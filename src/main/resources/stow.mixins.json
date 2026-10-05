@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "dev.stow.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "MixinAbstractContainerScreen",
+    "MixinClientPacketListener",
+    "MixinMultiPlayerGameMode",
+    "CreativeModeTabsAccessor",
+    "GameRendererAccessor",
+    "MixinKeyboardHandler",
+    "MixinMouseHandler"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

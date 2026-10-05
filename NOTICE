@@ -1,0 +1,8 @@
+stow
+Includes storage and inventory utilities developed in the custom Mouse Wheelie port.
+Mouse Wheelie: Copyright 2020–2026 Siphalor and contributors, Apache License 2.0.
+Mouse Wheelie's stack combination, chained-permutation client sorting, creative
+catalogue lookup and sort modes are retained and adapted for stow's guarded queue.
+Storage utilities have been extracted, renamed and modified for this project.
+Cloth Config is a separate required dependency, used through its public API.
+No third-party configuration library or server networking code is bundled.

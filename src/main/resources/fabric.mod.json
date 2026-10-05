@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "stow",
+  "version": "0.4.0+mc26.3",
+  "name": "stow",
+  "description": "A quiet home for your items. Inventory sorting, chest memory and material tracking.",
+  "environment": "client",
+  "license": "Apache-2.0",
+  "icon": "assets/stow/icon.png",
+  "entrypoints": {
+    "client": [
+      "dev.stow.StowClient"
+    ],
+    "modmenu": [
+      "dev.stow.client.StowModMenu"
+    ]
+  },
+  "mixins": [
+    "stow.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.3",
+    "cloth-config": ">=26.3.159"
+  },
+  "breaks": {
+    "mousewheelie": "*"
+  }
+}
