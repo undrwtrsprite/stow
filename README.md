@@ -9,7 +9,7 @@ Download individual builds from [GitHub Releases](https://github.com/undrwtrspri
 - **0.4.0+mc26.3:** the original source ZIP is preserved in [sources](sources/stow-source-0.4.0+mc26.3.zip). Its 75 files are imported unchanged on [codex/recovered-source-0.4.0](https://github.com/undrwtrsprite/stow/tree/codex/recovered-source-0.4.0), tagged [v0.4.0+mc26.3](https://github.com/undrwtrsprite/stow/tree/v0.4.0%2Bmc26.3). The recovery commit records the import time. The original source still pins Loom 1.17.0; it is retained as received and has not been rebuilt or repaired during this import.
 - **0.5.10+mc26.3:** existing [published source](https://github.com/undrwtrsprite/stow/tree/d23eb958b53521cb0cd13511d5a68a48ce6d93ef), tagged [v0.5.10+mc26.3](https://github.com/undrwtrsprite/stow/tree/v0.5.10%2Bmc26.3). That source includes the published Loom build configuration correction; the archived JAR is the user's original binary.
 - **All other versions:** original source is currently unavailable. Tags beginning with **binary-v** point to this binary archive, not to source snapshots for those versions. GitHub's automatically generated source archives for those tags contain this archive tree.
-- An earlier handoff mentioned a prepared 0.5.8 source bundle, but that package was not available in this checkout or Downloads. This import does not claim to have recovered it.
+- No other original source archives were available at import time.
 
 | Version | Original binary | Source availability |
 | --- | --- | --- |
