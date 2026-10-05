@@ -1,0 +1,82 @@
+<img src="src/main/resources/assets/stow/icon.png" alt="stow icon" width="80" height="80">
+
+# stow
+
+A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric · client only**.
+
+[Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](RELEASE-NOTES.md)
+
+## Why it exists
+
+I started stow for my friends and our Minecraft server. We wanted an inventory mod that worked the way we liked, so I used AI to build and change it around our ideas.
+
+**Much of stow's code, UI and documentation was generated or edited with AI.** I choose the features and test it, but this is a personal project, not a professionally developed mod. It will have rough edges. The source is public so people can see how it works, report problems and improve it.
+
+The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/mouse-wheelie) by Siphalor and contributors. Their work is credited in [NOTICE](NOTICE); this project retains the Apache 2.0 license.
+
+## What it does
+
+- **Sort and move items:** Mouse Wheelie sorting, five sort orders, matching/all-item drag modes, inventory search and pinned slots.
+- **Remember storage:** search previously opened chests, barrels and shulker boxes; rename them and highlight sources through walls.
+- **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters.
+- **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar.
+- **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
+- **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
+- **Keep track of equipment:** durability for hotbar tools and worn armor, with configurable HUD placement.
+- **Make it yours:** editable shortcuts, a searchable command palette, HUD previews and Cloth Config settings.
+
+Chest memory uses snapshots of storage you have opened. It cannot read unopened chests or know what someone else changed until you reopen them. Material goals include your inventory by default; settings can count selected storage only.
+
+## Install
+
+Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
+
+Put `stow-0.5.10+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+
+The source ZIP is for developers. A built JAR is available under **Artifacts** on a successful [build run](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml), or you can build it yourself. GitHub artifact downloads require signing in.
+
+## Quick controls
+
+| Action | Default control |
+| --- | --- |
+| Open command palette | Ctrl + K |
+| Sort inventory / quantity / name | Middle-click / Shift + middle-click / Ctrl + middle-click |
+| Move matching stacks | Shift + left-drag |
+| Move all crossed stacks in Both mode | Ctrl + Shift + left-drag |
+| Pin a slot | Hover and press P |
+| Track a material | Hover and press N, or `/need 1000 cobble` |
+| Prioritize a material on the HUD | Hover its floating counter and press H |
+| Find / stop a material's chest glow | Right-click its floating counter |
+| Toggle automatic mining tools | Alt + T; starts off |
+| Keep the current tool temporarily | Hold Sneak while mining |
+| Fill / unpack a held bundle | Shift + left-drag / Shift + right-drag |
+
+## Build from source
+
+Install a **JDK 25** and check `java -version`. The Gradle wrapper downloads the pinned Gradle version and the project dependencies; you do not need a separate Gradle installation.
+
+**Windows PowerShell**, from the repository folder:
+
+```powershell
+.\gradlew.bat build
+```
+
+**Linux / macOS:**
+
+```sh
+chmod +x gradlew
+./gradlew build
+```
+
+The mod and source JARs appear in `build/libs/`. `./gradlew runClient` launches the development client; use `.\gradlew.bat runClient` on Windows.
+
+[Development and tests](docs/DEVELOPMENT.md) explains the project structure, dependency versions and the optional Minecraft regression harness. [CONTRIBUTING.md](CONTRIBUTING.md) covers bug reports and changes.
+
+## Credits and license
+
+- **Mouse Wheelie:** original sorting code and earlier custom-port utilities, Siphalor and contributors, Apache 2.0.
+- **Material Design Icons:** Pictogrammers and contributors; original selected SVGs, their license and rasterized PNGs are included.
+- **Cloth Config, Fabric and Mod Menu:** separate dependencies, not bundled.
+- **stow icon:** made with AI for this project.
+
+stow is licensed under [Apache 2.0](LICENSE). See [NOTICE](NOTICE) for attribution. Minecraft and its assets are not included in this repository. This is an independent project, not affiliated with Mojang or Microsoft.
