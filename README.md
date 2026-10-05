@@ -4,7 +4,7 @@
 
 A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric · client only**.
 
-[Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](RELEASE-NOTES.md)
+[Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
 
 ## Why it exists
 
@@ -33,7 +33,9 @@ Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and
 
 Put `stow-0.5.10+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-The source ZIP is for developers. A built JAR is available under **Artifacts** on a successful [build run](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml), or you can build it yourself. GitHub artifact downloads require signing in.
+Download the original JAR from [GitHub Releases](https://github.com/undrwtrsprite/stow/releases/latest). The [version archive](docs/HISTORY.md) preserves all 18 available stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
+
+The source ZIP is for developers. CI-built JARs are also available under **Artifacts** on a successful [build run](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml), or you can build it yourself. GitHub artifact downloads require signing in.
 
 ## Quick controls
 
