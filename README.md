@@ -43,7 +43,7 @@ To enable Alt + S stripping **and mining**, install `stow-companion-0.5.11+mc26.
 | [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-0.5.11%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
 | [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-companion-0.5.11%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
 
-Both downloads are in the [0.5.11 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.11%2Bmc26.3), with checksums and source. Use the same JARs when uploading to Modrinth or CurseForge; the companion is a separate mod, not an alternative client build. [Publishing descriptions and upload details](docs/publishing/UPLOAD-GUIDE.md) are included for both projects.
+Both downloads are in the [0.5.11 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.11%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
 
 The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 

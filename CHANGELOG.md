@@ -25,9 +25,9 @@
 - Protected blocks, changed blocks, tool changes, death, dimension changes, container use and disconnects stop or reject work. Completed changes remain when a batch is cancelled; cancellation cannot undo logs already harvested.
 - The companion never loads terrain to expand a group. A group touching unloaded terrain is rejected before changes begin. Load the area first for very long rows.
 - The default server limit is **16,384 connected logs**, configurable from **1–65,536** in `config/stow-companion.properties` (`maxLogs`). This count limit protects the server; it is not a height or length limit.
-- The author reported that the client and companion work in their game. Compatibility with other Timber and protection mods should be checked in-game. Mods that only react to client mining packets may behave differently from mods that use normal block-break callbacks.
+- Compatibility with Timber and protection mods should be checked in-game. Mods that only react to client mining packets may behave differently from mods that use normal block-break callbacks.
 
-The client and companion are released together. Future versions are published only when requested.
+The client and companion are released together.
 
 ### Verification
 
@@ -35,4 +35,4 @@ The client and companion are released together. Future versions are published on
 - Headless Fabric server checks passed for a combined 100-log row, 96-log column and dense pile, exact stripped-log drops, durability, cancellation, creative mode, changed blocks, count limits and Fabric interaction/break vetoes.
 - A simulated Timber cascade verified that all logs were stripped before the first break and no duplicate drops were produced. The server's specific Timber mod was not available for this test.
 - Separate discovery checks passed for a 2,000-log row, a 384-log column, diagonal connections, isolated groups, unloaded boundaries and incremental work budgets.
-- The author tested the combined build in-game and confirmed it works before approving publication.
+- Manual in-game testing confirmed the combined client and companion behavior before release.

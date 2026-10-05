@@ -27,3 +27,14 @@ __pycache__/
 *.pyc
 *.hprof
 *.log
+
+# Private author notes and publishing material
+/private-notes/
+/ICON-PROMPT.txt
+/POLISH.md
+/VALIDATION.md
+/docs/publishing/
+/dev-tools/package-publishing.py
+/handoff*.md
+/publish-stow*.ps1
+/stow-upload-kit*.zip
