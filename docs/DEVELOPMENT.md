@@ -18,7 +18,7 @@ When changing the release version, update `build.gradle`, `fabric.mod.json`, REA
 | `tests/porttest/` | Minecraft client regression harness and integrated-world tests |
 | `dev-tools/` | Source checks, prepared-workspace builds, test launcher and icon conversion |
 | `docs/FEATURES.md` | Detailed behavior and controls |
-| `VALIDATION.md` | Recorded checks and their limitations |
+| `CHANGELOG.md` | Release changes and verification |
 
 Keep names/components, pinned slots, cursor state and client/server synchronization intact when changing item transactions. Automatic mining uses hotbar selection only; its default and reset value are off. Manual middle-click tool picking can retrieve backpack tools independently.
 

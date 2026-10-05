@@ -1,6 +1,6 @@
 # Historical versions
 
-All 18 original stow JARs available in the user's archive have been preserved, from **0.1.0+mc26.3** through **0.5.10+mc26.3**. Download them from [GitHub Releases](https://github.com/undrwtrsprite/stow/releases). The Git branch [codex/archived-releases](https://github.com/undrwtrsprite/stow/tree/codex/archived-releases) contains every JAR, the original 0.4.0 source ZIP, a version manifest and SHA-256 checksums. Only versions named stow are included.
+All 18 original stow JARs available in the version archive have been preserved, from **0.1.0+mc26.3** through **0.5.10+mc26.3**. Download them from [GitHub Releases](https://github.com/undrwtrsprite/stow/releases). The Git branch [codex/archived-releases](https://github.com/undrwtrsprite/stow/tree/codex/archived-releases) contains every JAR, the original 0.4.0 source ZIP, a version manifest and SHA-256 checksums. Only versions named stow are included.
 
 Each JAR's embedded Fabric mod ID/version and filename were checked. The original files are unchanged. These are recovery commits and releases: their dates record the import and publication, not the original development dates. Import verification checks preservation and metadata; it does not claim new gameplay testing of the older builds.
 
