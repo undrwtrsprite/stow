@@ -1,0 +1,31 @@
+{
+  "upstream": "https://github.com/Templarian/MaterialDesign-SVG",
+  "commit": "9e04201d4557e729822fb57f62a316c3dea1d4a8",
+  "license": "Apache-2.0",
+  "icons": {
+    "STORAGE": "treasure-chest",
+    "MATERIALS": "clipboard-list",
+    "SORT": "sort-descending",
+    "COMMAND": "lightning-bolt",
+    "DEPOSIT": "tray-arrow-down",
+    "EYE": "eye",
+    "EYE_OFF": "eye-off",
+    "STAR": "star",
+    "COPY": "layers-triple",
+    "GRID": "select-all",
+    "BOTH": "gesture-swipe-horizontal",
+    "CHECK": "check",
+    "CLOSE": "close",
+    "PLUS": "plus",
+    "MINUS": "minus",
+    "LEFT": "chevron-left",
+    "RIGHT": "chevron-right",
+    "PROJECT": "folder-multiple",
+    "KEEP": "shield-check",
+    "KEYBOARD": "keyboard",
+    "SETTINGS": "cog",
+    "EQUIPMENT": "pickaxe",
+    "TRACK": "clipboard-plus",
+    "FIND": "magnify"
+  }
+}
