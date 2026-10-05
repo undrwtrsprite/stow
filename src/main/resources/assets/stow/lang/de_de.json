@@ -269,5 +269,16 @@
   "stow.settings.auto-tool.tip": "Nutzt die Schnellleiste. Schleichen hält deine Auswahl.",
   "stow.action.auto_tool": "Automatischen Werkzeugwechsel umschalten",
   "stow.auto-tool.on": "Werkzeugwechsel: an",
-  "stow.auto-tool.off": "Werkzeugwechsel: aus"
+  "stow.auto-tool.off": "Werkzeugwechsel: aus",
+  "stow.action.bulk_strip": "Nahe Eichenstämme entrinden / abbrechen",
+  "stow.settings.bulk-strip": "Eichenstämme gesammelt entrinden",
+  "stow.settings.bulk-strip.tip": "Halte eine Axt, ziele auf einen Eichenstamm und nutze das Entrinden-Kürzel. Erneut drücken bricht ab. Schleichen bleibt unverändert.",
+  "stow.bulk-strip.started": "Bis zu %s erreichbare Eichenstämme werden entrindet. Erneutes Drücken bricht ab.",
+  "stow.bulk-strip.done": "%s Eichenstämme entrindet; %s übersprungen.",
+  "stow.bulk-strip.cancelled": "Entrinden gestoppt. %s entrindet; %s übersprungen.",
+  "stow.bulk-strip.rejected": "Entrinden gestoppt: keine Serverbestätigung. %s entrindet; %s übersprungen.",
+  "stow.bulk-strip.axe": "Halte eine Axt mit mindestens 2 verbleibender Haltbarkeit.",
+  "stow.bulk-strip.aim": "Ziele auf einen nicht entrindeten Eichenstamm in Reichweite.",
+  "stow.bulk-strip.disabled": "Gesammeltes Entrinden ist in den Einstellungen deaktiviert.",
+  "stow.bulk-strip.unavailable": "Beende deine aktuelle Aktion, bevor du Eichenstämme entrindest."
 }

@@ -269,5 +269,16 @@
   "stow.settings.auto-tool.tip": "Uses hotbar tools. Hold Sneak to keep your choice.",
   "stow.action.auto_tool": "Toggle auto tool",
   "stow.auto-tool.on": "Auto tool: on",
-  "stow.auto-tool.off": "Auto tool: off"
+  "stow.auto-tool.off": "Auto tool: off",
+  "stow.action.bulk_strip": "Strip nearby oak logs / cancel",
+  "stow.settings.bulk-strip": "Batch oak log stripping",
+  "stow.settings.bulk-strip.tip": "Hold an axe, aim at an oak log, then use the Strip shortcut. Press it again to cancel. Sneak stays unchanged.",
+  "stow.bulk-strip.started": "Stripping up to %s reachable oak logs. Use the shortcut again to cancel.",
+  "stow.bulk-strip.done": "Stripped %s oak logs; skipped %s.",
+  "stow.bulk-strip.cancelled": "Oak stripping stopped. Stripped %s; skipped %s.",
+  "stow.bulk-strip.rejected": "Stripping stopped: no server confirmation. Stripped %s; skipped %s.",
+  "stow.bulk-strip.axe": "Hold an axe with at least 2 durability remaining.",
+  "stow.bulk-strip.aim": "Aim at an unstripped oak log within reach.",
+  "stow.bulk-strip.disabled": "Batch oak stripping is disabled in settings.",
+  "stow.bulk-strip.unavailable": "Finish your current action before stripping oak logs."
 }

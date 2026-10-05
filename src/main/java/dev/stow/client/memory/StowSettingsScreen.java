@@ -52,6 +52,9 @@ public final class StowSettingsScreen {
         var autoTool=new ResponsiveConfigEntries.Toggle(text("auto-tool"),config.autoTool,entry.getResetButtonKey(),false,v->config.autoTool=v);
         autoTool.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("auto-tool.tip")}));
         inventory.addEntry(autoTool);
+        var bulkStrip=new ResponsiveConfigEntries.Toggle(text("bulk-strip"),config.bulkStrip,entry.getResetButtonKey(),true,v->config.bulkStrip=v);
+        bulkStrip.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("bulk-strip.tip")}));
+        inventory.addEntry(bulkStrip);
         inventory.addEntry(new ScreenLinkEntry(Component.translatable("stow.shortcuts.title"),dev.stow.client.ui.ShortcutEditorScreen::new));
         var deposit=builder.getOrCreateCategory(text("deposit"));
         deposit.addEntry(new ResponsiveConfigEntries.Toggle(text("deposit.matching"),config.depositMatchingOnly,entry.getResetButtonKey(),true,v->config.depositMatchingOnly=v));

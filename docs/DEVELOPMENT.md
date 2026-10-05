@@ -26,7 +26,7 @@ Keep names/components, pinned slots, cursor state and client/server synchronizat
 
 The **Build** workflow runs source checks and the Gradle build on Windows and Linux for pushes and pull requests. Each successful job uploads the mod and source JARs. It has read-only repository permissions and does not publish a release or upload anything to Modrinth.
 
-The **Minecraft regression tests** workflow can be started manually under Actions. Choose behavior, automatic mining, crafting, bundles/glow or native outlines. It downloads dependencies from their upstream sources and launches an offscreen Fabric client on Linux. These tests are independent of Gradle's ordinary `test` task; a successful Gradle build alone does not mean the Minecraft behavior checks ran.
+The **Minecraft regression tests** workflow can be started manually under Actions. Choose behavior, automatic mining, oak stripping, crafting, bundles/glow or native outlines. It downloads dependencies from their upstream sources and launches an offscreen Fabric client on Linux. These tests are independent of Gradle's ordinary `test` task; a successful Gradle build alone does not mean the Minecraft behavior checks ran.
 
 ## Optional local regression harness
 
@@ -41,7 +41,7 @@ STOW_TEST_SCREENSHOTS=0 python3 dev-tools/test-local.py
 STOW_AUTO_TOOL_WORLD_TEST=1 STOW_TEST_SCREENSHOTS=0 python3 dev-tools/test-local.py
 ```
 
-Other world runs use `STOW_CRAFTING_WORLD_TEST=1`, `STOW_BUNDLE_WORLD_TEST=1` or `STOW_NATIVE_WORLD_TEST=1`. Use only one world flag per run. Logs and result files are written into unique sibling `stow-tests/game-v03-*` directories. Without the screenshot flag, the behavior run also captures the UI.
+Other world runs use `STOW_STRIP_WORLD_TEST=1`, `STOW_CRAFTING_WORLD_TEST=1`, `STOW_BUNDLE_WORLD_TEST=1` or `STOW_NATIVE_WORLD_TEST=1`. Use only one world flag per run. The stripping suite uses a real integrated server, including a test-only interaction rejection hook. Logs and result files are written into unique sibling `stow-tests/game-v03-*` directories. Without the screenshot flag, the behavior run also captures the UI.
 
 `build-local.py` is a direct javac fallback for this harness, not the public release pipeline. Use the Gradle workflow for normal builds. The harness uses controlled item prototypes for menu-only cases and real vanilla item components for integrated-world cases. Remote multiplayer and live shader packs require separate manual checks.
 
