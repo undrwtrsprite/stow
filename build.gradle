@@ -15,4 +15,18 @@ dependencies {
 }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
 tasks.withType(JavaCompile).configureEach { options.release = 25; options.encoding = 'UTF-8' }
-jar { from('LICENSE'); from('NOTICE') }
+jar { exclude('dev/stow/stripping/server/**'); from('LICENSE'); from('NOTICE') }
+tasks.register('companionJar', Jar) {
+    archiveBaseName = 'stow-companion'
+    from(sourceSets.main.output.classesDirs) { include('dev/stow/stripping/**') }
+    from('server-resources')
+    from('LICENSE'); from('NOTICE')
+    dependsOn(classes)
+}
+tasks.named('build') { dependsOn('companionJar') }
+tasks.register('prepareHarvestTestClasspath') {
+    dependsOn(classes)
+    doLast {
+        file('build/harvest-test-classpath.txt').text = sourceSets.main.compileClasspath.asPath + File.pathSeparator + sourceSets.main.output.classesDirs.asPath
+    }
+}
