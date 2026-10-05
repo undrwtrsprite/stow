@@ -1,0 +1,34 @@
+name: Bug report
+description: Something in stow is not working as expected.
+title: "[Bug] "
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: stow, Minecraft, Fabric Loader and Fabric API versions.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce it?
+      placeholder: "1. Open the inventory…"
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other mods and shaders
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or screenshots
+      description: Attach the relevant client log or screenshot if available.
