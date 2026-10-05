@@ -1,0 +1,29 @@
+# Gradle and local runtime
+.gradle/
+build/
+run/
+runServer/
+logs/
+crash-reports/
+manual-build/
+toolchain/
+stow-tests/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db
+
+# Local configuration and generated artifacts
+.env
+.env.*
+*.local
+__pycache__/
+*.pyc
+*.hprof
+*.log

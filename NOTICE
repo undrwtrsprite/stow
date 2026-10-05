@@ -1,0 +1,17 @@
+stow
+Includes storage and inventory utilities developed in the custom Mouse Wheelie port.
+Mouse Wheelie: Copyright 2020–2026 Siphalor and contributors, Apache License 2.0.
+Mouse Wheelie's stack combination, chained-permutation client sorting, creative
+catalogue lookup and sort modes are retained and adapted for stow's guarded queue.
+Storage utilities have been extracted, renamed and modified for this project.
+Cloth Config is a separate required dependency, used through its public API.
+No third-party configuration library or server networking code is bundled.
+
+Inventory/menu action icons: Material Design Icons, by Pictogrammers and contributors,
+Apache License 2.0. https://pictogrammers.com/library/mdi/
+Upstream: https://github.com/Templarian/MaterialDesign-SVG
+Commit: 9e04201d4557e729822fb57f62a316c3dea1d4a8
+Selected SVG paths are retained unchanged in the source. Runtime modifications:
+rasterized to 64px white alpha-mask PNGs for centered 16px Minecraft GUI rendering.
+The upstream Pictogrammers Free License is retained with source icons and at
+assets/stow/textures/gui/icons/LICENSE; this project's LICENSE includes Apache 2.0.
