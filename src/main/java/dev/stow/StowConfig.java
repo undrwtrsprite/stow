@@ -55,6 +55,7 @@ public final class StowConfig {
     public HotbarScoping hotbarScoping=HotbarScoping.SOFT;
     public boolean optimizeCreativeSearchSort=true;
     public int sortSettingsVersion=2;
+    public String lastNotifiedVersion="";
     private static final com.google.gson.Gson JSON=new GsonBuilder().setPrettyPrinting().create();
     public static void initialize(){
         Path directory=Stow.dataDirectory(), old=directory.getParent();

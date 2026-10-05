@@ -28,22 +28,28 @@ The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/m
 
 Chest memory uses snapshots of storage you have opened. It cannot read unopened chests or know what someone else changed until you reopen them. Material goals include your inventory by default; settings can count selected storage only.
 
+## Update notices
+
+Starting with **0.5.12**, stow checks for newer stable Fabric releases for your Minecraft version on **GitHub, Modrinth and CurseForge**. A clickable in-game chat notice opens the release page. Each new version is announced once, and checks run in the background while you play. Successful checks repeat after 12 hours; unavailable services retry after an hour.
+
+The check requests public release metadata from GitHub, Modrinth and [CFWidget](https://cfwidget.com/) for CurseForge. It sends no player, world, server or account data. Listings and files awaiting platform approval become detectable after approval; CFWidget can cache CurseForge data for up to an hour.
+
 ## Install
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-0.5.11+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-0.5.12+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-To enable Alt + S stripping **and mining**, install `stow-companion-0.5.11+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+To enable Alt + S stripping **and mining**, install `stow-companion-0.5.12+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
 
-### Downloads — 0.5.11+mc26.3
+### Downloads — 0.5.12+mc26.3
 
 | File | Install location | Required dependencies |
 | --- | --- | --- |
-| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-0.5.11%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
-| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-companion-0.5.11%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
+| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.12%2Bmc26.3/stow-0.5.12%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
+| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.12%2Bmc26.3/stow-companion-0.5.12%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
 
-Both downloads are in the [0.5.11 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.11%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
+Both downloads are in the [0.5.12 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.12%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
 
 The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 
@@ -85,7 +91,7 @@ chmod +x gradlew
 
 The client, companion and source JARs appear in `build/libs/`. `./gradlew runClient` launches the development client; use `.\gradlew.bat runClient` on Windows.
 
-[Development and tests](docs/DEVELOPMENT.md) explains the project structure, dependency versions and the optional Minecraft regression harness. [CONTRIBUTING.md](CONTRIBUTING.md) covers bug reports and changes.
+[Development](docs/DEVELOPMENT.md) explains the project structure and dependency versions. [CONTRIBUTING.md](CONTRIBUTING.md) covers bug reports and changes.
 
 ## Credits and license
 

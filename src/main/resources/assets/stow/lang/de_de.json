@@ -290,5 +290,6 @@
   "stow.harvest.limit": "Die Eichengruppe überschreitet das Stammlimit des Companion-Servers; nichts geändert.",
   "stow.harvest.durability": "Die Axthaltbarkeit reicht für diese Gruppe nicht sicher aus. %s entrindet; %s abgebaut.",
   "stow.harvest.rejected": "Eichenabbau gestoppt: Ein Block wurde geändert oder der Server hat die Aktion abgelehnt. %s entrindet; %s abgebaut.",
-  "stow.harvest.timeout": "Keine Antwort vom Companion. Prüfe vor einem erneuten Versuch die Verbindung."
+  "stow.harvest.timeout": "Keine Antwort vom Companion. Prüfe vor einem erneuten Versuch die Verbindung.",
+  "stow.update.available": "Eine neue stow-Version ist verfügbar: %s. Klicke, um die Downloadseite zu öffnen."
 }

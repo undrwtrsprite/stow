@@ -1,5 +1,5 @@
 plugins { id 'net.fabricmc.fabric-loom' version '1.17.21' }
-version = '0.5.11+mc26.3'
+version = '0.5.12+mc26.3'
 group = 'dev.stow'
 base { archivesName = 'stow' }
 repositories {
@@ -24,9 +24,3 @@ tasks.register('companionJar', Jar) {
     dependsOn(classes)
 }
 tasks.named('build') { dependsOn('companionJar') }
-tasks.register('prepareHarvestTestClasspath') {
-    dependsOn(classes)
-    doLast {
-        file('build/harvest-test-classpath.txt').text = sourceSets.main.compileClasspath.asPath + File.pathSeparator + sourceSets.main.output.classesDirs.asPath
-    }
-}

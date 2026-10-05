@@ -1,54 +1,42 @@
 # Development
 
-## Standard build
+## Build
 
-Use Java 25 and the included wrapper. On Linux/macOS, run `chmod +x gradlew` once if the wrapper has no executable permission (for example, after a first commit made on Windows). Run `./gradlew build` on Linux/macOS or `.\gradlew.bat build` in Windows PowerShell. Import the repository root as a Gradle project in your IDE. `runClient` opens the development client.
+Use JDK 25 and the included Gradle wrapper. Run `./gradlew build` on Linux/macOS or `.\gradlew.bat build` in Windows PowerShell. Import the repository root as a Gradle project in your IDE; `runClient` opens the development client.
 
-Versions are pinned in `build.gradle` and `gradle/wrapper/gradle-wrapper.properties`: Minecraft 26.3, Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Cloth Config 26.3.159, optional Mod Menu 21.0.0, Loom 1.17.21 and Gradle 9.6.0. Minecraft 26.3 uses unobfuscated names, so the plugin is `net.fabricmc.fabric-loom`; there is no mappings dependency.
+The pinned versions are Minecraft 26.3, Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Cloth Config 26.3.159, optional Mod Menu 21.0.0, Loom 1.17.21 and Gradle 9.6.0. Minecraft 26.3 uses unobfuscated names, so there is no mappings dependency.
 
-When changing the release version, update `build.gradle`, `fabric.mod.json`, README and release notes together. Run `python3 dev-tools/check-project.py` to check metadata, translation keys, referenced assets and the wrapper layout.
+When changing the release version, update `build.gradle`, both Fabric metadata files, README and release notes together. `python3 dev-tools/check-project.py` checks metadata, translation keys, assets and the wrapper layout.
 
 ## Source layout
 
 | Path | Purpose |
 | --- | --- |
-| `src/main/java/dev/stow/` | Mod configuration, client code and mixins |
-| `src/main/resources/` | Fabric metadata, English/German text and runtime assets |
+| `src/main/java/dev/stow/` | Mod configuration, client code, mixins and companion server code |
+| `src/main/resources/` | Client metadata, English/German text and runtime assets |
+| `server-resources/` | Companion metadata |
 | `design/icons/mdi/` | Original third-party SVG icons and license |
-| `tests/porttest/` | Minecraft client regression harness and integrated-world tests |
-| `dev-tools/` | Source checks, prepared-workspace builds, test launcher and icon conversion |
+| `dev-tools/` | Build preparation, source checks and icon conversion |
 | `docs/FEATURES.md` | Detailed behavior and controls |
-| `CHANGELOG.md` | Release changes and verification |
+| `CHANGELOG.md` | Release changes |
 
-Keep names/components, pinned slots, cursor state and client/server synchronization intact when changing item transactions. Automatic mining uses hotbar selection only; its default and reset value are off. Manual middle-click tool picking can retrieve backpack tools independently.
+The client JAR excludes companion server classes. The companion JAR contains only the shared protocol and companion server code. Local notes, publishing material and regression suites are ignored and excluded from the public repository and release packages.
+
+Keep item names/components, pinned slots, cursor state and client/server synchronization intact when changing item transactions. Automatic mining uses hotbar selection only and defaults to off.
 
 ## GitHub Actions
 
-The **Build** workflow runs source checks and the Gradle build on Windows and Linux for pushes and pull requests. Each successful job uploads the mod and source JARs. It has read-only repository permissions and does not publish a release or upload anything to Modrinth.
+The Build workflow checks project metadata and builds on Windows and Linux. It uploads client, companion and source JARs as build artifacts. It has read-only repository permissions.
 
-The **Minecraft regression tests** workflow can be started manually under Actions. Choose behavior, automatic mining, oak stripping, crafting, bundles/glow or native outlines. It downloads dependencies from their upstream sources and launches an offscreen Fabric client on Linux. These tests are independent of Gradle's ordinary `test` task; a successful Gradle build alone does not mean the Minecraft behavior checks ran.
+## Version checks
 
-## Optional local regression harness
+`VersionChecker` runs network work on daemon threads and adds the chat notice on the client tick thread. It checks published stable client releases for the running Minecraft version. GitHub releases must include the matching client JAR. Modrinth versions must list the matching Minecraft version and Fabric. CurseForge uses CFWidget's public file metadata, filtered by release type, Fabric and Minecraft version.
 
-This is a **Linux-only** developer tool. Clone this repository into a directory named `stow`, because the prepared-workspace scripts expect that name. Python 3, internet access and the usual Linux OpenGL/OpenAL runtime libraries are needed. It downloads a Java 25 toolchain and verified upstream dependencies into sibling `toolchain/` and `manual-build/` directories. No Minecraft JARs or dependency JARs are committed.
-
-From the repository root:
-
-```sh
-python3 dev-tools/bootstrap-local.py
-python3 dev-tools/build-local.py
-STOW_TEST_SCREENSHOTS=0 python3 dev-tools/test-local.py
-STOW_AUTO_TOOL_WORLD_TEST=1 STOW_TEST_SCREENSHOTS=0 python3 dev-tools/test-local.py
-```
-
-Other world runs use `STOW_STRIP_WORLD_TEST=1`, `STOW_CRAFTING_WORLD_TEST=1`, `STOW_BUNDLE_WORLD_TEST=1` or `STOW_NATIVE_WORLD_TEST=1`. Use only one world flag per run. The stripping suite uses a real integrated server, including a test-only interaction rejection hook. Logs and result files are written into unique sibling `stow-tests/game-v03-*` directories. Without the screenshot flag, the behavior run also captures the UI.
-
-The optional server companion is built separately as `stow-companion-VERSION.jar`; the client JAR excludes its server classes. Its shared packet codecs have no client imports. To run headless companion checks on Windows or Linux, set `JAVA_HOME` to JDK 25, run `gradlew prepareHarvestTestClasspath build`, then `python dev-tools/test-harvest-server.py`. This launches a disposable Fabric GameTest world under `build/harvest-server-*`, using only the packaged companion, Fabric API and a test fixture. It checks real axe use, vanilla drops and durability, tall/long/dense groups, Fabric veto callbacks, a simulated Timber cascade, cancellation and invalid starting conditions. Test fixtures never ship in either mod JAR. `ConnectedLogsTest.java` separately exercises 2,000-log rows, 384-log columns, caps and unloaded boundaries without a game launch. Gradle's ordinary `test` task does not run these suites.
-
-`build-local.py` is a direct javac fallback for this harness, not the public release pipeline. Use the Gradle workflow for normal builds. The harness uses controlled item prototypes for menu-only cases and real vanilla item components for integrated-world cases. Remote multiplayer and live shader packs require separate manual checks.
+The request URLs are fixed public endpoints. Download links are constructed for the three official project pages. No credentials or game data are sent. `lastNotifiedVersion` is saved only in the player's local settings so reconnecting or restarting does not repeat the same notice.
 
 ## Upstream build references
 
 - [Fabric for Minecraft 26.3](https://www.fabricmc.net/2026/09/15/263.html)
 - [Fabric Loom documentation](https://docs.fabricmc.net/develop/loom/)
 - [Gradle setup action](https://github.com/gradle/actions)
+- [CFWidget API](https://cfwidget.com/)
