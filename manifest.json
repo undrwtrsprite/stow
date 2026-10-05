@@ -1,0 +1,164 @@
+[
+  {
+    "version": "0.1.0+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.1.0+mc26.3.jar",
+    "bytes": 173636,
+    "sha256": "de93f2f04cd458b783da83f9284dd21095851b88a8d948f74574867bdc5aee85",
+    "tag": "binary-v0.1.0+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.2.0+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.2.0+mc26.3.jar",
+    "bytes": 198600,
+    "sha256": "2b7542eeef8890c3a593cf623ce8b9f969335bf01729d9a0e6e135a42a9215f7",
+    "tag": "binary-v0.2.0+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.3.0+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.3.0+mc26.3.jar",
+    "bytes": 201207,
+    "sha256": "ae54acc1ecdf75a84e96cb47af7b862da16f15ea97b236ed1e56d7f907628d53",
+    "tag": "binary-v0.3.0+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.3.1+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.3.1+mc26.3.jar",
+    "bytes": 203010,
+    "sha256": "f5ba9aa1a4deefee64b381c381e8542e4b400e6a9d65804409337434eb2e3a34",
+    "tag": "binary-v0.3.1+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.4.0+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.4.0+mc26.3.jar",
+    "bytes": 265684,
+    "sha256": "533ded461fd6a383855f33a54bc7ac3d1c552430e932ef698fb5b2a1617cd408",
+    "tag": "v0.4.0+mc26.3",
+    "source": "Original source ZIP and recovered source tag"
+  },
+  {
+    "version": "0.4.1+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.4.1+mc26.3.jar",
+    "bytes": 274938,
+    "sha256": "cd86051f11fdb16e687d1018374dfc251c2dfcb7915114998731a1d926fb8de8",
+    "tag": "binary-v0.4.1+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.4.2+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.4.2+mc26.3.jar",
+    "bytes": 271875,
+    "sha256": "d7673d57912f0efa53576cce6b745da021b79d8240b73cfcf2c2d0064370e16f",
+    "tag": "binary-v0.4.2+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.0+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.0+mc26.3.jar",
+    "bytes": 284065,
+    "sha256": "8039ad4e9fad0dd1ceffe357c98cc51847c87aecc0228083f022a4264a999179",
+    "tag": "binary-v0.5.0+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.1+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.1+mc26.3.jar",
+    "bytes": 288251,
+    "sha256": "288fc3e8aaa85c1c0f1d49c1d943d0ae73e3f68445af460a05f5f1d4c008886a",
+    "tag": "binary-v0.5.1+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.2+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.2+mc26.3.jar",
+    "bytes": 294351,
+    "sha256": "ca08a22b04db50c8667b8960c4d00c1da02d89975760e116f266cb19fb98d6bd",
+    "tag": "binary-v0.5.2+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.3+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.3+mc26.3.jar",
+    "bytes": 304424,
+    "sha256": "84031a1738e3b30a7f2f327a2e30472f9e1f317cfa6ffffd087460a3002e9a6d",
+    "tag": "binary-v0.5.3+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.4+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.4+mc26.3.jar",
+    "bytes": 312920,
+    "sha256": "e6ca2e5f0a710747fc936ba0b56be74fa0f8a0a54533d52d10206850320fac6e",
+    "tag": "binary-v0.5.4+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.5+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.5+mc26.3.jar",
+    "bytes": 321414,
+    "sha256": "84277a4d56fdb9b784603d92d978ecf7edfc217643525b1a03dd4b6e82aeeca1",
+    "tag": "binary-v0.5.5+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.6+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.6+mc26.3.jar",
+    "bytes": 349313,
+    "sha256": "7e2d7df2138f665044b484b30c159dd3b9dcd6fb1a56ed0b586ae7e9469f884c",
+    "tag": "binary-v0.5.6+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.7+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.7+mc26.3.jar",
+    "bytes": 352274,
+    "sha256": "a6ad5520be440924a8839fb3b70e6725c457356c4de0e3ad43dcdad7ebea1ad3",
+    "tag": "binary-v0.5.7+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.8+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.8+mc26.3.jar",
+    "bytes": 349780,
+    "sha256": "941dfdef4a82e9c073bf53c47df48929bf93679d5818bf45412befcfd3b65602",
+    "tag": "binary-v0.5.8+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.9+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.9+mc26.3.jar",
+    "bytes": 355807,
+    "sha256": "511f42cf494c27a2e691af5578ac68ca435df9b00f8b1bdb9c747623b47d7e97",
+    "tag": "binary-v0.5.9+mc26.3",
+    "source": "Unavailable; original JAR only"
+  },
+  {
+    "version": "0.5.10+mc26.3",
+    "mod_id": "stow",
+    "file": "releases/stow-0.5.10+mc26.3.jar",
+    "bytes": 357203,
+    "sha256": "967a48c2503efa76c1d88a62bbeb99d272c0ff3854cf26ad0c8a25f83f4fe8f9",
+    "tag": "v0.5.10+mc26.3",
+    "source": "Published source at d23eb958b53521cb0cd13511d5a68a48ce6d93ef"
+  }
+]
