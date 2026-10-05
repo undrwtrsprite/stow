@@ -1,12 +1,14 @@
-# stow 0.5.11 — Batch oak stripping
+# stow 0.5.11 — Oak stripping and companion harvesting
 
 - Hold an axe, aim at a placed oak log and press **Alt + S** to strip nearby visible oak logs within normal reach. Press it again to cancel; the shortcut can be changed in the editor.
-- Sneak is untouched. Stripping uses normal axe right-click interactions and never sends block-breaking actions.
-- Batches handle up to 64 oak logs, one server-confirmed use at a time, preserving log orientation and normal axe durability. Other wood, hidden logs and distant logs are left alone.
+- Sneak is untouched. The optional **stow companion** adds server-side stripping followed by harvesting through the same Alt + S shortcut.
+- Companion discovery follows connected oak logs through tall columns, long rows and dense piles, with no fixed height or length limit. The starting log must be visible and reachable. The group must be loaded and permitted; a configurable count limit defaults to 16,384 logs.
+- The whole group is stripped before mining starts. Normal axe actions, break callbacks, durability and loot apply; logs already harvested by Timber are skipped. Exact compatibility with each Timber mod requires an in-game check.
+- Without the companion, batches only strip up to 64 nearby visible logs, one server-confirmed use at a time, preserving log orientation and normal axe durability.
 - Changing tools, opening a menu or starting another interaction cancels. Rejected or unconfirmed uses stop the batch without retries; the last durability point is protected.
 - Added an Inventory settings toggle and a searchable world command-palette action, with English and German text.
 
-Replace the old stow JAR with `stow-0.5.11+mc26.3.jar`. Dependencies are unchanged; no server-side stow installation is needed.
+Replace the old client JAR with `stow-0.5.11+mc26.3.jar`. For stripping **and mining**, install `stow-companion-0.5.11+mc26.3.jar` with Fabric API on the server. Full installation instructions, verification and limits are in [CHANGELOG.md](CHANGELOG.md).
 
 # stow 0.5.10 — Automatic mining tools
 

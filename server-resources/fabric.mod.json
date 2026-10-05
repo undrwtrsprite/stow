@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "stow_companion",
+  "version": "0.5.11+mc26.3",
+  "name": "stow companion",
+  "description": "Optional server support for stripping and harvesting connected oak logs with stow's Alt+S shortcut.",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "entrypoints": {"main": ["dev.stow.stripping.server.OakHarvestServer"]},
+  "depends": {"fabricloader": ">=0.19.5", "minecraft": "26.3", "java": ">=25", "fabric-api": ">=0.161.0+26.3"},
+  "contact": {"sources": "https://github.com/undrwtrsprite/stow"}
+}

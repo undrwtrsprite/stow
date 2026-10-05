@@ -10,7 +10,8 @@ old=GAME/'config/mousewheelie-chest-memory';old.mkdir();(old/'import-fixture.jso
 (GAME/'config/mousewheelie-pinned-slots.txt').write_text('35\n');(GAME/'config/mousewheelie.hjson').write_text('{ general: { "shift-drag-mode": "MATCHING_ONLY" } }')
 cp=(ROOT/'stow/build/classpath.txt').read_text()+':'+str(ROOT/'stow/build/classes')
 CLASSES=GAME/'test-classes';CLASSES.mkdir()
-subprocess.run([str(ROOT/'toolchain/jdk25/bin/javac'),'-proc:none','--release','25','-cp',cp,'-d',str(CLASSES),*map(str,(ROOT/'stow/tests/porttest').glob('*.java'))],check=True)
+client_sources=[p for p in (ROOT/'stow/tests/porttest').glob('*.java') if p.name!='HarvestGameTest.java']
+subprocess.run([str(ROOT/'toolchain/jdk25/bin/javac'),'-proc:none','--release','25','-cp',cp,'-d',str(CLASSES),*map(str,client_sources)],check=True)
 with zipfile.ZipFile(GAME/'mods/port-feature-test.jar','w') as z:
  for p in CLASSES.rglob('*.class'):z.write(p,p.relative_to(CLASSES).as_posix())
  entry='porttest.StripWorldTest' if os.environ.get('STOW_STRIP_WORLD_TEST')=='1' else 'porttest.AutoToolWorldTest' if os.environ.get('STOW_AUTO_TOOL_WORLD_TEST')=='1' else 'porttest.BundleWorldTest' if os.environ.get('STOW_BUNDLE_WORLD_TEST')=='1' else 'porttest.CraftingWorldTest' if os.environ.get('STOW_CRAFTING_WORLD_TEST')=='1' else 'porttest.NativeWorldTest' if os.environ.get('STOW_NATIVE_WORLD_TEST')=='1' else 'porttest.FeatureTest'

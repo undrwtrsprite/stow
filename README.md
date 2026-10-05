@@ -2,9 +2,9 @@
 
 # stow
 
-A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric · client only**.
+A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for oak stripping and harvesting.
 
-[Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
+[Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](CHANGELOG.md) · [Older release notes](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
 
 ## Why it exists
 
@@ -21,7 +21,7 @@ The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/m
 - **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters.
 - **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar.
 - **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
-- **Strip oak logs:** hold an axe, aim at a placed oak log and press **Alt + S** to strip nearby visible oak logs within normal reach. Press the shortcut again to cancel; Sneak is unchanged.
+- **Strip and harvest oak logs:** hold an axe, aim at a placed oak log and press **Alt + S**. With the optional stow companion on the server, it strips and harvests the connected group through tall columns, long rows and dense piles. Without the companion it only strips nearby visible logs. Press again to cancel; Sneak is unchanged.
 - **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
 - **Keep track of equipment:** durability for hotbar tools and worn armor, with configurable HUD placement.
 - **Make it yours:** editable shortcuts, a searchable command palette, HUD previews and Cloth Config settings.
@@ -34,7 +34,18 @@ Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and
 
 Put `stow-0.5.11+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-Download the original JAR from [GitHub Releases](https://github.com/undrwtrsprite/stow/releases/latest). The [version archive](docs/HISTORY.md) preserves all 18 available stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
+To enable Alt + S stripping **and mining**, install `stow-companion-0.5.11+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+
+### Downloads — 0.5.11+mc26.3
+
+| File | Install location | Required dependencies |
+| --- | --- | --- |
+| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-0.5.11%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
+| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.11%2Bmc26.3/stow-companion-0.5.11%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
+
+Both downloads are in the [0.5.11 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.11%2Bmc26.3), with checksums and source. Use the same JARs when uploading to Modrinth or CurseForge; the companion is a separate mod, not an alternative client build. [Publishing descriptions and upload details](docs/publishing/UPLOAD-GUIDE.md) are included for both projects.
+
+The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 
 The source ZIP is for developers. CI-built JARs are also available under **Artifacts** on a successful [build run](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml), or you can build it yourself. GitHub artifact downloads require signing in.
 
@@ -51,7 +62,7 @@ The source ZIP is for developers. CI-built JARs are also available under **Artif
 | Prioritize a material on the HUD | Hover its floating counter and press H |
 | Find / stop a material's chest glow | Right-click its floating counter |
 | Toggle automatic mining tools | Alt + T; starts off |
-| Strip nearby placed oak logs / cancel | Alt + S; hold an axe and aim at an oak log |
+| Strip oak logs / harvest with companion / cancel | Alt + S; hold an axe and aim at an oak log |
 | Keep the current tool temporarily | Hold Sneak while mining |
 | Fill / unpack a held bundle | Shift + left-drag / Shift + right-drag |
 
@@ -72,7 +83,7 @@ chmod +x gradlew
 ./gradlew build
 ```
 
-The mod and source JARs appear in `build/libs/`. `./gradlew runClient` launches the development client; use `.\gradlew.bat runClient` on Windows.
+The client, companion and source JARs appear in `build/libs/`. `./gradlew runClient` launches the development client; use `.\gradlew.bat runClient` on Windows.
 
 [Development and tests](docs/DEVELOPMENT.md) explains the project structure, dependency versions and the optional Minecraft regression harness. [CONTRIBUTING.md](CONTRIBUTING.md) covers bug reports and changes.
 

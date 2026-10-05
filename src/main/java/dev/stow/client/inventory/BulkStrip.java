@@ -36,8 +36,8 @@ public final class BulkStrip {
     }
     private static Batch batch;
     private BulkStrip(){}
-    public static boolean busy(){return batch!=null;}
-    public static void cancel(){batch=null;}
+    public static boolean busy(){return batch!=null||CompanionHarvest.busy();}
+    public static void cancel(){batch=null;CompanionHarvest.clear();}
     private static ItemStack identity(ItemStack item){
         var copy=item.copy();if(copy.isDamageableItem())copy.setDamageValue(0);return copy;
     }
@@ -73,7 +73,8 @@ public final class BulkStrip {
         return null;
     }
     public static boolean toggle(Minecraft mc){
-        if(busy()){finish(mc,"cancelled");return true;}
+        if(CompanionHarvest.busy()){CompanionHarvest.cancel();return true;}
+        if(batch!=null){finish(mc,"cancelled");return true;}
         if(!Stow.config.bulkStrip){message(mc,"disabled");return true;}
         if(!ready(mc)){message(mc,"unavailable");return true;}
         if(!usableAxe(mc.player.getMainHandItem())){message(mc,"axe");return true;}
@@ -81,6 +82,7 @@ public final class BulkStrip {
                 ||!mc.level.getBlockState(hit.getBlockPos()).is(Blocks.OAK_LOG)||visibleHit(mc,hit.getBlockPos())==null){
             message(mc,"aim");return true;
         }
+        if(CompanionHarvest.available()){CompanionHarvest.start(mc,hit.getBlockPos());return true;}
         var eye=mc.player.getEyePosition();var center=BlockPos.containing(eye);
         // Bound scanning even on servers with unusually large interaction-range attributes.
         int radius=Math.min(8,(int)Math.ceil(mc.player.blockInteractionRange()));
@@ -96,6 +98,7 @@ public final class BulkStrip {
         HandRefill.cancel();message(mc,"started",batch.targets.size());return true;
     }
     public static void tick(Minecraft mc){
+        CompanionHarvest.tick(mc,Stow.config.bulkStrip&&ready(mc));
         var current=batch;if(current==null)return;
         if(!Stow.config.bulkStrip||!ready(mc)||mc.player!=current.player||mc.level!=current.level
                 ||mc.player.getInventory().getSelectedSlot()!=current.selected

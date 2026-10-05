@@ -12,6 +12,13 @@ version=json.loads((p/'src/main/resources/fabric.mod.json').read_text())['versio
 with zipfile.ZipFile(jar,'w',compression=zipfile.ZIP_DEFLATED) as z:
  for folder in [out,p/'src/main/resources']:
   for f in folder.rglob('*'):
-   if f.is_file():z.write(f,f.relative_to(folder).as_posix())
+   if f.is_file() and not f.relative_to(folder).as_posix().startswith('dev/stow/stripping/server/'):
+    z.write(f,f.relative_to(folder).as_posix())
  for name in ['LICENSE','NOTICE']:z.write(p/name,name)
 print('Built',jar,jar.stat().st_size,'bytes')
+companion=p/f'build/libs/stow-companion-{version}.jar'
+with zipfile.ZipFile(companion,'w',compression=zipfile.ZIP_DEFLATED) as z:
+ for f in (out/'dev/stow/stripping').rglob('*.class'):z.write(f,f.relative_to(out).as_posix())
+ z.write(p/'server-resources/fabric.mod.json','fabric.mod.json')
+ for name in ['LICENSE','NOTICE']:z.write(p/name,name)
+print('Built',companion,companion.stat().st_size,'bytes')
