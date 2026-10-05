@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "stow_companion",
-  "version": "0.5.11+mc26.3",
+  "version": "0.5.12+mc26.3",
   "name": "stow companion",
   "description": "Optional server support for stripping and harvesting connected oak logs with stow's Alt+S shortcut.",
   "environment": "*",

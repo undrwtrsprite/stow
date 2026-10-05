@@ -9,6 +9,12 @@ manual-build/
 toolchain/
 stow-tests/
 
+# Local regression suites (kept locally, excluded from the public project)
+/tests/
+/dev-tools/test-local.py
+/dev-tools/test-harvest-server.py
+/.github/workflows/regression.yml
+
 # Editors and operating systems
 .idea/
 .vscode/

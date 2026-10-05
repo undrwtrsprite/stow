@@ -11,3 +11,11 @@ gradlew text eol=lf
 gradlew.bat text eol=crlf
 *.png binary
 *.jar binary
+
+# Keep local-only material out of source archives too.
+/tests export-ignore
+/private-notes export-ignore
+/docs/publishing export-ignore
+/dev-tools/test-local.py export-ignore
+/dev-tools/test-harvest-server.py export-ignore
+/.github/workflows/regression.yml export-ignore

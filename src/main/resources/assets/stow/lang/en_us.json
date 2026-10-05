@@ -290,5 +290,6 @@
   "stow.harvest.limit": "Oak group exceeds the companion server log-count limit; nothing changed.",
   "stow.harvest.durability": "Not enough axe durability to strip and harvest this group safely. Stripped %s; harvested %s.",
   "stow.harvest.rejected": "Oak harvest stopped: a block changed or the server denied an action. Stripped %s; harvested %s.",
-  "stow.harvest.timeout": "No companion response. Check the connection before trying again."
+  "stow.harvest.timeout": "No companion response. Check the connection before trying again.",
+  "stow.update.available": "A new stow version is available: %s. Click to open its download page."
 }

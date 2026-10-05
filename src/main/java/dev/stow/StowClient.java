@@ -7,6 +7,7 @@ import dev.stow.client.inventory.BulkStrip;
 import dev.stow.client.inventory.CompanionHarvest;
 import dev.stow.client.hud.SurvivalDock;
 import dev.stow.client.hud.BuildingStockHud;
+import dev.stow.client.version.VersionChecker;
 import dev.stow.client.memory.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.*;
@@ -17,7 +18,7 @@ public final class StowClient implements ClientModInitializer {
         StowConfig.initialize();
         CompanionHarvest.register();
         MaterialPlanner.register();ChestGlow.register();SurvivalDock.register();BuildingStockHud.register();
-        ClientTickEvents.END_CLIENT_TICK.register(mc->{InventorySorting.tick(mc);SmartDeposit.tick(mc);HandRefill.tick(mc);BulkStrip.tick(mc);ChestMemory.tick(mc);});
+        ClientTickEvents.END_CLIENT_TICK.register(mc->{InventorySorting.tick(mc);SmartDeposit.tick(mc);HandRefill.tick(mc);BulkStrip.tick(mc);ChestMemory.tick(mc);VersionChecker.tick(mc);});
         ClientPlayConnectionEvents.DISCONNECT.register((handler,mc)->{InventorySorting.cancel();SmartDeposit.cancel();HandRefill.cancel();BulkStrip.cancel();SurvivalDock.clear();ChestMemory.disconnect();});
         ClientLifecycleEvents.CLIENT_STOPPING.register(mc->{InventorySorting.cancel();SmartDeposit.cancel();HandRefill.cancel();BulkStrip.cancel();ChestMemory.stop();});
     }
