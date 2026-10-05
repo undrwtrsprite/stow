@@ -4,7 +4,7 @@
 
 Use Java 25 and the included wrapper. On Linux/macOS, run `chmod +x gradlew` once if the wrapper has no executable permission (for example, after a first commit made on Windows). Run `./gradlew build` on Linux/macOS or `.\gradlew.bat build` in Windows PowerShell. Import the repository root as a Gradle project in your IDE. `runClient` opens the development client.
 
-Versions are pinned in `build.gradle` and `gradle/wrapper/gradle-wrapper.properties`: Minecraft 26.3, Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Cloth Config 26.3.159, optional Mod Menu 21.0.0, Loom 1.17.0 and Gradle 9.6.0. Minecraft 26.3 uses unobfuscated names, so the plugin is `net.fabricmc.fabric-loom`; there is no mappings dependency.
+Versions are pinned in `build.gradle` and `gradle/wrapper/gradle-wrapper.properties`: Minecraft 26.3, Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Cloth Config 26.3.159, optional Mod Menu 21.0.0, Loom 1.17.21 and Gradle 9.6.0. Minecraft 26.3 uses unobfuscated names, so the plugin is `net.fabricmc.fabric-loom`; there is no mappings dependency.
 
 When changing the release version, update `build.gradle`, `fabric.mod.json`, README and release notes together. Run `python3 dev-tools/check-project.py` to check metadata, translation keys, referenced assets and the wrapper layout.
 
