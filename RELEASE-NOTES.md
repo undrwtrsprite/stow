@@ -1,3 +1,13 @@
+# stow 0.5.11 — Batch oak stripping
+
+- Hold an axe, aim at a placed oak log and press **Alt + S** to strip nearby visible oak logs within normal reach. Press it again to cancel; the shortcut can be changed in the editor.
+- Sneak is untouched. Stripping uses normal axe right-click interactions and never sends block-breaking actions.
+- Batches handle up to 64 oak logs, one server-confirmed use at a time, preserving log orientation and normal axe durability. Other wood, hidden logs and distant logs are left alone.
+- Changing tools, opening a menu or starting another interaction cancels. Rejected or unconfirmed uses stop the batch without retries; the last durability point is protected.
+- Added an Inventory settings toggle and a searchable world command-palette action, with English and German text.
+
+Replace the old stow JAR with `stow-0.5.11+mc26.3.jar`. Dependencies are unchanged; no server-side stow installation is needed.
+
 # stow 0.5.10 — Automatic mining tools
 
 - Added automatic hotbar tool selection when starting or continuing to mine. Stone picks a pickaxe, dirt a shovel and logs an axe; vanilla tool components, Efficiency and harvest requirements determine the choice.

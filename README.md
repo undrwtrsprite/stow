@@ -21,6 +21,7 @@ The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/m
 - **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters.
 - **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar.
 - **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
+- **Strip oak logs:** hold an axe, aim at a placed oak log and press **Alt + S** to strip nearby visible oak logs within normal reach. Press the shortcut again to cancel; Sneak is unchanged.
 - **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
 - **Keep track of equipment:** durability for hotbar tools and worn armor, with configurable HUD placement.
 - **Make it yours:** editable shortcuts, a searchable command palette, HUD previews and Cloth Config settings.
@@ -31,7 +32,7 @@ Chest memory uses snapshots of storage you have opened. It cannot read unopened 
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-0.5.10+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-0.5.11+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
 Download the original JAR from [GitHub Releases](https://github.com/undrwtrsprite/stow/releases/latest). The [version archive](docs/HISTORY.md) preserves all 18 available stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 
@@ -50,6 +51,7 @@ The source ZIP is for developers. CI-built JARs are also available under **Artif
 | Prioritize a material on the HUD | Hover its floating counter and press H |
 | Find / stop a material's chest glow | Right-click its floating counter |
 | Toggle automatic mining tools | Alt + T; starts off |
+| Strip nearby placed oak logs / cancel | Alt + S; hold an axe and aim at an oak log |
 | Keep the current tool temporarily | Hold Sneak while mining |
 | Fill / unpack a held bundle | Shift + left-drag / Shift + right-drag |
 

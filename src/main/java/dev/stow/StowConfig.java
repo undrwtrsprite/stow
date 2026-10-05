@@ -37,6 +37,7 @@ public final class StowConfig {
     public int refillThreshold=8;
     public boolean toolPick=true;
     public boolean autoTool=false;
+    public boolean bulkStrip=true;
     public boolean depositKeepHotbar=true;
     public boolean depositMatchingOnly=true;
     public boolean dockEnabled=true;

@@ -5,6 +5,7 @@
   "client": [
     "MixinAbstractContainerScreen",
     "MixinClientPacketListener",
+    "ClientLevelAccessor",
     "MixinMultiPlayerGameMode",
     "CreativeModeTabsAccessor",
     "GameRendererAccessor",

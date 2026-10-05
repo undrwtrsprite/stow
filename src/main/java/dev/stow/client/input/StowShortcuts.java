@@ -18,12 +18,13 @@ import net.minecraft.world.item.ItemStack;
 
 public final class StowShortcuts {
     public enum Action {
-        PALETTE,PIN,HUD_GOAL,TRACK,SEARCH,SORT,DEPOSIT,KEEP,EQUIPMENT,PROJECTS,CYCLE_DRAG,DOCK,AUTO_TOOL;
+        PALETTE,PIN,HUD_GOAL,TRACK,SEARCH,SORT,DEPOSIT,KEEP,EQUIPMENT,PROJECTS,CYCLE_DRAG,DOCK,AUTO_TOOL,BULK_STRIP;
         public Component title(){return Component.translatable("stow.action."+name().toLowerCase(Locale.ROOT));}
         public Component group(){return Component.translatable("stow.shortcuts."+switch(this){case PIN,HUD_GOAL,TRACK,SEARCH,SORT,CYCLE_DRAG->"inventory";case DEPOSIT,KEEP->"storage";default->"workspace";});}
         public Shortcut defaults(){return switch(this){
             case PALETTE->new Shortcut(false,InputConstants.KEY_K,InputConstants.MOD_CONTROL);
             case AUTO_TOOL->new Shortcut(false,InputConstants.KEY_T,InputConstants.MOD_ALT);
+            case BULK_STRIP->new Shortcut(false,InputConstants.KEY_S,InputConstants.MOD_ALT);
             case HUD_GOAL->new Shortcut(false,InputConstants.KEY_H,0);
             case PIN->new Shortcut(false,InputConstants.KEY_P,0);
             case TRACK->new Shortcut(false,InputConstants.KEY_N,0);
@@ -57,7 +58,7 @@ public final class StowShortcuts {
         if(key.code()<0)return List.of();var found=new ArrayList<String>();
         for(var other:Action.values())if(other!=action&&normalized(key).equals(normalized(draft.getOrDefault(other.name(),other.defaults()))))found.add(other.title().getString());
         var options=Minecraft.getInstance().options;
-        boolean global=Set.of(Action.PALETTE,Action.EQUIPMENT,Action.PROJECTS,Action.DOCK,Action.AUTO_TOOL).contains(action);
+        boolean global=Set.of(Action.PALETTE,Action.EQUIPMENT,Action.PROJECTS,Action.DOCK,Action.AUTO_TOOL,Action.BULK_STRIP).contains(action);
         for(var vanilla:options.keyMappings){
             if(modifiers(key.modifiers())!=0)continue;
             if(!global&&vanilla!=options.keyInventory&&vanilla!=options.keyDrop&&vanilla!=options.keySwapOffhand&&Arrays.stream(options.keyHotbarSlots).noneMatch(k->k==vanilla))continue;
@@ -68,6 +69,7 @@ public final class StowShortcuts {
     }
     public static boolean dispatch(Action action,Screen parent,Slot hovered){
         var mc=Minecraft.getInstance();var container=parent instanceof AbstractContainerScreen<?> screen?screen:null;
+        if(action==Action.BULK_STRIP)return parent==null&&BulkStrip.toggle(mc);
         if(action==Action.AUTO_TOOL){
             Stow.config.autoTool=!Stow.config.autoTool;Stow.config.save();
             mc.gui.hud.setOverlayMessage(Component.translatable(Stow.config.autoTool?"stow.auto-tool.on":"stow.auto-tool.off"),false);return true;
@@ -107,7 +109,11 @@ public final class StowShortcuts {
     }
     public static boolean global(Shortcut chord){
         var mc=Minecraft.getInstance();if(mc.player==null||mc.gui.screen()!=null)return false;
-        for(Action action:List.of(Action.PALETTE,Action.EQUIPMENT,Action.PROJECTS,Action.DOCK,Action.AUTO_TOOL))if(matches(action,chord))return dispatch(action,null,null);
+        for(Action action:List.of(Action.PALETTE,Action.EQUIPMENT,Action.PROJECTS,Action.DOCK,Action.AUTO_TOOL,Action.BULK_STRIP))if(matches(action,chord))return dispatch(action,null,null);
         return false;
+    }
+    public static boolean bulkStripRepeat(Shortcut chord){
+        var mc=Minecraft.getInstance();
+        return mc.player!=null&&mc.gui.screen()==null&&matches(Action.BULK_STRIP,chord);
     }
 }

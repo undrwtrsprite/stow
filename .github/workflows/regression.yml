@@ -8,7 +8,7 @@ on:
         required: true
         default: behavior
         type: choice
-        options: [behavior, mining, crafting, bundles, outlines]
+        options: [behavior, mining, stripping, crafting, bundles, outlines]
 
 permissions:
   contents: read
@@ -27,6 +27,7 @@ jobs:
         env:
           STOW_TEST_SCREENSHOTS: '0'
           STOW_AUTO_TOOL_WORLD_TEST: ${{ inputs.suite == 'mining' && '1' || '0' }}
+          STOW_STRIP_WORLD_TEST: ${{ inputs.suite == 'stripping' && '1' || '0' }}
           STOW_CRAFTING_WORLD_TEST: ${{ inputs.suite == 'crafting' && '1' || '0' }}
           STOW_BUNDLE_WORLD_TEST: ${{ inputs.suite == 'bundles' && '1' || '0' }}
           STOW_NATIVE_WORLD_TEST: ${{ inputs.suite == 'outlines' && '1' || '0' }}
