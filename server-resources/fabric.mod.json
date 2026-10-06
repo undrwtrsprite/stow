@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "stow_companion",
-  "version": "0.5.12+mc26.3",
+  "version": "0.5.13+mc26.3",
   "name": "stow companion",
-  "description": "Optional server support for stripping and harvesting connected oak logs with stow's Alt+S shortcut.",
+  "description": "Optional server support for stripping and harvesting connected logs and Nether stems with stow's Alt+S shortcut.",
   "environment": "*",
   "license": "Apache-2.0",
   "entrypoints": {"main": ["dev.stow.stripping.server.OakHarvestServer"]},

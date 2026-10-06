@@ -1,5 +1,6 @@
 package dev.stow.stripping.server;
 
+import dev.stow.stripping.StrippableLogs;
 import dev.stow.stripping.protocol.OakHarvestProtocol;
 import dev.stow.stripping.protocol.OakHarvestProtocol.*;
 import java.nio.file.*;
@@ -15,7 +16,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 
@@ -37,8 +37,9 @@ public final class OakHarvestServer implements ModInitializer {
         boolean mining,prepared;
         Job(ServerPlayer p,Request r,int limit){
             player=p;level=p.level();request=r;axe=identity(p.getMainHandItem());
+            var log=level.getBlockState(r.anchor()).getBlock();
             scan=new ConnectedLogs<>(r.anchor(),limit,OakHarvestServer::neighbors,
-                pos->level.getBlockState(pos).is(Blocks.OAK_LOG)?level.getBlockState(pos):null,
+                pos->{var state=level.getBlockState(pos);return state.is(log)?state:null;},
                 pos->level.isOutsideBuildHeight(pos)||level.hasChunkAt(pos));
         }
     }
@@ -54,7 +55,7 @@ public final class OakHarvestServer implements ModInitializer {
         var properties=new Properties();
         try{
             if(Files.exists(file)){try(var in=Files.newInputStream(file)){properties.load(in);}}
-            else {properties.setProperty("maxLogs","16384");try(var out=Files.newOutputStream(file)){properties.store(out,"Maximum connected oak logs per request (1..65536). No height or length limit.");}}
+            else {properties.setProperty("maxLogs","16384");try(var out=Files.newOutputStream(file)){properties.store(out,"Maximum connected logs per request (1..65536). No height or length limit.");}}
             maxLogs=Math.clamp(Integer.parseInt(properties.getProperty("maxLogs","16384")),1,65536);
         }catch(java.io.IOException|NumberFormatException e){System.err.println("[stow companion] Cannot read config; using 16384 logs: "+e.getMessage());}
     }
@@ -100,7 +101,7 @@ public final class OakHarvestServer implements ModInitializer {
         if(ticks-last<10){reply(p,r,"busy",0,0);return;}
         lastRequest.put(p.getUUID(),ticks);
         if(!ready(p)||r.slot()!=p.getInventory().getSelectedSlot()){reply(p,r,"cancelled",0,0);return;}
-        if(!permitted(p,r.anchor())||!visible(p,r.anchor())||!p.level().getBlockState(r.anchor()).is(Blocks.OAK_LOG)){
+        if(!permitted(p,r.anchor())||!visible(p,r.anchor())||!StrippableLogs.canStrip(p.level().getBlockState(r.anchor()))){
             reply(p,r,"aim",0,0);return;
         }
         jobs.put(p.getUUID(),new Job(p,r,maxLogs));
@@ -146,8 +147,7 @@ public final class OakHarvestServer implements ModInitializer {
                 if(!permitted(j.player,pos)){status="rejected";break;}
                 var state=j.level.getBlockState(pos);
                 if(j.mining&&state.isAir())continue; // Timber may already have harvested this position.
-                var expected=j.mining?Blocks.STRIPPED_OAK_LOG.defaultBlockState()
-                    .setValue(RotatedPillarBlock.AXIS,target.getValue().getValue(RotatedPillarBlock.AXIS)):target.getValue();
+                var expected=j.mining?StrippableLogs.strippedState(target.getValue()):target.getValue();
                 if(state!=expected){status="rejected";break;}
                 var axe=j.player.getMainHandItem();
                 if(!j.player.hasInfiniteMaterials()&&axe.isDamageableItem()&&axe.getMaxDamage()-axe.getDamageValue()<=1){status="durability";break;}
@@ -157,8 +157,7 @@ public final class OakHarvestServer implements ModInitializer {
                 }else{
                     var hit=new BlockHitResult(Vec3.atCenterOf(pos),Direction.UP,pos,false);
                     var result=j.player.gameMode.useItemOn(j.player,j.level,axe,InteractionHand.MAIN_HAND,hit);
-                    if(!result.consumesAction()||!j.level.getBlockState(pos).is(Blocks.STRIPPED_OAK_LOG)
-                        ||j.level.getBlockState(pos).getValue(RotatedPillarBlock.AXIS)!=state.getValue(RotatedPillarBlock.AXIS)){
+                    if(!result.consumesAction()||j.level.getBlockState(pos)!=StrippableLogs.strippedState(state)){
                         status="rejected";break;
                     }
                     j.stripped++;
