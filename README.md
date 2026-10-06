@@ -85,7 +85,6 @@ Install a **JDK 25** and check `java -version`. The Gradle wrapper downloads the
 **Linux / macOS:**
 
 ```sh
-chmod +x gradlew
 ./gradlew build
 ```
 

@@ -32,7 +32,7 @@ jobs:
         run: python dev-tools/check-project.py
       - name: Build mod and sources
         shell: bash
-        run: bash ./gradlew --no-daemon build
+        run: ./gradlew --no-daemon build
       - name: Upload JARs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
