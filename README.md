@@ -2,7 +2,7 @@
 
 # stow
 
-A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for oak stripping and harvesting.
+A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for log stripping and harvesting.
 
 [Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](CHANGELOG.md) · [Older release notes](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
 
@@ -19,9 +19,9 @@ The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/m
 - **Sort and move items:** Mouse Wheelie sorting, five sort orders, matching/all-item drag modes, inventory search and pinned slots.
 - **Remember storage:** search previously opened chests, barrels and shulker boxes; rename them and highlight sources through walls.
 - **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters.
-- **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar.
+- **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar. Set “Refill at this many items” to **0** to refill after the held stack runs out.
 - **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
-- **Strip and harvest oak logs:** hold an axe, aim at a placed oak log and press **Alt + S**. With the optional stow companion on the server, it strips and harvests the connected group through tall columns, long rows and dense piles. Without the companion it only strips nearby visible logs. Press again to cancel; Sneak is unchanged.
+- **Strip and harvest logs:** hold an axe, aim at a placed log and press **Alt + S**. All vanilla log types and Nether stems are supported. With the optional stow companion on the server, it strips and harvests the connected group of the same type through tall columns, long rows and dense piles. Without the companion it only strips nearby visible logs. Press again to cancel; Sneak is unchanged.
 - **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
 - **Keep track of equipment:** durability for hotbar tools and worn armor, with configurable HUD placement.
 - **Make it yours:** editable shortcuts, a searchable command palette, HUD previews and Cloth Config settings.
@@ -38,18 +38,18 @@ The check requests public release metadata from GitHub, Modrinth and [CFWidget](
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-0.5.12+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-0.5.13+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-To enable Alt + S stripping **and mining**, install `stow-companion-0.5.12+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+To enable Alt + S stripping **and mining**, install `stow-companion-0.5.13+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
 
-### Downloads — 0.5.12+mc26.3
+### Downloads — 0.5.13+mc26.3
 
 | File | Install location | Required dependencies |
 | --- | --- | --- |
-| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.12%2Bmc26.3/stow-0.5.12%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
-| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.12%2Bmc26.3/stow-companion-0.5.12%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
+| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-0.5.13%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
+| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-companion-0.5.13%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
 
-Both downloads are in the [0.5.12 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.12%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
+Both downloads are in the [0.5.13 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.13%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
 
 The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 
@@ -68,7 +68,7 @@ The source ZIP is for developers. CI-built JARs are also available under **Artif
 | Prioritize a material on the HUD | Hover its floating counter and press H |
 | Find / stop a material's chest glow | Right-click its floating counter |
 | Toggle automatic mining tools | Alt + T; starts off |
-| Strip oak logs / harvest with companion / cancel | Alt + S; hold an axe and aim at an oak log |
+| Strip logs / harvest with companion / cancel | Alt + S; hold an axe and aim at a log |
 | Keep the current tool temporarily | Hold Sneak while mining |
 | Fill / unpack a held bundle | Shift + left-drag / Shift + right-drag |
 

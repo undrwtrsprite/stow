@@ -91,7 +91,7 @@ public final class StowConfig {
                     if(loaded.projectCorner==null)loaded.projectCorner=DockCorner.TOP_RIGHT;
                     loaded.projectScale=Math.clamp(loaded.projectScale,60,150);loaded.projectOffsetX=Math.clamp(loaded.projectOffsetX,0,1000);loaded.projectOffsetY=Math.clamp(loaded.projectOffsetY,0,1000);
                     if(loaded.dockCorner==null)loaded.dockCorner=DockCorner.BOTTOM_RIGHT;
-                    loaded.refillThreshold=Math.clamp(loaded.refillThreshold,1,16);
+                    loaded.refillThreshold=Math.clamp(loaded.refillThreshold,0,16);
                     loaded.equipmentThreshold=Math.clamp(loaded.equipmentThreshold,1,50);
                     loaded.dockScale=Math.clamp(loaded.dockScale,60,150);loaded.dockRows=Math.clamp(loaded.dockRows,3,5);
                     loaded.buildingStockScale=Math.clamp(loaded.buildingStockScale,100,200);

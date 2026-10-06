@@ -1,3 +1,22 @@
+# stow 0.5.13 — All log types and empty-stack refill
+
+- **Alt + S** now strips every vanilla log type, including poplar, plus crimson and warped Nether stems. The server companion strips and then harvests connected logs of the same type as the starting log. Each log keeps its orientation while stripping.
+- **Refill at this many items** now accepts **0**. Set it to 0 in Settings → Inventory to refill the same hotbar slot only after placing the last block in the held stack. The value is preserved after restarting.
+- Updated English and German settings, tooltips and messages.
+
+## Installation
+
+For Minecraft **26.3**, Fabric Loader **0.19.5+** and Java **25**:
+
+- Client: `stow-0.5.13+mc26.3.jar` — requires Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+**. Mod Menu **21.0.0** is optional. Remove Mouse Wheelie before installing stow.
+- Optional server companion: `stow-companion-0.5.13+mc26.3.jar` — requires Fabric API. Update the companion on the server to enable other log types for harvesting. For single-player, install both JARs locally.
+
+Replace your previous JARs rather than keeping two versions installed.
+
+## Checks
+
+Both release builds passed. A headless Fabric server verified all 12 vanilla log/stem types, all orientations, correct drops and durability, adjacent-species isolation, cancellation, protection callbacks and Timber cascade behavior. Focused refill checks verified zero-threshold scheduling, matching reserve transfers and saved settings.
+
 # stow 0.5.12 — In-game update notices
 
 - Added a clickable in-game chat notice when a newer stable stow release for the running Minecraft version is available on GitHub, Modrinth or CurseForge.

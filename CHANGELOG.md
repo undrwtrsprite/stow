@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.13+mc26.3 — 6 October 2026
+
+- Alt + S now supports every vanilla log type, including poplar, plus crimson and warped stems, in both client stripping and companion harvesting. Batches select the same block type as the starting log and preserve each log’s orientation.
+- “Refill at this many items” now accepts **0**, refilling after the last block in the held stack is placed. The setting keeps its value after restarting.
+
 ## 0.5.12+mc26.3 — 6 October 2026
 
 - Added a clickable in-game chat notice when a newer stable stow release for the running Minecraft version is available on GitHub, Modrinth or CurseForge.

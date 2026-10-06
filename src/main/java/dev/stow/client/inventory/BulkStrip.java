@@ -2,6 +2,7 @@ package dev.stow.client.inventory;
 
 import dev.stow.Stow;
 import dev.stow.client.mixin.ClientLevelAccessor;
+import dev.stow.stripping.StrippableLogs;
 import java.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -13,7 +14,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 
@@ -79,17 +79,18 @@ public final class BulkStrip {
         if(!ready(mc)){message(mc,"unavailable");return true;}
         if(!usableAxe(mc.player.getMainHandItem())){message(mc,"axe");return true;}
         if(!(mc.hitResult instanceof BlockHitResult hit)||hit.getType()!=HitResult.Type.BLOCK
-                ||!mc.level.getBlockState(hit.getBlockPos()).is(Blocks.OAK_LOG)||visibleHit(mc,hit.getBlockPos())==null){
+                ||!StrippableLogs.canStrip(mc.level.getBlockState(hit.getBlockPos()))||visibleHit(mc,hit.getBlockPos())==null){
             message(mc,"aim");return true;
         }
         if(CompanionHarvest.available()){CompanionHarvest.start(mc,hit.getBlockPos());return true;}
+        var log=mc.level.getBlockState(hit.getBlockPos()).getBlock();
         var eye=mc.player.getEyePosition();var center=BlockPos.containing(eye);
         // Bound scanning even on servers with unusually large interaction-range attributes.
         int radius=Math.min(8,(int)Math.ceil(mc.player.blockInteractionRange()));
         var candidates=new ArrayList<Target>();
         for(var pos:BlockPos.betweenClosed(center.offset(-radius,-radius,-radius),center.offset(radius,radius,radius))){
             var state=mc.level.getBlockState(pos);
-            if(state.is(Blocks.OAK_LOG)&&visibleHit(mc,pos)!=null)candidates.add(new Target(pos.immutable(),state));
+            if(state.is(log)&&visibleHit(mc,pos)!=null)candidates.add(new Target(pos.immutable(),state));
         }
         candidates.sort(Comparator.<Target>comparingInt(t->t.pos.equals(hit.getBlockPos())?0:1)
                 .thenComparingDouble(t->eye.distanceToSqr(Vec3.atCenterOf(t.pos))));
@@ -128,7 +129,7 @@ public final class BulkStrip {
         var current=batch;
         if(current==null||current.waiting==null||sequence<current.sequence||mc.level!=current.level)return;
         var target=current.waiting;var state=mc.level.getBlockState(target.pos);
-        if(!state.is(Blocks.STRIPPED_OAK_LOG)||state.getValue(RotatedPillarBlock.AXIS)!=target.state.getValue(RotatedPillarBlock.AXIS)){
+        if(state!=StrippableLogs.strippedState(target.state)){
             finish(mc,"rejected");return;
         }
         current.stripped++;current.waiting=null;current.cooldown=USE_INTERVAL;

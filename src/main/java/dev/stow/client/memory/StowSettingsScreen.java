@@ -47,7 +47,9 @@ public final class StowSettingsScreen {
         inventory.addEntry(new ResponsiveConfigEntries.Toggle(text("glow"),config.chestGlow,entry.getResetButtonKey(),true,v->ChestMemory.setGlowEnabled(v)));
         inventory.addEntry(new ResponsiveConfigEntries.Toggle(text("stock"),config.buildingStock,entry.getResetButtonKey(),true,v->config.buildingStock=v));
         inventory.addEntry(new ResponsiveConfigEntries.Toggle(text("refill"),config.handRefill,entry.getResetButtonKey(),true,v->config.handRefill=v));
-        inventory.addEntry(new ResponsiveConfigEntries.Slider(text("refill.threshold"),config.refillThreshold,1,16,entry.getResetButtonKey(),8,v->config.refillThreshold=v));
+        var refillThreshold=new ResponsiveConfigEntries.Slider(text("refill.threshold"),config.refillThreshold,0,16,entry.getResetButtonKey(),8,v->config.refillThreshold=v);
+        refillThreshold.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("refill.threshold.tip")}));
+        inventory.addEntry(refillThreshold);
         inventory.addEntry(new ResponsiveConfigEntries.Toggle(text("tool-pick"),config.toolPick,entry.getResetButtonKey(),true,v->config.toolPick=v));
         var autoTool=new ResponsiveConfigEntries.Toggle(text("auto-tool"),config.autoTool,entry.getResetButtonKey(),false,v->config.autoTool=v);
         autoTool.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("auto-tool.tip")}));
