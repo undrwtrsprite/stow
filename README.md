@@ -46,9 +46,9 @@ The check requests public release metadata from GitHub, Modrinth and [CFWidget](
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-1.0.0+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-1.0.1+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-To enable Alt + S stripping **and mining**, install `stow-companion-1.0.0+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+To enable Alt + S stripping **and mining**, install `stow-companion-1.0.1+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
 
 ### Previous GitHub downloads — 0.5.13+mc26.3
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "stow_companion",
-  "version": "1.0.0+mc26.3",
+  "version": "1.0.1+mc26.3",
   "name": "stow companion",
   "description": "Optional server support for stripping and harvesting connected logs and Nether stems with stow's Alt+S shortcut.",
   "environment": "*",

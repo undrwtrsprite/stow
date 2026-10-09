@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 1.0.1+mc26.3 — 9 October 2026
+
+### Hardening
+
+- Update checks now reject responses larger than 8 MiB instead of reading them fully into memory. Normal GitHub, Modrinth and CurseForge metadata is far below this limit. An oversized response counts as an unavailable service, just like other failed checks.
+- The Gradle wrapper verifies the downloaded Gradle distribution against a pinned SHA-256 checksum.
+- The local development bootstrap verifies downloaded libraries against pinned hashes and requires a hash for every Fabric library.
+
+No gameplay, control or settings changes.
+
 ## 1.0.0+mc26.3 — 7 October 2026
 
 ### Stow 1.0 — your build starts with a list

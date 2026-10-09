@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "stow",
-  "version": "1.0.0+mc26.3",
+  "version": "1.0.1+mc26.3",
   "name": "stow",
   "description": "A quiet home for your items. Inventory sorting, chest memory and material tracking.",
   "environment": "client",
