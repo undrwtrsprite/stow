@@ -18,7 +18,7 @@ public final class ShortcutEditorScreen extends ToolListScreen {
     public ShortcutEditorScreen(Screen parent){super(Component.translatable("stow.shortcuts.title"),parent);for(Action action:Action.values())draft.put(action.name(),StowShortcuts.binding(action));}
     @Override protected void init(){
         begin(48,Component.translatable("stow.shortcuts.search"));
-        addRenderableWidget(new PlannerButton(Component.translatable("stow.common.save"),b->{Stow.config.shortcuts=new LinkedHashMap<>(draft);Stow.config.save();onClose();},left+80,height-30,68,22,true));
+        addRenderableWidget(new PlannerButton(Component.translatable("stow.common.save"),b->{Stow.config.shortcuts=new LinkedHashMap<>(draft);Stow.config.save();UiNotifications.show("stow.feedback.shortcuts-saved");onClose();},left+80,height-30,68,22,true));
         refresh();setFocused(search);
     }
     @Override protected void refresh(){

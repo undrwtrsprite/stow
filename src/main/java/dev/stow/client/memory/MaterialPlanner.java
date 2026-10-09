@@ -39,8 +39,8 @@ public final class MaterialPlanner {
     }
     public static void toggleHud(ChestMemoryStore store,String itemId){
         if(store==null)return;
-        if(store.toggleHudGoal(itemId,dev.stow.Stow.config.dockRows))ChestMemory.saveLater(store);
-        else Minecraft.getInstance().gui.hud.setOverlayMessage(Component.translatable("stow.hud.full",dev.stow.Stow.config.dockRows),false);
+        if(store.toggleHudGoal(itemId,dev.stow.Stow.config.dockRows)){ChestMemory.saveLater(store);dev.stow.client.ui.UiNotifications.show(store.isHudGoal(itemId,dev.stow.Stow.config.dockRows)?"stow.feedback.material-pinned":"stow.feedback.material-unpinned");}
+        else dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.hud.full",dev.stow.Stow.config.dockRows));
     }
     public static void quickAdd(Screen parent,ChestMemoryStore store,ItemStack stack) {
         if(stack.isEmpty() || store==null)return;

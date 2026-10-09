@@ -62,6 +62,7 @@ public final class PinnedSlots {
         } catch (IOException e) {
             LOGGER.warn("Could not save pinned inventory slots", e);
         }
+        dev.stow.client.ui.UiNotifications.show(PINS.get(slot.getContainerSlot())?"stow.feedback.pinned":"stow.feedback.unpinned");
         return true;
     }
 }

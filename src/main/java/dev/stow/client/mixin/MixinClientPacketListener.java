@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public abstract class MixinClientPacketListener {
+    @Inject(method="handleEntityEvent",at=@At("TAIL"))
+    private void stow_toolBroken(ClientboundEntityEventPacket packet,CallbackInfo ci){var mc=net.minecraft.client.Minecraft.getInstance();if(packet.getEventId()==47&&mc.level!=null&&packet.getEntity(mc.level)==mc.player)dev.stow.client.inventory.ToolRefill.broke(mc);}
     @Inject(method="handleContainerSetSlot",at=@At("TAIL"))
     private void stow_slot(ClientboundContainerSetSlotPacket packet,CallbackInfo ci){ChestMemory.slotReceived(packet.getContainerId());}
     @Inject(method="handleContainerContent",at=@At("TAIL"))

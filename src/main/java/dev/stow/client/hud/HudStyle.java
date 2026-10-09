@@ -9,7 +9,7 @@ public final class HudStyle {
     public static float scale(float guiScale,int relativePercent){
         // Retain the saved building-count size as the common size when upgrading.
         return Math.clamp(Stow.config.buildingStockScale,100,200)/100f
-            *Math.clamp(relativePercent,60,150)/100f
+            *Math.clamp(relativePercent,60,200)/100f
             *Math.clamp(.75f*guiScale,1f,1.5f)/Math.max(1f,guiScale);
     }
 }

@@ -28,7 +28,7 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
     @Override protected int sidebarWidth(){return 0;}
     @Override protected void init(){
         panelWidth=Math.min(480,width-24);visible=Math.max(1,Math.min(6,(height-126)/28));panelHeight=96+visible*28;
-        left=(width-panelWidth)/2;top=Math.max(12,(height-panelHeight)/3);rows.clear();
+        left=(width-panelWidth)/2;top=Math.max(12,(height-panelHeight)/2);rows.clear();
         search=addRenderableWidget(new EditBox(font,left+10,top+30,panelWidth-20,22,Component.translatable("stow.palette.search")));
         search.setMaxLength(80);search.setHint(Component.translatable("stow.palette.search"));search.setValue(lastQuery);
         search.setResponder(value->{selected=0;first=0;lastQuery=value;refresh();});refresh();setFocused(search);
@@ -46,7 +46,6 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
             add(all,"stow.menu.projects","ui:PROJECT",Action.PROJECTS,()->minecraft.gui.setScreen(new ProjectsScreen(origin,store)),()->true);
         }
         if(container!=null&&SmartDeposit.supported(container.getMenu()))add(all,"stow.action.deposit","ui:DEPOSIT",Action.DEPOSIT,()->{minecraft.gui.setScreen(origin);SmartDeposit.start(container);},()->true);
-        add(all,"stow.watch.title","ui:EQUIPMENT",Action.EQUIPMENT,()->minecraft.gui.setScreen(new EquipmentScreen(origin)),()->true);
         add(all,"stow.settings.title","ui:SETTINGS",null,()->minecraft.gui.setScreen(StowSettingsScreen.create(origin)),()->true);
         if(!search.getValue().isBlank()){
             add(all,"stow.shortcuts.title","ui:KEYBOARD",null,()->minecraft.gui.setScreen(new ShortcutEditorScreen(origin)),()->true);
@@ -69,6 +68,7 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
             }
         }
         commands=List.copyOf(found);panelHeight=96+Math.max(1,Math.min(visible,commands.size()))*28;selected=Math.clamp(selected,0,Math.max(0,commands.size()-1));
+        top=Math.max(12,(height-panelHeight)/2);search.setY(top+30);
         first=Math.clamp(first,0,Math.max(0,commands.size()-visible));
         if(selected<first)first=selected;if(selected>=first+visible)first=selected-visible+1;
         rows.forEach(this::removeWidget);rows.clear();

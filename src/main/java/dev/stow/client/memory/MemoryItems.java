@@ -11,6 +11,7 @@ import static dev.stow.client.memory.ChestMemoryStore.*;
 
 /** Icons are reconstructed from item IDs; remembered names/counts remain independent of registries. */
 public final class MemoryItems {
+    public static final int PREVIEW_CELL=26;
     public record Entry(String id,String name) {}
     public static Item item(String id) {
         Identifier key=Identifier.tryParse(id);
@@ -29,6 +30,23 @@ public final class MemoryItems {
         }
         entries.sort(Comparator.comparing(Entry::name,String.CASE_INSENSITIVE_ORDER).thenComparing(Entry::id));
         return List.copyOf(entries);
+    }
+    /** English descriptions stay usable when the player's active language is different. */
+    public static List<MaterialListImporter.Item> importCatalogue(){
+        var english=new HashMap<String,String>();
+        try{
+            var resource=Minecraft.getInstance().getResourceManager().getResource(Identifier.withDefaultNamespace("lang/en_us.json"));
+            if(resource.isPresent())try(var reader=resource.get().openAsReader()){
+                var json=com.google.gson.JsonParser.parseReader(reader).getAsJsonObject();
+                for(var entry:json.entrySet())if(entry.getValue().isJsonPrimitive())english.put(entry.getKey(),entry.getValue().getAsString());
+            }
+        }catch(java.io.IOException|RuntimeException ignored){}
+        return catalogue().stream().map(entry->{
+            var stack=icon(entry.id());var aliases=new ArrayList<String>();
+            aliases.add(entry.id().substring(entry.id().indexOf(':')+1).replace('_',' '));
+            aliases.add(english.getOrDefault(item(entry.id()).getDescriptionId(),entry.name()));
+            return new MaterialListImporter.Item(entry.id(),entry.name(),stack.isEmpty()?64:stack.getMaxStackSize(),List.copyOf(aliases));
+        }).toList();
     }
     public static String normalizeQuery(String query) {
         return query.strip().equalsIgnoreCase("cobble")?"cobblestone":query.strip();
@@ -55,17 +73,17 @@ public final class MemoryItems {
         List<MemoryItem> sorted=items.stream().sorted(Comparator.comparingInt(MemoryItem::count).reversed()).toList();
         var font=Minecraft.getInstance().font;
         for(int i=0;i<Math.min(slots,sorted.size());i++) {
-            MemoryItem entry=sorted.get(i);int ix=x+i*22;
+            MemoryItem entry=sorted.get(i);int ix=x+i*PREVIEW_CELL;
             ItemStack stack=icon(entry.id());
-            graphics.fill(ix-1,y-1,ix+19,y+19,0x88323D42);
+            graphics.fill(ix-2,y-2,ix+22,y+23,0xD0303030);
             if(!stack.isEmpty()) graphics.item(stack,ix,y);
             else graphics.text(font,"?",ix+4,y+4,0xFFFFFFFF);
-            String count=shortCount(entry.count());float scale=Math.min(1,20f/Math.max(1,font.width(count)));
-            graphics.pose().pushMatrix();graphics.pose().translate(ix+20-font.width(count)*scale,y+19-9*scale);graphics.pose().scale(scale,scale);graphics.text(font,count,0,0,0xFFFFFFFF);graphics.pose().popMatrix();
-            if(mouseX>=ix-1 && mouseX<ix+20 && mouseY-panelTop>=y-1 && mouseY-panelTop<y+20)
+            String count=shortCount(entry.count());float scale=Math.min(1,22f/Math.max(1,font.width(count)));
+            graphics.pose().pushMatrix();graphics.pose().translate(ix+21-font.width(count)*scale,y+21-9*scale);graphics.pose().scale(scale,scale);graphics.text(font,count,0,0,0xFFFFFFFF);graphics.pose().popMatrix();
+            if(mouseX>=ix-2 && mouseX<ix+22 && mouseY-panelTop>=y-2 && mouseY-panelTop<y+23)
                 PlannerTooltips.show(graphics,mouseX,mouseY,Component.literal(entry.name()+" × "+entry.count()));
         }
-        if(sorted.size()>slots) graphics.text(font,"+"+(sorted.size()-slots),x+slots*22,y+5,0xFFACB9BA);
+        if(sorted.size()>slots) graphics.text(font,"+"+(sorted.size()-slots),x+slots*PREVIEW_CELL+2,y+7,0xFFCCCCCC);
     }
     public static String shortCount(long count) { return count<1000?Long.toString(count):count<1_000_000?String.format(Locale.ROOT,"%.1fk",count/1000.0):String.format(Locale.ROOT,"%.1fm",count/1_000_000.0); }
 }

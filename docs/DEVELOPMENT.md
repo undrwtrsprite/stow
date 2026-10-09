@@ -24,6 +24,10 @@ The client JAR excludes companion server classes. The companion JAR contains onl
 
 Keep item names/components, pinned slots, cursor state and client/server synchronization intact when changing item transactions. Automatic mining uses hotbar selection only and defaults to off.
 
+## Release validation
+
+A completed build does not establish in-game compatibility. Before treating a release as ready, record manual client and companion checks here and resolve remaining compatibility items. For 1.0, game-specific checks remain for server damage applied to an item already in use and custom modded durability costs, as noted in `CHANGELOG.md`.
+
 ## GitHub Actions
 
 The Build workflow checks project metadata and builds on Windows and Linux. It uploads client, companion and source JARs as build artifacts. It has read-only repository permissions.

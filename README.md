@@ -6,6 +6,14 @@ A quiet home for your items. Inventory sorting, chest memory and material tracki
 
 [Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](CHANGELOG.md) · [Older release notes](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
 
+## Stow 1.0: your build starts with a list
+
+Copy a materials list from a YouTube description, paste it into **Materials → Import**, review the items, and start gathering. Export your saved goals as plain text to share a plan or reuse it in another project. No schematic mod is required.
+
+This release also brings **more materials on screen**, Minecraft item icons, centered menu tabs, the familiar pixel priority star, helpful empty states, and smooth import-list scrolling. Set each HUD's alignment, position and size; see **+N more materials**, count equipment durability down, and replace worn main-hand tools before they break or just after. Brief action feedback stays readable above open menus.
+
+[Download on Modrinth](https://modrinth.com/mod/stow) · [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/stow) · [What's new in 1.0](CHANGELOG.md)
+
 ## Why it exists
 
 I started stow for my friends and our Minecraft server. We wanted an inventory mod that worked the way we liked, so I used AI to build and change it around our ideas.
@@ -38,18 +46,18 @@ The check requests public release metadata from GitHub, Modrinth and [CFWidget](
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-0.5.13+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-1.0.0+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-To enable Alt + S stripping **and mining**, install `stow-companion-0.5.13+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+To enable Alt + S stripping **and mining**, install `stow-companion-1.0.0+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
 
-### Downloads — 0.5.13+mc26.3
+### Previous GitHub downloads — 0.5.13+mc26.3
 
 | File | Install location | Required dependencies |
 | --- | --- | --- |
 | [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-0.5.13%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
 | [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-companion-0.5.13%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
 
-Both downloads are in the [0.5.13 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.13%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
+These previous downloads are in the [0.5.13 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.13%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
 
 The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
 

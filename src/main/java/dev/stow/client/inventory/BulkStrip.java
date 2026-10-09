@@ -54,7 +54,7 @@ public final class BulkStrip {
                 &&!InventorySorting.busy(menu)&&!SmartDeposit.busy(menu);
     }
     private static void message(Minecraft mc,String key,Object... arguments){
-        if(mc.player!=null)mc.gui.hud.setOverlayMessage(Component.translatable("stow.bulk-strip."+key,arguments),false);
+        if(mc.player!=null)dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.bulk-strip."+key,arguments));
     }
     private static void finish(Minecraft mc,String key){
         var current=batch;batch=null;

@@ -37,8 +37,10 @@ public final class ToolPicker {
     }
     private static int best(Inventory inventory,AbstractContainerMenu menu,BlockState block,Player player,int limit){
         int selected=inventory.getSelectedSlot(),best=selected;ItemStack held=inventory.getSelectedItem();boolean correct=!block.requiresCorrectToolForDrops()||held.isCorrectToolForDrops(block);double fastest=speed(player,held,block);
+        if(Stow.config.toolRefill&&Stow.config.toolRefillMode==dev.stow.StowConfig.ToolRefillMode.KEEP_ONE&&held.isDamageableItem()&&ToolRefill.remaining(held)<=ToolRefill.miningCost(held)){fastest=-1;correct=false;}
         for(int index=0;index<limit;index++){
             var item=inventory.getItem(index);if(item.isEmpty()||!item.has(DataComponents.TOOL)&&speed(player,item,block)<=1)continue;
+            if(Stow.config.toolRefill&&Stow.config.toolRefillMode==dev.stow.StowConfig.ToolRefillMode.KEEP_ONE&&item.isDamageableItem()&&ToolRefill.remaining(item)<=ToolRefill.miningCost(item))continue;
             Slot source=slot(menu,inventory,index);if(source==null||!source.isActive()||index>=9&&(PinnedSlots.isPinned(source)||!source.mayPickup(inventory.player)))continue;
             boolean drops=!block.requiresCorrectToolForDrops()||item.isCorrectToolForDrops(block);double value=speed(player,item,block);
             if(drops&&!correct||drops==correct&&value>fastest+1e-6){best=index;fastest=value;correct=drops;}

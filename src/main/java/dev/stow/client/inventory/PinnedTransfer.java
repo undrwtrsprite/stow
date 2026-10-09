@@ -10,9 +10,16 @@ import net.minecraft.world.item.ItemStack;
 /** Route quick transfers through vanilla pickup transactions so protected destinations are never sent to the server. */
 public final class PinnedTransfer {
     private PinnedTransfer(){}
-    /** Crafting keeps vanilla bulk crafting and its destination selection. */
-    public static boolean isCraftingResult(AbstractContainerMenu menu,Slot source){
-        return source!=null&&(source instanceof ResultSlot||menu instanceof AbstractCraftingMenu crafting&&source==crafting.getResultSlot());
+    /** Preserve each vanilla result menu's own shift-transfer and batch-production behavior. */
+    public static boolean isVanillaResultSlot(AbstractContainerMenu menu,Slot source){
+        if(source==null)return false;
+        return source instanceof ResultSlot
+                ||source instanceof FurnaceResultSlot
+                ||source instanceof MerchantResultSlot
+                ||source instanceof NonInteractiveResultSlot
+                ||source.container instanceof ResultContainer
+                ||menu instanceof AbstractCraftingMenu crafting&&source==crafting.getResultSlot()
+                ||menu instanceof LoomMenu loom&&source==loom.getResultSlot();
     }
     public static List<Slot> destinations(AbstractContainerMenu menu,Slot source,Inventory inventory){
         if(source.container==inventory){
@@ -29,7 +36,7 @@ public final class PinnedTransfer {
             .sorted(source.container==inventory?Comparator.comparingInt(s->s.index):Comparator.comparingInt((Slot s)->s.index).reversed()).toList();
     }
     public static boolean move(AbstractContainerMenu menu,Slot source,Player player,BiConsumer<Integer,Integer> click){
-        if(!Stow.config.pinProtectTransfers||source==null||player==null||isCraftingResult(menu,source))return false;
+        if(!Stow.config.pinProtectTransfers||source==null||player==null||isVanillaResultSlot(menu,source))return false;
         var destinations=destinations(menu,source,player.getInventory());if(destinations.stream().noneMatch(PinnedSlots::isPinned))return false;
         if(!menu.getCarried().isEmpty()||!source.hasItem()||!source.isActive()||!source.mayPickup(player))return true;
         // Non-stackable equipment may normally auto-equip; keep that behavior if its equipment slot is available.

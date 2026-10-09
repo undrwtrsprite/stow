@@ -39,7 +39,7 @@ public final class MaterialPickerScreen extends MemoryScreenBase {
         amount.setMaxLength(7);amount.setValue(value);
         confirm=addRenderableWidget(new PlannerButton(Component.translatable("stow.need.confirm-add"),b -> {
             if(selected==null || target()==0)return;
-            try{store.setGoal(selected.id(),target());ChestMemory.saveLater(store);onClose();}
+            try{store.setGoal(selected.id(),target());dev.stow.client.ui.UiNotifications.show("stow.feedback.material-saved",target(),selected.name());ChestMemory.saveLater(store);onClose();}
             catch(IllegalArgumentException e){error=Component.translatable("stow.need.limit").getString();}
         },left+bodyWidth-104,footer+28,96,22,true));
         search.setResponder(s -> {page=0;refresh();});amount.setResponder(s -> {error="";syncConfirm();});

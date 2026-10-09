@@ -32,6 +32,7 @@ public final class ChestMemory {
     private static Location pending;
     private static long pendingAt;
     private static AbstractContainerMenu activeMenu;
+    private static AbstractContainerMenu forgottenMenu;
     private static Location activeLocation;
     private static String activeTitle;
     private static boolean receivedContents;
@@ -58,7 +59,7 @@ public final class ChestMemory {
         String current = currentWorldKey();
         if (!Objects.equals(worldKey, current)) {
             saveLater(store);
-            pending = null; activeMenu = null; activeLocation = null; stopGlow();
+            pending = null; activeMenu = null; forgottenMenu=null; activeLocation = null; clearGlow();
             worldKey = current; store = null;
             if (current != null) {
                 try { store = new ChestMemoryStore(Stow.dataDirectory().resolve("chests"), current); }
@@ -94,7 +95,7 @@ public final class ChestMemory {
         if (activeMenu == menu) return; // Returning from the chest-search screen.
         if (!(menu instanceof ChestMenu || menu instanceof ShulkerBoxMenu)) { pending = null; return; }
         snapshot(true);
-        activeMenu = null;
+        activeMenu = null;forgottenMenu=null;
         if (store != null && pending != null && System.nanoTime()-pendingAt <= TimeUnit.SECONDS.toNanos(5)) {
             activeMenu = menu; activeLocation = pending; activeTitle = screen.getTitle().getString(); receivedContents = false;
         }
@@ -129,13 +130,22 @@ public final class ChestMemory {
 
     private static void snapshot(boolean refreshTime) {
         if (store == null || activeMenu == null || activeLocation == null || !receivedContents) return;
+        if(activeMenu==forgottenMenu){if(store.get(activeLocation)==null)return;forgottenMenu=null;} // Undo Forget resumes live snapshots.
         List<MemoryItem> items = collectItems(activeMenu);
         SavedChest old = store.get(activeLocation);
-        if (refreshTime || old == null || !old.items().equals(items))
-            store.remember(new SavedChest(activeLocation, activeTitle, System.currentTimeMillis(), items));
+        if (refreshTime || old == null || !old.items().equals(items)){
+            store.remember(new SavedChest(activeLocation, activeTitle, System.currentTimeMillis(), items),Stow.config.autoAssignChests);
+            if(old==null)dev.stow.client.ui.UiNotifications.show(store.isIncluded(activeLocation)?"stow.feedback.chest-assigned":"stow.feedback.chest-remembered",activeTitle,store.projectName());
+        }
     }
 
     public static void refreshSnapshot() { snapshot(false); }
+    public static void forget(ChestMemoryStore fromStore,Location location){
+        if(fromStore==store&&Objects.equals(activeLocation,location))forgottenMenu=activeMenu;
+        fromStore.forget(location);
+        dev.stow.client.ui.UiNotifications.show("stow.feedback.chest-forgotten");
+        if(fromStore==store&&Objects.equals(selected,location))clearGlow();
+    }
 
     public static void screenRemoved(AbstractContainerMenu menu) {
         if (menu == activeMenu) { snapshot(true); saveLater(store); }
@@ -145,7 +155,7 @@ public final class ChestMemory {
         currentStore();
         MaterialPlanner.tick(mc);
         if (activeMenu != null && (mc.player == null || mc.player.containerMenu != activeMenu)) {
-            snapshot(true); saveLater(store); activeMenu = null; activeLocation = null;
+            snapshot(true); saveLater(store); activeMenu = null;forgottenMenu=null; activeLocation = null;
         }
         if (++ticks % 20 == 0) { snapshot(false); saveLater(store); }
         updateGlow(mc);
@@ -154,7 +164,7 @@ public final class ChestMemory {
     public static void disconnect() {
         MaterialPlanner.disconnect();
         snapshot(true); saveLater(store);
-        pending = null; activeMenu = null; activeLocation = null; stopGlow();
+        pending = null; activeMenu = null;forgottenMenu=null; activeLocation = null; clearGlow();
         worldKey = null; store = null;
     }
 
@@ -170,9 +180,21 @@ public final class ChestMemory {
     }
 
     public static Location selected() { return selected; }
-    public static void setGlowEnabled(boolean enabled){Stow.config.chestGlow=enabled;Stow.config.save();updateGlow(Minecraft.getInstance());}
-    public static void stopGlow(){selected=null;selectedMaterial=null;glowTarget=null;}
-    public static void select(Location location) { boolean wasEnabled=Stow.config.chestGlow;setGlowEnabled(true);selectedMaterial=null;selected = wasEnabled&&Objects.equals(selected, location) ? null : location; updateGlow(Minecraft.getInstance()); }
+    public static void setGlowEnabled(boolean enabled){
+        boolean changed=Stow.config.chestGlow!=enabled;
+        Stow.config.chestGlow=enabled;Stow.config.save();updateGlow(Minecraft.getInstance());
+        if(changed)dev.stow.client.ui.UiNotifications.show(enabled?"stow.feedback.glow-on":"stow.feedback.glow-off");
+    }
+    private static void clearGlow(){selected=null;selectedMaterial=null;glowTarget=null;}
+    public static void stopGlow(){
+        boolean hadSelection=selected!=null;clearGlow();
+        if(hadSelection)dev.stow.client.ui.UiNotifications.show("stow.feedback.glow-off");
+    }
+    public static void select(Location location) {
+        boolean wasEnabled=Stow.config.chestGlow;setGlowEnabled(true);
+        if(wasEnabled&&Objects.equals(selected,location)){stopGlow();return;}
+        selectedMaterial=null;selected=location;updateGlow(Minecraft.getInstance());
+    }
     public static boolean isMaterialGlowing(String itemId){return Stow.config.chestGlow&&selected!=null&&Objects.equals(selectedMaterial,itemId);}
     public static boolean toggleMaterialGlow(ChestMemoryStore source,String itemId){
         if(isMaterialGlowing(itemId)){stopGlow();return true;}
@@ -182,9 +204,9 @@ public final class ChestMemory {
         Minecraft mc=Minecraft.getInstance();if(source==null || mc.level==null || mc.player==null)return false;
         String dimension=mc.level.dimension().identifier().toString();
         SavedChest chest=source.nearestSource(itemId,dimension,mc.player.blockPosition());
-        if(chest==null){mc.gui.hud.setOverlayMessage(Component.translatable("stow.need.no-source"),false);return false;}
+        if(chest==null){dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.need.no-source"));return false;}
         setGlowEnabled(true);selected=chest.location();selectedMaterial=itemId;updateGlow(mc);
-        mc.gui.hud.setOverlayMessage(Component.translatable("stow.need.found-source",source.displayName(chest)),false);return true;
+        dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.need.found-source",source.displayName(chest)));return true;
     }
     public static ChestGlow.Target glowTarget() { return glowTarget; }
 

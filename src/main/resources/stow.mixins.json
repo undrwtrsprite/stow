@@ -3,6 +3,7 @@
   "package": "dev.stow.client.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
+    "MixinAbstractScrollArea",
     "MixinAbstractContainerScreen",
     "MixinClientPacketListener",
     "ClientLevelAccessor",

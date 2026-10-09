@@ -19,7 +19,7 @@ public final class KeepAmountsScreen extends ToolListScreen {
     @Override protected void init(){
         begin(40,Component.translatable("stow.need.search"));
         save=addRenderableWidget(new PlannerButton(Component.translatable("stow.common.save"),b->{
-            var rules=new LinkedHashMap<String,Integer>();draft.forEach((id,value)->{int n=parse(value);if(n>0)rules.put(id,n);});Stow.config.keepAmounts=rules;Stow.config.save();onClose();
+            var rules=new LinkedHashMap<String,Integer>();draft.forEach((id,value)->{int n=parse(value);if(n>0)rules.put(id,n);});Stow.config.keepAmounts=rules;Stow.config.save();UiNotifications.show("stow.feedback.keep-saved");onClose();
         },left+80,height-30,68,22,true));
         refresh();setFocused(search);
     }

@@ -72,7 +72,7 @@ public final class StowShortcuts {
         if(action==Action.BULK_STRIP)return parent==null&&BulkStrip.toggle(mc);
         if(action==Action.AUTO_TOOL){
             Stow.config.autoTool=!Stow.config.autoTool;Stow.config.save();
-            mc.gui.hud.setOverlayMessage(Component.translatable(Stow.config.autoTool?"stow.auto-tool.on":"stow.auto-tool.off"),false);return true;
+            dev.stow.client.ui.UiNotifications.show(Component.translatable(Stow.config.autoTool?"stow.auto-tool.on":"stow.auto-tool.off"));return true;
         }
         if(mc.player!=null&&!mc.player.containerMenu.getCarried().isEmpty())return false;
         if(container!=null&&(InventorySorting.busy(container.getMenu())||SmartDeposit.busy(container.getMenu())))return false;
@@ -86,7 +86,7 @@ public final class StowShortcuts {
             case EQUIPMENT->mc.gui.setScreen(new EquipmentScreen(parent));
             case PROJECTS->{if(store==null)return false;mc.gui.setScreen(new ProjectsScreen(parent,store));}
             case CYCLE_DRAG->Stow.config.cycleDragMode();
-            case DOCK->{Stow.config.dockEnabled=!Stow.config.dockEnabled;Stow.config.save();}
+            case DOCK->{Stow.config.dockEnabled=!Stow.config.dockEnabled;Stow.config.equipmentWatch=Stow.config.dockEnabled;Stow.config.save();dev.stow.client.ui.UiNotifications.show(Stow.config.dockEnabled?"stow.feedback.dock-on":"stow.feedback.dock-off");}
             default->{return false;}
         }
         return true;

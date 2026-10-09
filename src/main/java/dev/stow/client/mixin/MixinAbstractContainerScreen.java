@@ -44,7 +44,6 @@ public abstract class MixinAbstractContainerScreen extends Screen {
     @Unique private Button stow_modeButton;
     @Unique private Button stow_memoryButton;
     @Unique private Button stow_needButton;
-    @Unique private Button stow_sortButton;
     @Unique private Button stow_paletteButton;
     @Unique private Button stow_depositButton;
     @Unique private Button stow_glowButton;
@@ -74,10 +73,6 @@ public abstract class MixinAbstractContainerScreen extends Screen {
             var memory=ChestMemory.currentStore();
             if(memory!=null && menu.getCarried().isEmpty())Minecraft.getInstance().gui.setScreen(new MaterialsScreen(this,memory));
         },layout.needX(),layout.needY()));
-        stow_sortButton=addRenderableWidget(new InventoryIconButton(InventoryIconButton.Kind.SORT,Component.translatable("stow.sort.title"),button -> {
-            if(menu.getCarried().isEmpty())Minecraft.getInstance().gui.setScreen(StowSettingsScreen.create(this));
-        },layout.sortX(),layout.sortY()));
-        stow_sortButton.setTooltip(Tooltip.create(Component.translatable("stow.sort.title")));
         stow_paletteButton=addRenderableWidget(new InventoryIconButton(InventoryIconButton.Kind.PALETTE,Component.translatable("stow.palette.title"),button->{
             if(menu.getCarried().isEmpty())Minecraft.getInstance().gui.setScreen(new CommandPaletteScreen(this,hoveredSlot==null?net.minecraft.world.item.ItemStack.EMPTY:hoveredSlot.getItem()));
         },layout.paletteX(),layout.paletteY()));
@@ -104,7 +99,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         if (stow_modeButton == null) return;
         stow_layout=InventoryExtrasLayout.of(width,height,leftPos,topPos,imageWidth,imageHeight);
         stow_modeButton.setPosition(stow_layout.modeX(),stow_layout.modeY());stow_memoryButton.setY(stow_layout.memoryY());
-        stow_needButton.setPosition(stow_layout.needX(),stow_layout.needY());stow_sortButton.setPosition(stow_layout.sortX(),stow_layout.sortY());stow_paletteButton.setPosition(stow_layout.paletteX(),stow_layout.paletteY());stow_depositButton.setPosition(stow_layout.depositX(),stow_layout.depositY());
+        stow_needButton.setPosition(stow_layout.needX(),stow_layout.needY());stow_paletteButton.setPosition(stow_layout.paletteX(),stow_layout.paletteY());stow_depositButton.setPosition(stow_layout.depositX(),stow_layout.depositY());
         stow_search.setY(stow_layout.searchY());stow_tracker.place(stow_layout.trackerX(),stow_layout.trackerY(),stow_layout.trackerWidth(),stow_layout.trackerHeight());
         boolean toolbar=stow_layout.modeY()==stow_layout.glowY();
         stow_glowButton.setPosition(toolbar?leftPos+imageWidth-20:stow_layout.glowX(),toolbar?stow_layout.glowY():SmartDeposit.supported(menu)?stow_layout.glowY():stow_layout.depositY());
@@ -130,14 +125,13 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         stow_needButton.setMessage(Component.translatable("stow.need.title-short"));
         stow_needButton.setTooltip(Tooltip.create(Component.translatable("stow.need.quick-hint")));
         boolean busy=InventorySorting.busy(menu)||SmartDeposit.busy(menu);
-        stow_sortButton.active=menu.getCarried().isEmpty()&&!busy;
         stow_paletteButton.active=menu.getCarried().isEmpty()&&!busy;
         stow_depositButton.visible=SmartDeposit.supported(menu);
         var preview=SmartDeposit.preview(menu);stow_depositButton.active=menu.getCarried().isEmpty()&&!busy;
         stow_depositButton.setTooltip(Tooltip.create(preview.amount()>0?Component.translatable("stow.deposit.preview",preview.amount()):Component.translatable(SmartDeposit.emptyReason(menu,Stow.config.depositKeepHotbar,Stow.config.depositMatchingOnly))));
         boolean expanded=stow_searchVisible&&stow_layout.modeY()==stow_layout.searchY();
         stow_search.setX(expanded?leftPos:stow_layout.searchX());stow_search.setWidth(expanded?imageWidth-24:stow_layout.searchWidth());
-        stow_modeButton.visible=stow_memoryButton.visible=stow_needButton.visible=stow_sortButton.visible=stow_paletteButton.visible=!expanded;
+        stow_modeButton.visible=stow_memoryButton.visible=stow_needButton.visible=stow_paletteButton.visible=!expanded;
         stow_memoryButton.visible=true;stow_memoryButton.setX(expanded?leftPos+imageWidth-20:stow_layout.memoryX());
         stow_depositButton.visible=SmartDeposit.supported(menu)&&!expanded;
         stow_glowButton.visible=!expanded;stow_glowButton.setTooltip(Tooltip.create(Component.translatable(Stow.config.chestGlow?"stow.glow.on":"stow.glow.off")));
@@ -247,7 +241,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         if(stow_modeButton==null)return;
         if(InventorySorting.busy(menu)||SmartDeposit.busy(menu)){cir.setReturnValue(true);return;}
         double x=event.x(),y=event.y();
-        if(stow_modeButton!=null&&(stow_modeButton.visible&&stow_modeButton.isMouseOver(x,y)||stow_memoryButton.visible&&stow_memoryButton.isMouseOver(x,y)||stow_needButton.visible&&stow_needButton.isMouseOver(x,y)||stow_sortButton.visible&&stow_sortButton.isMouseOver(x,y)||stow_paletteButton.visible&&stow_paletteButton.isMouseOver(x,y)||stow_depositButton.visible&&stow_depositButton.isMouseOver(x,y)||stow_glowButton.visible&&stow_glowButton.isMouseOver(x,y)||stow_tracker.visible&&stow_tracker.isMouseOver(x,y))){
+        if(stow_modeButton!=null&&(stow_modeButton.visible&&stow_modeButton.isMouseOver(x,y)||stow_memoryButton.visible&&stow_memoryButton.isMouseOver(x,y)||stow_needButton.visible&&stow_needButton.isMouseOver(x,y)||stow_paletteButton.visible&&stow_paletteButton.isMouseOver(x,y)||stow_depositButton.visible&&stow_depositButton.isMouseOver(x,y)||stow_glowButton.visible&&stow_glowButton.isMouseOver(x,y)||stow_tracker.visible&&stow_tracker.isMouseOver(x,y))){
             super.mouseClicked(event,doubleClick);setFocused(null);stow_controlClick=true;cir.setReturnValue(true);return;
         }
         if(stow_search!=null&&stow_search.isVisible()){
@@ -257,7 +251,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         Slot slot=getHoveredSlot(x,y);
         if(stow_search!=null&&StowShortcuts.matches(Action.SEARCH,StowShortcuts.chord(event.buttonInfo()))){stow_searchVisible=true;stow_search.setVisible(true);setFocused(stow_search);stow_controlClick=true;cir.setReturnValue(true);return;}
         if(StowShortcuts.inventoryMouse(this,slot,event)){stow_controlClick=true;cir.setReturnValue(true);return;}
-        if(PinnedTransfer.isCraftingResult(menu,slot))return;
+        if(PinnedTransfer.isVanillaResultSlot(menu,slot))return;
         if(Stow.config.bundleDrag&&slot!=null&&event.hasShiftDown()&&!event.hasControlDown()&&!event.hasAltDown()
                 &&(event.button()==InputConstants.MOUSE_BUTTON_LEFT||event.button()==InputConstants.MOUSE_BUTTON_RIGHT)
                 &&stow_carriedBundleDrag.begin(menu,Minecraft.getInstance().player,event.button()==InputConstants.MOUSE_BUTTON_RIGHT)){

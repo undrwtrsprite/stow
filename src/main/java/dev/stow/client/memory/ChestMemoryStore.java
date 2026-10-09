@@ -73,7 +73,7 @@ public final class ChestMemoryStore {
                 if(validGoal(goal) && goals.stream().noneMatch(g -> g.itemId.equals(goal.itemId)) && goals.size()<MAX_GOALS) goals.add(goal);
             }
             customSelection=data.customSelection;
-            if(data.selectedChests!=null) for(String key:data.selectedChests) if(chests.containsKey(key)) selectedChests.add(key);
+            if(data.selectedChests!=null) for(String key:data.selectedChests) if(validSelectionKey(key)) selectedChests.add(key);
             if(data.hiddenGoals!=null) for(String id:data.hiddenGoals) if(goals.stream().anyMatch(g -> g.itemId.equals(id))) hiddenGoals.add(id);
             projects.get(activeProject).customSelection=customSelection;
             if(data.version==4 && data.projects!=null && !data.projects.isEmpty()) {
@@ -83,7 +83,7 @@ public final class ChestMemoryStore {
                     if(saved==null || saved.id==null || saved.id.isBlank() || saved.id.length()>64 || saved.name==null || cleanName(saved.name).isBlank() || projects.containsKey(saved.id))continue;
                     ProjectState state=new ProjectState(saved.id,cleanName(saved.name));state.customSelection=saved.customSelection;
                     if(saved.goals!=null)for(MaterialGoal goal:saved.goals)if(validGoal(goal) && state.goals.size()<MAX_GOALS && state.goals.stream().noneMatch(g -> g.itemId.equals(goal.itemId)))state.goals.add(goal);
-                    if(saved.selectedChests!=null)for(String key:saved.selectedChests)if(chests.containsKey(key))state.selectedChests.add(key);
+                    if(saved.selectedChests!=null)for(String key:saved.selectedChests)if(validSelectionKey(key))state.selectedChests.add(key);
                     if(saved.hiddenGoals!=null)for(String id:saved.hiddenGoals)if(state.goals.stream().anyMatch(g -> g.itemId.equals(id)))state.hiddenGoals.add(id);
                     if(saved.hudGoals!=null)state.hudGoals=saved.hudGoals.stream().filter(id->state.goals.stream().anyMatch(g->g.itemId.equals(id))).distinct().limit(6).toList();
                     if(state.hudGoals!=null)state.hudGoals=new ArrayList<>(state.hudGoals);
@@ -141,22 +141,29 @@ public final class ChestMemoryStore {
     public synchronized long revision() { return revision; }
     public synchronized SavedChest get(Location location) { return chests.get(location.key()); }
     public synchronized void remember(SavedChest chest) {
+        remember(chest,true);
+    }
+    public synchronized void remember(SavedChest chest,boolean assignToProject) {
         if (!valid(chest)) throw new IllegalArgumentException("Invalid container snapshot");
+        boolean discovered=!chests.containsKey(chest.location.key());
         chests.put(chest.location.key(), new SavedChest(chest.location, chest.title, chest.lastSeen, List.copyOf(chest.items)));
+        if(discovered&&assignToProject&&customSelection)selectedChests.add(chest.location.key());
         trim();
         changed();
     }
     public synchronized void forget(Location location) {
         String key=location.key();SavedChest previous=chests.remove(key);if(previous==null)return;
-        String alias=names.remove(key);Set<String> included=new HashSet<>();
-        projects.values().forEach(p -> {if(p.selectedChests.remove(key))included.add(p.id);});
+        // A forgotten snapshot is missing knowledge, not a change to a project's storage choice.
+        // Keep the location selected so reopening that chest restores fresh totals automatically.
+        String alias=names.remove(key);
         pushUndo("Forget "+(alias==null?previous.title:alias),() -> {
             // A newly opened chest is more accurate than the deleted snapshot.
             if(!chests.containsKey(key)){chests.put(key,previous);if(alias!=null)names.put(key,alias);trim();}
             if(chests.containsKey(key) && alias!=null)names.putIfAbsent(key,alias);
-            if(chests.containsKey(key))included.forEach(id -> {ProjectState p=projects.get(id);if(p!=null)p.selectedChests.add(key);});
         });changed();
     }
+
+    private static boolean validSelectionKey(String key){return key!=null&&key.length()<=160&&key.matches("[a-z0-9_.-]+:[a-z0-9_./-]+:-?[0-9]{1,11},-?[0-9]{1,11},-?[0-9]{1,11}");}
 
     private void changed() { projects.get(activeProject).customSelection=customSelection;revision++; dirty=true; cachedCounts.clear(); }
     private static String cleanName(String name) {
@@ -189,6 +196,10 @@ public final class ChestMemoryStore {
         for(var goal:visibleGoals())if(shown.size()<limit&&!shown.contains(goal))shown.add(goal);
         return List.copyOf(shown);
     }
+    public synchronized int additionalHudGoals(int limit){
+        var shown=hudGoals(limit);
+        return (int)visibleGoals().stream().filter(goal->!shown.contains(goal)).count();
+    }
     public synchronized boolean isHudGoal(String id,int limit){return starredGoals(Integer.MAX_VALUE).stream().anyMatch(g->g.itemId.equals(id));}
     public synchronized boolean toggleHudGoal(String id,int limit){
         if(goals.stream().noneMatch(g->g.itemId.equals(id)))return false;
@@ -215,6 +226,30 @@ public final class ChestMemoryStore {
         if(!existing)hiddenGoals.remove(itemId);
         if(existing){updateTarget(itemId,target);return;}goals.add(goal);changed();
     }
+    /** Validate the complete batch before changing anything, including merged quantities and limits. */
+    public synchronized List<MaterialGoal> previewImport(Collection<MaterialGoal> imported,boolean add){
+        var incoming=new LinkedHashMap<String,Integer>();
+        for(var goal:imported){
+            if(!validGoal(goal))throw new IllegalArgumentException("Invalid material goal");
+            long total=(long)incoming.getOrDefault(goal.itemId,0)+goal.target;
+            if(total>1_000_000)throw new IllegalArgumentException("Material quantity exceeds 1000000");
+            incoming.put(goal.itemId,(int)total);
+        }
+        var result=new LinkedHashMap<String,MaterialGoal>();for(var goal:goals)result.put(goal.itemId,goal);
+        for(var entry:incoming.entrySet()){
+            long total=entry.getValue()+(add&&result.containsKey(entry.getKey())?(long)result.get(entry.getKey()).target:0);
+            if(total>1_000_000)throw new IllegalArgumentException("Material quantity exceeds 1000000");
+            result.put(entry.getKey(),new MaterialGoal(entry.getKey(),(int)total));
+        }
+        if(result.size()>MAX_GOALS)throw new IllegalArgumentException("Maximum 1024 material goals");
+        return List.copyOf(result.values());
+    }
+    public synchronized void importGoals(Collection<MaterialGoal> imported,boolean add){
+        var result=previewImport(imported,add);if(result.equals(goals))return;
+        var oldGoals=List.copyOf(goals);var oldHidden=Set.copyOf(hiddenGoals);String project=activeProject;
+        pushUndo("Import materials",()->{var state=projects.get(project);if(state==null)return;bind(state);goals.clear();goals.addAll(oldGoals);hiddenGoals.clear();hiddenGoals.addAll(oldHidden);});
+        goals.clear();goals.addAll(result);changed();
+    }
     public synchronized void removeGoal(String itemId) {
         for(int i=0;i<goals.size();i++)if(goals.get(i).itemId.equals(itemId)) {
             int index=i;MaterialGoal removed=goals.remove(i);boolean hidden=hiddenGoals.remove(itemId);String project=activeProject;
@@ -236,7 +271,7 @@ public final class ChestMemoryStore {
         if(!selectedChests.remove(location.key())) selectedChests.add(location.key());
         changed();
     }
-    public synchronized int includedChestCount() { return customSelection?selectedChests.size():chests.size(); }
+    public synchronized int includedChestCount() { return customSelection?(int)selectedChests.stream().filter(chests::containsKey).count():chests.size(); }
     public synchronized long chestCount(String itemId) {
         Long cached=cachedCounts.get(itemId);if(cached!=null)return cached;
         long count=0;

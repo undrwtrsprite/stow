@@ -37,7 +37,10 @@ public final class InventorySorting {
     public static void tick(Minecraft mc){
         if(active==null)return;
         if(mc.player==null||mc.player.containerMenu!=active.menu||mc.gui.screen()!=owner){cancel();return;}
-        if(!active.step())cancel();
+        if(!active.step()){
+            boolean completed=!active.failed&&active.position>=active.clicks.size()&&active.menu.getCarried().isEmpty();
+            dev.stow.client.ui.UiNotifications.show(completed?"stow.feedback.sort-done":"stow.feedback.sort-stopped");cancel();
+        }
     }
     public static List<Slot> scope(AbstractContainerScreen<?> screen,Slot hovered,Player player){return scope(screen.getMenu(),hovered,player,screen instanceof InventoryScreen);}
     public static List<Slot> scope(AbstractContainerMenu menu,Slot hovered,Player player){return scope(menu,hovered,player,false);}

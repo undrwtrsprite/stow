@@ -14,6 +14,7 @@ public final class InventoryIconButton extends Button {
     public void setHudSelected(boolean value){selected=value;}
     public InventoryIconButton(Kind kind,Component label,OnPress action,int x,int y){super(x,y,20,20,label,action,DEFAULT_NARRATION);this.kind=kind;}
     @Override protected void extractContents(GuiGraphicsExtractor g,int mx,int my,float delta) {
+        setOverrideRenderHighlightedSprite(()->isHoveredOrFocused()||kind==Kind.HUD&&selected||kind==Kind.GLOW&&Stow.config.chestGlow);
         extractDefaultSprite(g);
         var icon=switch(kind){
             case CHESTS->UIIcons.Kind.STORAGE;case MATERIALS->UIIcons.Kind.MATERIALS;
@@ -23,6 +24,7 @@ public final class InventoryIconButton extends Button {
             case DRAG->switch(Stow.config.dragMode){case MATCHING_ONLY->UIIcons.Kind.COPY;case ALL_ITEMS->UIIcons.Kind.GRID;case BOTH->UIIcons.Kind.BOTH;};
         };
         int color=!active?0xFF737A80:kind==Kind.HUD?(selected?0xFFFFD486:0xFF999999):0xFFE7ECEF;
-        UIIcons.draw(g,icon,getX()+(getWidth()-UIIcons.SIZE)/2,getY()+(getHeight()-UIIcons.SIZE)/2,color);
+        int x=getX()+(getWidth()-UIIcons.SIZE)/2,y=getY()+(getHeight()-UIIcons.SIZE)/2;
+        UIIcons.draw(g,icon,x,y,color);
     }
 }

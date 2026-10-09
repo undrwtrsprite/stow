@@ -77,7 +77,7 @@ public final class SmartDeposit {
         return "stow.deposit.protected";
     }
     private static void feedback(String key,Object... values){
-        Minecraft.getInstance().gui.hud.setOverlayMessage(net.minecraft.network.chat.Component.translatable(key,values),false);
+        dev.stow.client.ui.UiNotifications.show(net.minecraft.network.chat.Component.translatable(key,values));
     }
     public static void tick(Minecraft mc){
         if(active==null)return;

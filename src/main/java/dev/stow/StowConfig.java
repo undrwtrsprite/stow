@@ -21,6 +21,8 @@ public final class StowConfig {
     public enum HotbarScoping { SOFT,NONE }
     public enum PinStyle { LOCK,HIGHLIGHT }
     public enum DockCorner { BOTTOM_RIGHT,BOTTOM_LEFT,TOP_RIGHT,TOP_LEFT }
+    public enum HudAlignment { LEFT,CENTER,RIGHT }
+    public enum ToolRefillMode { AFTER_BREAK,KEEP_ONE }
     public record Shortcut(boolean mouse,int code,int modifiers) {}
     public java.util.Map<String,Shortcut> shortcuts=new java.util.LinkedHashMap<>();
     public java.util.Map<String,Integer> keepAmounts=new java.util.LinkedHashMap<>();
@@ -30,6 +32,11 @@ public final class StowConfig {
     public boolean pinProtectTransfers=true;
     public boolean bundleDrag=true;
     public boolean equipmentAll=true;
+    public boolean equipmentPercent=false;
+    public boolean notifications=true;
+    public boolean autoAssignChests=true;
+    public boolean toolRefill=true;
+    public ToolRefillMode toolRefillMode=ToolRefillMode.KEEP_ONE;
     public boolean materialsIncludeInventory=true;
     public PinStyle pinStyle=PinStyle.LOCK;
     public boolean rememberMaterialPage=true;
@@ -46,6 +53,10 @@ public final class StowConfig {
     public int equipmentThreshold=15;
     public DockCorner projectCorner=DockCorner.TOP_RIGHT;
     public int projectOffsetX=8,projectOffsetY=8,projectScale=100;
+    public HudAlignment projectAlignment=HudAlignment.RIGHT,dockAlignment=HudAlignment.RIGHT,stockAlignment=HudAlignment.LEFT;
+    public boolean stockFollowHotbar=true;
+    public DockCorner stockCorner=DockCorner.BOTTOM_RIGHT;
+    public int stockOffsetX=8,stockOffsetY=62,stockScale=100;
     public DockCorner dockCorner=DockCorner.BOTTOM_RIGHT;
     public int dockOffsetX=8,dockOffsetY=62,dockScale=100,dockRows=3;
     public DragMode dragMode=DragMode.BOTH;
@@ -89,6 +100,12 @@ public final class StowConfig {
                     loaded.keepAmounts.entrySet().removeIf(e->e.getKey()==null||e.getValue()==null||e.getValue()<0||e.getValue()>1_000_000);
                     if(loaded.pinStyle==null)loaded.pinStyle=PinStyle.LOCK;
                     if(loaded.projectCorner==null)loaded.projectCorner=DockCorner.TOP_RIGHT;
+                    if(loaded.projectAlignment==null)loaded.projectAlignment=HudAlignment.RIGHT;
+                    if(loaded.dockAlignment==null)loaded.dockAlignment=HudAlignment.RIGHT;
+                    if(loaded.stockAlignment==null)loaded.stockAlignment=HudAlignment.LEFT;
+                    if(loaded.stockCorner==null)loaded.stockCorner=DockCorner.BOTTOM_RIGHT;
+                    if(loaded.toolRefillMode==null)loaded.toolRefillMode=ToolRefillMode.KEEP_ONE;
+                    loaded.stockOffsetX=Math.clamp(loaded.stockOffsetX,0,1000);loaded.stockOffsetY=Math.clamp(loaded.stockOffsetY,0,1000);loaded.stockScale=Math.clamp(loaded.stockScale,60,200);
                     loaded.projectScale=Math.clamp(loaded.projectScale,60,150);loaded.projectOffsetX=Math.clamp(loaded.projectOffsetX,0,1000);loaded.projectOffsetY=Math.clamp(loaded.projectOffsetY,0,1000);
                     if(loaded.dockCorner==null)loaded.dockCorner=DockCorner.BOTTOM_RIGHT;
                     loaded.refillThreshold=Math.clamp(loaded.refillThreshold,0,16);

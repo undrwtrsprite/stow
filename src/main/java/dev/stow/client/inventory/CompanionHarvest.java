@@ -17,7 +17,7 @@ public final class CompanionHarvest {
         ClientPlayNetworking.registerGlobalReceiver(Result.TYPE,(r,c)->c.client().execute(()->{
             if(pending==null||pending.id()!=r.id())return;
             clear();
-            c.client().gui.hud.setOverlayMessage(Component.translatable("stow.harvest."+r.status(),r.stripped(),r.mined()),false);
+            dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.harvest."+r.status(),r.stripped(),r.mined()));
         }));
     }
     public static boolean available(){return ClientPlayNetworking.canSend(Request.TYPE);}
@@ -25,7 +25,7 @@ public final class CompanionHarvest {
     public static void start(Minecraft mc,BlockPos anchor){
         pending=new Request(++nextId,anchor.immutable(),mc.player.getInventory().getSelectedSlot(),false);
         age=0;cancelling=false;HandRefill.cancel();ClientPlayNetworking.send(pending);
-        mc.gui.hud.setOverlayMessage(Component.translatable("stow.harvest.started"),false);
+        dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.harvest.started"));
     }
     public static void cancel(){
         if(pending==null||cancelling)return;
@@ -37,7 +37,7 @@ public final class CompanionHarvest {
         if(mc.player==null||mc.level==null||!available()){clear();return;}
         if(!ready||mc.player.getInventory().getSelectedSlot()!=pending.slot())cancel();
         // Server jobs expire after 120 seconds. A stalled connection never triggers local harvesting.
-        if(++age>2600){clear();mc.gui.hud.setOverlayMessage(Component.translatable("stow.harvest.timeout"),false);}
+        if(++age>2600){clear();dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.harvest.timeout"));}
     }
     public static void clear(){pending=null;age=0;cancelling=false;}
     private CompanionHarvest(){}
