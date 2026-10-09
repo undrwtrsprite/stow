@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.stow.Stow;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -36,6 +37,8 @@ public final class VersionChecker {
     private static final String CURSEFORGE_PROJECT = "1728619";
     private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(8);
     private static final Duration CONNECT_TIMEOUT = Duration.ofSeconds(5);
+    // Generous for 100 GitHub releases with notes; anything larger is treated as an unreachable service.
+    private static final int MAX_RESPONSE_BYTES = 8 * 1024 * 1024;
     private static final long SUCCESS_RECHECK_MILLIS = Duration.ofHours(12).toMillis();
     private static final long FAILURE_RECHECK_MILLIS = Duration.ofHours(1).toMillis();
     private static final Pattern CURSEFORGE_FILE_VERSION = Pattern.compile(
@@ -186,11 +189,18 @@ public final class VersionChecker {
                 .header("Accept", "application/json")
                 .header("User-Agent", "undrwtrsprite/stow");
         if (github) request.header("X-GitHub-Api-Version", "2022-11-28");
-        HttpResponse<String> response = HTTP.send(request.GET().build(), HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new IOException("Version service returned HTTP " + response.statusCode());
+        HttpResponse<InputStream> response = HTTP.send(request.GET().build(), HttpResponse.BodyHandlers.ofInputStream());
+        try (InputStream body = response.body()) {
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                throw new IOException("Version service returned HTTP " + response.statusCode());
+            }
+            // Read one byte past the limit so an oversized response is detected rather than silently truncated.
+            byte[] bytes = body.readNBytes(MAX_RESPONSE_BYTES + 1);
+            if (bytes.length > MAX_RESPONSE_BYTES) {
+                throw new IOException("Version service response exceeded " + MAX_RESPONSE_BYTES + " bytes");
+            }
+            return JsonParser.parseString(new String(bytes, StandardCharsets.UTF_8));
         }
-        return JsonParser.parseString(response.body());
     }
 
     private static Optional<Update> newerUpdate(Optional<Update> previous, String installed, Update candidate) {
