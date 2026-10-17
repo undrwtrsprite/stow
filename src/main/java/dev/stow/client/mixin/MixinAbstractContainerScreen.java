@@ -193,6 +193,9 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Unique
     private void stow_moveMatchingSlot(Slot slot) {
+        // A drag that starts in a merchant input can cross its output slot. Leave all result
+        // transfers to vanilla so a Stow multi-slot gesture cannot repeat trades or crafting.
+        if (PinnedTransfer.isVanillaResultSlot(menu, slot)) return;
         if (stow_matchingDrag.visit(slot, Minecraft.getInstance().player)) {
             slotClicked(slot, slot.index, 0, ContainerInput.QUICK_MOVE);
         }
@@ -206,7 +209,8 @@ public abstract class MixinAbstractContainerScreen extends Screen {
                 int steps=Math.max(1,(int)Math.ceil(Math.hypot(dx,dy)/4.0));
                 for(int i=1;i<=steps;i++){
                     double progress=(double)i/steps;
-                    stow_carriedBundleDrag.visit(getHoveredSlot(event.x()-dx+dx*progress,event.y()-dy+dy*progress),Minecraft.getInstance().player,
+                    Slot target=getHoveredSlot(event.x()-dx+dx*progress,event.y()-dy+dy*progress);
+                    if(!PinnedTransfer.isVanillaResultSlot(menu,target))stow_carriedBundleDrag.visit(target,Minecraft.getInstance().player,
                             (id,button)->slotClicked(menu.slots.get(id),id,button,ContainerInput.PICKUP));
                 }
             }
@@ -218,7 +222,8 @@ public abstract class MixinAbstractContainerScreen extends Screen {
                 int steps=Math.max(1,(int)Math.ceil(Math.hypot(dx,dy)/4.0));
                 for(int i=1;i<=steps;i++){
                     double progress=(double)i/steps;
-                    stow_bundleDrag.visit(getHoveredSlot(event.x()-dx+dx*progress,event.y()-dy+dy*progress),Minecraft.getInstance().player,
+                    Slot target=getHoveredSlot(event.x()-dx+dx*progress,event.y()-dy+dy*progress);
+                    if(!PinnedTransfer.isVanillaResultSlot(menu,target))stow_bundleDrag.visit(target,Minecraft.getInstance().player,
                             (id,button)->slotClicked(menu.slots.get(id),id,button,ContainerInput.PICKUP));
                 }
             }

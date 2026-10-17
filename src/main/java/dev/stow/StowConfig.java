@@ -49,6 +49,7 @@ public final class StowConfig {
     public boolean depositMatchingOnly=true;
     public boolean dockEnabled=true;
     public boolean dockMaterials=true;
+    public boolean dockFinished=true;
     public boolean equipmentWatch=true;
     public int equipmentThreshold=15;
     public DockCorner projectCorner=DockCorner.TOP_RIGHT;

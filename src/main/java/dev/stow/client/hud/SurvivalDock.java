@@ -30,7 +30,7 @@ public final class SurvivalDock {
         }return List.copyOf(rows);
     }
     public static List<Row> projectRows(ChestMemoryStore store){
-        var rows=new ArrayList<Row>();if(Stow.config.dockMaterials&&store!=null){var goals=store.hudGoals(Stow.config.dockRows);
+        var rows=new ArrayList<Row>();if(Stow.config.dockMaterials&&store!=null&&(Stow.config.dockFinished||!store.isFinished())){var goals=store.hudGoals(Stow.config.dockRows);
             for(var goal:goals.stream().limit(Stow.config.dockRows).toList()){
                 var progress=MaterialPlanner.progress(store,goal);
                 rows.add(new Row(MemoryItems.icon(goal.itemId()),progress.label(),progress.color()));

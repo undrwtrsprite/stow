@@ -23,13 +23,15 @@ public final class MaterialsScreen extends MemoryScreenBase {
     private int page,pageSize,left,bodyWidth,startY,toolbarY;
     private EditBox search;
     private List<MaterialGoal> allGoals=List.of();
-    private PlannerButton previous,next,chests,project,undo,copy;
+    private PlannerButton previous,next,chests,project,undo,copy,finish;
     private String projectId;
     private long revision=-1;
     private Component importNotice;
     private String importNoticeProject;
     private int importedTypes;
     private String resizeFocus;
+    private int finishCheck;
+    private boolean canFinish;
     @Override protected void repositionElements(){
         var focus=rows.stream().filter(r->r.amount.isFocused()).findFirst().orElse(null);resizeFocus=focus==null?null:focus.goal.itemId();
         boolean searching=search!=null&&search.isFocused();int cursor=focus!=null?focus.amount.getCursorPosition():searching?search.getCursorPosition():0;
@@ -43,7 +45,7 @@ public final class MaterialsScreen extends MemoryScreenBase {
     public MaterialsScreen(Screen parent,ChestMemoryStore store,String focusItem,int importedTypes){this(parent,store,focusItem);this.importedTypes=importedTypes;importNotice=Component.translatable("stow.import.saved",importedTypes);importNoticeProject=store.activeProjectId();}
     @Override protected void init() {
         layoutDialog(480);
-        bodyWidth=contentWidth();left=contentLeft();toolbarY=workspaceTop();startY=toolbarY+48;pageSize=Math.max(1,(dialogHeight-startY-38)/ROW_HEIGHT);
+        bodyWidth=contentWidth();left=contentLeft();toolbarY=workspaceTop();startY=toolbarY+48;pageSize=Math.max(1,(dialogHeight-startY-52)/ROW_HEIGHT);
         project=addRenderableWidget(new PlannerButton(Component.empty(),b -> minecraft.gui.setScreen(new ProjectsScreen(this,store)),left+8,toolbarY,bodyWidth-166,22,false));
         copy=addRenderableWidget(new PlannerButton(Component.translatable("stow.export.copy"),b->{
             minecraft.keyboardHandler.setClipboard(MaterialListExporter.export(store.projectName(),store.goals()));
@@ -57,6 +59,14 @@ public final class MaterialsScreen extends MemoryScreenBase {
         addRenderableWidget(new PlannerButton(Component.translatable("stow.import.open"),b->minecraft.gui.setScreen(new MaterialImportScreen(this,store)),left+bodyWidth-88,toolbarY,80,22,false)).active=store!=null;
         chests=addRenderableWidget(new PlannerButton(Component.empty(),b -> minecraft.gui.setScreen(new ChestMemoryScreen(this,store,"",true,null)),left+bodyWidth-120,toolbarY+24,112,22,false));
         String query=search==null?"":search.getValue();search=addRenderableWidget(new EditBox(font,left+8,toolbarY+24,bodyWidth-134,22,Component.translatable("stow.need.search")));search.setMaxLength(80);search.setHint(Component.translatable("stow.need.search"));search.setValue(query);search.setResponder(v->{page=0;refresh();});
+        finish=addRenderableWidget(new PlannerButton(Component.empty(),b->{
+            if(store==null)return;
+            boolean finishing=!store.isFinished();
+            if(finishing&&!MaterialPlanner.canFinish(store)){finishCheck=0;syncButtons();return;}
+            store.setFinished(finishing);
+            dev.stow.client.ui.UiNotifications.show(finishing?"stow.feedback.project-finished":"stow.feedback.project-reopened");
+            ChestMemory.saveLater(store);finishCheck=0;syncButtons();
+        },left+142,dialogHeight-30,Math.min(112,bodyWidth-216),22,false));
         addRenderableWidget(new PlannerButton(Component.translatable("gui.back"),b -> onClose(),left+8,dialogHeight-30,66,22,false));
         previous=addRenderableWidget(new PlannerButton(Component.literal("<"),b -> {page-=pageSize;refresh();},left+bodyWidth-68,dialogHeight-30,26,22,false));
         next=addRenderableWidget(new PlannerButton(Component.literal(">"),b -> {page+=pageSize;refresh();},left+bodyWidth-36,dialogHeight-30,26,22,false));
@@ -64,6 +74,7 @@ public final class MaterialsScreen extends MemoryScreenBase {
     }
     private static int parseAmount(String value){try{int n=Integer.parseInt(value);return n>0 && n<=1_000_000?n:0;}catch(NumberFormatException e){return 0;}}
     private void refresh() {
+        finishCheck=0;canFinish=false;
         GoalRow focused=rows.stream().filter(r->r.amount.isFocused()).findFirst().orElse(null);
         int cursor=focused==null?0:focused.amount.getCursorPosition();
         if(store!=null && !Objects.equals(projectId,store.activeProjectId())){page=0;drafts.clear();focused=null;projectId=store.activeProjectId();}
@@ -94,17 +105,22 @@ public final class MaterialsScreen extends MemoryScreenBase {
             rows.add(new GoalRow(goal,amount,save,show,hud));
             if(focused!=null&&focused.goal.itemId().equals(goal.itemId())){setFocused(amount);amount.moveCursorTo(Math.min(cursor,amount.getValue().length()),false);}
         }
-        trackList(widgets,startY,dialogHeight-38,page,ROW_HEIGHT,1);
+        trackList(widgets,startY,dialogHeight-52,page,ROW_HEIGHT,1);
         previous.active=page>0;next.active=(page+pageSize)<goals.size();syncButtons();
         revision=store==null?0:store.revision();
     }
     private void syncButtons() {
         copy.active=store!=null&&!allGoals.isEmpty();
-        project.active=store!=null;project.setMessage(Component.translatable("stow.need.project-current",store==null?"":store.projectName()));
+        project.active=store!=null;project.setMessage(Component.translatable(store!=null&&store.isFinished()?"stow.need.project-finished":"stow.need.project-current",store==null?"":store.projectName()));
         boolean imported=importNotice!=null&&store!=null&&Objects.equals(importNoticeProject,store.activeProjectId());
         project.setTooltip(Tooltip.create(imported?Component.translatable("stow.import.done",importedTypes):Component.translatable("stow.materials.summary",allGoals.size(),store==null?0:store.starredGoals(Integer.MAX_VALUE).size())));
         undo.active=store!=null && store.canUndo();undo.setTooltip(PlannerTooltips.undo(store));
         chests.active=store!=null;
+        boolean finished=store!=null&&store.isFinished();
+        finish.setMessage(Component.translatable(finished?"stow.need.reopen":"stow.need.finish"));
+        if(!finished&&finishCheck--<=0){canFinish=MaterialPlanner.canFinish(store);finishCheck=20;}
+        finish.active=finished||canFinish;
+        finish.setTooltip(Tooltip.create(Component.translatable(finished?"stow.need.reopen-hint":finish.active?"stow.need.finish-hint":"stow.need.finish-locked")));
         chests.setMessage(Component.translatable("stow.need.storage-count",store==null?0:store.includedChestCount()));
         for(GoalRow row:rows){row.visibility.setMessage(Component.translatable(store.isGoalVisible(row.goal.itemId())?"stow.need.hide-item":"stow.need.show-item"));row.visibility.icon(store.isGoalVisible(row.goal.itemId())?dev.stow.client.ui.UIIcons.Kind.EYE:dev.stow.client.ui.UIIcons.Kind.EYE_OFF);row.visibility.setTooltip(Tooltip.create(Component.translatable(store.isGoalVisible(row.goal.itemId())?"stow.need.hide-tooltip":"stow.need.show-tooltip")));boolean selected=store.isHudGoal(row.goal.itemId(),dev.stow.Stow.config.dockRows);row.hud.setHudSelected(selected);row.hud.active=selected||store.starredGoals(Integer.MAX_VALUE).size()<dev.stow.Stow.config.dockRows;row.hud.setTooltip(Tooltip.create(Component.translatable(row.hud.active?(selected?"stow.hud.remove":"stow.hud.toggle"):"stow.hud.full",dev.stow.Stow.config.dockRows)));}
     }
@@ -135,10 +151,10 @@ public final class MaterialsScreen extends MemoryScreenBase {
             graphics.text(font,font.plainSubstrByWidth(MemoryItems.name(goal.itemId()),nameWidth),left+34,y+4,0xFFFFFFFF);
             graphics.text(font,count,left+bodyWidth-countWidth-12,y+4,progress.color());
             graphics.text(font,Component.translatable("stow.need.target-label"),left+12,y+24,0xFFAAAAAA);
-            String missing=Component.translatable(progress.enough()?"stow.need.ready":"stow.need.missing",progress.missing()).getString();
+            String missing=Component.translatable(progress.finished()?"stow.need.used":progress.enough()?"stow.need.ready":"stow.need.missing",progress.missing()).getString();
             int detailLeft=left+140,detailRight=left+bodyWidth-110;
             if(font.width(missing)<=detailRight-detailLeft) {
-                graphics.text(font,missing,detailRight-font.width(missing),y+24,progress.enough()?0xFF8DE8B2:0xFFEDBF8D);
+                graphics.text(font,missing,detailRight-font.width(missing),y+24,progress.finished()?MaterialPlanner.FINISHED_COLOR:progress.enough()?0xFF8DE8B2:0xFFEDBF8D);
                 var parts=Component.translatable("stow.need.count-parts",progress.inventory(),progress.chests());
                 int space=detailRight-detailLeft-font.width(missing)-10;
                 if(font.width(parts)<=space)graphics.text(font,parts,detailLeft,y+24,0xFFAAAAAA);
@@ -167,8 +183,9 @@ public final class MaterialsScreen extends MemoryScreenBase {
             graphics.textWithWordWrap(font,Component.translatable("stow.need.empty-help"),left+12,startY+26,bodyWidth-24,0xFFAAAAAA);
         }
         endList(graphics);
-        listScrollbar(graphics,page,pageSize,goals.size(),startY,dialogHeight-38);
-        listRangeLabel(graphics,page,pageSize,goals.size());
+        listScrollbar(graphics,page,pageSize,goals.size(),startY,dialogHeight-52);
+        String range=listRange(page,pageSize,goals.size());
+        graphics.text(font,range,left+(bodyWidth-font.width(range))/2,dialogHeight-46,0xFFAAAAAA);
         graphics.pose().popMatrix();super.extractRenderState(graphics,mx,my,delta);
         if(search.isFocused()&&search.getValue().isEmpty())graphics.text(font,font.plainSubstrByWidth(Component.translatable("stow.need.search").getString(),search.getWidth()-16),search.getX()+8,search.getY()+7,0xFF777777);
     }

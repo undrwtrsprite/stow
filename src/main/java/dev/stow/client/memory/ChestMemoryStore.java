@@ -27,15 +27,15 @@ public final class ChestMemoryStore {
     private final Deque<UndoEntry> history=new ArrayDeque<>();
     private record UndoEntry(String label,Runnable restore) {}
     public record Project(String id,String name) {}
-    private record SavedProject(String id,String name,List<MaterialGoal> goals,boolean customSelection,Set<String> selectedChests,Set<String> hiddenGoals,List<String> hudGoals) {}
+    private record SavedProject(String id,String name,List<MaterialGoal> goals,boolean customSelection,Set<String> selectedChests,Set<String> hiddenGoals,List<String> hudGoals,boolean finished) {}
     private static final class ProjectState {
-        final String id;String name;boolean customSelection;
+        final String id;String name;boolean customSelection,finished;
         final List<MaterialGoal> goals=new ArrayList<>();
         List<String> hudGoals;
         int materialPage;
         final Set<String> selectedChests=new HashSet<>(),hiddenGoals=new HashSet<>();
         ProjectState(String id,String name){this.id=id;this.name=name;}
-        SavedProject snapshot(){return new SavedProject(id,name,List.copyOf(goals),customSelection,Set.copyOf(selectedChests),Set.copyOf(hiddenGoals),hudGoals==null?null:List.copyOf(hudGoals));}
+        SavedProject snapshot(){return new SavedProject(id,name,List.copyOf(goals),customSelection,Set.copyOf(selectedChests),Set.copyOf(hiddenGoals),hudGoals==null?null:List.copyOf(hudGoals),finished);}
     }
     private final Map<String,Long> cachedCounts=new HashMap<>();
     private final Object writeLock=new Object();
@@ -81,7 +81,7 @@ public final class ChestMemoryStore {
                 for(SavedProject saved:data.projects) {
                     if(projects.size()>=16)break;
                     if(saved==null || saved.id==null || saved.id.isBlank() || saved.id.length()>64 || saved.name==null || cleanName(saved.name).isBlank() || projects.containsKey(saved.id))continue;
-                    ProjectState state=new ProjectState(saved.id,cleanName(saved.name));state.customSelection=saved.customSelection;
+                    ProjectState state=new ProjectState(saved.id,cleanName(saved.name));state.customSelection=saved.customSelection;state.finished=saved.finished;
                     if(saved.goals!=null)for(MaterialGoal goal:saved.goals)if(validGoal(goal) && state.goals.size()<MAX_GOALS && state.goals.stream().noneMatch(g -> g.itemId.equals(goal.itemId)))state.goals.add(goal);
                     if(saved.selectedChests!=null)for(String key:saved.selectedChests)if(validSelectionKey(key))state.selectedChests.add(key);
                     if(saved.hiddenGoals!=null)for(String id:saved.hiddenGoals)if(state.goals.stream().anyMatch(g -> g.itemId.equals(id)))state.hiddenGoals.add(id);
@@ -101,6 +101,13 @@ public final class ChestMemoryStore {
         activeProject=state.id;goals=state.goals;selectedChests=state.selectedChests;hiddenGoals=state.hiddenGoals;customSelection=state.customSelection;
     }
     public synchronized String activeProjectId(){return activeProject;}
+    public synchronized boolean isFinished(){return projects.get(activeProject).finished;}
+    public synchronized void setFinished(boolean finished){
+        ProjectState state=projects.get(activeProject);if(state.finished==finished)return;
+        state.finished=finished;String id=state.id;
+        pushUndo(finished?"Finish project":"Reopen project",()->{var s=projects.get(id);if(s!=null)s.finished=!finished;});
+        changed();
+    }
     public synchronized String projectName(){return projects.get(activeProject).name;}
     public synchronized List<Project> projects(){return projects.values().stream().map(p -> new Project(p.id,p.name)).toList();}
     public synchronized void switchProject(String id){ProjectState state=projects.get(id);if(state==null || id.equals(activeProject))return;bind(state);changed();}

@@ -1,6 +1,28 @@
 # Changelog
 
-## Unreleased
+## 1.0.2+mc26.3 — 17 October 2026
+
+### Prevent accidental trades while Shift-dragging
+
+- **Problem:** Stow's multi-slot Shift-drag could cross a villager trade output after starting on an offer input. The output's quick-move handler can repeat that trade, so one drag could consume several offers. Bundle drag gestures also now treat recipe and trade result slots as protected targets.
+- **New behavior:** Stow's matching/all-item Shift-drag and Shift-bundle drag skip vanilla result slots. A drag across a merchant output no longer triggers a trade. Direct Shift-click on an output remains Minecraft's native action and can still batch-trade or batch-craft.
+- **Controls/settings:** no new control or setting. Existing Shift-drag modes continue working on ordinary inventory slots.
+- **Compatibility:** recipe and trade output slots remain owned by their vanilla menus; vanilla output transfers may still fill or merge into pinned inventory slots under that menu's rules.
+
+### Finish a project
+
+- **Problem:** after a build used up its materials, every goal drifted back toward red even though the project was done.
+- **New behavior:** once every material in the active project is at its target, **Materials → Finish project** (footer, beside Undo) becomes available. Before that it is disabled and its tooltip explains why. A finished project keeps counting your inventory and included chests as you build, but counts, progress bars and the project HUD use one neutral blue instead of red/yellow/green, and the per-row status reads "N used" instead of "N missing". The project button shows "(finished)".
+- **Reopen:** the same button becomes **Reopen project** and restores the normal planning colors. Finish and Reopen can both be reversed with Undo. Targets, chest selections, hidden goals and HUD stars are untouched.
+- **Setting:** Settings → Project totals → **Show finished project totals** (on by default). Turn it off to hide the top-right project HUD while the active project is finished.
+- **Storage:** the finished flag is saved per project in the existing chest-memory file (additive field; older files load as not finished).
+
+- **Eligibility fix:** changing projects or reopening a finished project now invalidates cached Finish availability immediately. Clicking Finish also checks the current material counts again, so an outdated enabled button cannot finish a project whose targets are no longer met.
+- **Compact layout fix:** the Finish/Reopen button adapts to narrow menus, and the material range label has its own line above the footer. Pagination reserves that space so the controls and material rows do not overlap.
+
+Validation (9 October 2026): JDK 25 build and metadata/translation checks pass. An isolated Minecraft 26.3 Fabric client passed 37 automated checks covering Finish/Reopen, Undo, project isolation, save/reload, older saved data, finished HUD visibility, stale eligibility and footer geometry at 320, 360, 480 and 720 GUI pixels. Existing importer/project checks (47), export checks (6) and the companion harvest GameTest also pass. A subsequent live singleplayer session verified the rendered menu at GUI scale 4, Finish/Reopen/Undo, neutral colors below target, HUD updates when placing a block and finished-state persistence after leaving/rejoining. Actual multiplayer modpack compatibility and remembered chest updates on that server remain unverified. See `docs/DEVELOPMENT.md` for the validation record.
+
+Validation (17 October 2026): JDK 25 Gradle build produced the client, companion and source JARs. `dev-tools/check-project.py` passed metadata, bilingual translation, license, wrapper and client/companion separation checks. The Minecraft 26.3 Fabric development client loaded Stow 1.0.2 without a Mixin injection error; the test environment did not expose a controllable game window, so the villager gesture was not verified interactively. See `docs/DEVELOPMENT.md` for this limitation and the remaining multiplayer compatibility notes.
 
 ## 1.0.1+mc26.3 — 9 October 2026
 

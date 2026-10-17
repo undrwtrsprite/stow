@@ -15,13 +15,15 @@ import static dev.stow.client.memory.ChestMemoryStore.*;
 
 public final class MaterialPlanner {
     private static Screen pendingScreen;
-    public record Progress(long inventory,long chests,int target,int containers) {
+    /** Neutral tone for finished projects: counts keep falling as the build uses materials, without warning colors. */
+    public static final int FINISHED_COLOR=0xFFA9C6D8;
+    public record Progress(long inventory,long chests,int target,int containers,boolean finished) {
         public long total(){return inventory+chests;}
         public long counted(){return chests+(dev.stow.Stow.config.materialsIncludeInventory?inventory:0);}
         public String label(){return counted()+" / "+target;}
         public long missing(){return Math.max(0,target-counted());}
         public boolean enough(){return counted()>=target;}
-        public int color(){return enough()?0xFF8DE8B2:counted()*5>=target*2L?0xFFFFD486:0xFFFF967D;}
+        public int color(){return finished?FINISHED_COLOR:enough()?0xFF8DE8B2:counted()*5>=target*2L?0xFFFFD486:0xFFFF967D;}
     }
     public static long inventoryCount(Inventory inventory,ItemStack carried,String itemId) {
         long count=0;
@@ -35,7 +37,13 @@ public final class MaterialPlanner {
         Minecraft mc=Minecraft.getInstance();
         ChestMemory.refreshSnapshot();
         long inventory=mc.player==null?0:inventoryCount(mc.player.getInventory(),mc.player.containerMenu.getCarried(),goal.itemId());
-        return new Progress(inventory,store.chestCount(goal.itemId()),goal.target(),store.includedChestCount());
+        return new Progress(inventory,store.chestCount(goal.itemId()),goal.target(),store.includedChestCount(),store.isFinished());
+    }
+    /** A project can be finished once it has goals and every one is met. */
+    public static boolean canFinish(ChestMemoryStore store){
+        if(store==null)return false;
+        var goals=store.goals();
+        return !goals.isEmpty()&&goals.stream().allMatch(goal->progress(store,goal).enough());
     }
     public static void toggleHud(ChestMemoryStore store,String itemId){
         if(store==null)return;

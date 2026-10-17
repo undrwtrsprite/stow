@@ -22,6 +22,8 @@ The preview preserves the original lines. **Edit** opens item search and quantit
 
 Projects allow 1,024 material types and targets up to 1,000,000 items each. A paste supports 65,536 characters and 2,048 lines. No changes are applied if the complete batch exceeds a limit. The world project HUD shows **+N more materials** for additional visible material types beyond its configured 3–5 rows.
 
+**Finish project** (Materials footer) unlocks when every material meets its target. A finished project keeps counting down as you build but shows neutral colors and "N used" instead of red/yellow/green and "missing"; **Reopen project** restores normal colors. Settings → Project totals → Show finished project totals can hide its HUD.
+
 Forgetting chest contents preserves the location's project selection. Reopening that chest restores its material totals from the fresh snapshot; forgotten locations do not count as available storage. Discovered and reopened forgotten chests are assigned to the active project by default. Project totals settings can disable auto-assignment. Refreshing a known excluded chest leaves it excluded.
 
 ### HUDs, tool replacement and feedback (1.0)
@@ -143,4 +145,4 @@ The actual SVG artwork is downloaded from [Pictogrammers Material Design Icons](
 
 ### Vanilla crafting (0.5.8)
 
-Recipe and trade output slots keep their menu's vanilla Shift-click behavior, including batch crafting from the inventory, crafting table, stonecutter, smithing, loom, cartography table, grindstone and furnace menus. stow does not replace output transfers with a pickup queue. **Keep Shift-transfers out of pinned slots** still protects ordinary item transfers; vanilla result transfers may fill or merge into pinned slots according to that menu's rules.
+Recipe and trade output slots keep their menu's vanilla Shift-click behavior, including batch crafting from the inventory, crafting table, stonecutter, smithing, loom, cartography table, grindstone, furnace and villager menus. Stow's multi-slot Shift-drag and bundle-drag gestures skip vanilla result slots, even when the drag starts in a merchant input slot, so crossing a trade output cannot trigger repeated trades. Direct Shift-clicks on result slots keep Minecraft's native behavior, including batch crafting or trading. **Keep Shift-transfers out of pinned slots** still protects ordinary item transfers; vanilla result transfers may fill or merge into pinned slots according to that menu's rules.

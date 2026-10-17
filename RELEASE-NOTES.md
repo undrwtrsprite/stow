@@ -1,3 +1,21 @@
+# stow 1.0.2+mc26.3 — 17 October 2026
+
+## Finish and reopen a completed project
+
+- **Materials → Finish project** unlocks when every material goal in the active project meets its target. Finishing keeps inventory and selected-chest totals live as you build, while counts and the project HUD change to a neutral color and each row says **N used** instead of showing planning warnings or **N missing**.
+- **Reopen project** restores the normal planning colors. Finish and Reopen both support Undo. The finished state is stored per project; targets, chest selections, hidden goals and HUD priorities are preserved.
+- **Settings → Project totals → Show finished project totals** is on by default. Turn it off to hide the active finished project's top-right HUD. Existing saved project files load as unfinished, with no reset to goals or chest selections.
+
+## Prevent accidental repeat trades while Shift-dragging
+
+- Stow's matching/all-item Shift-drag and bundle-drag gestures skip vanilla recipe and trade result slots. Dragging across a villager trade output no longer invokes its repeat-trade handler.
+- Direct Shift-click on a result slot retains Minecraft's native behavior, including batch trading and crafting. Vanilla result transfers keep their menu rules, including how they can fill or merge into pinned slots.
+- The drag safeguard adds no setting, control or item-count limit. The optional companion is unchanged and is not required for client inventory features.
+
+For Minecraft **26.3**, Fabric Loader **0.19.5+** and Java **25**. The client requires Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+**; Mod Menu **21.0.0** is optional. The companion requires Fabric API. Remove Mouse Wheelie before installing stow. Replace prior client and companion JARs rather than keeping multiple versions. The companion is only needed on the server for connected-log harvesting; single-player requires both JARs locally for that feature.
+
+Validation: JDK 25 release build and project metadata/translation checks passed. The development client loaded Stow 1.0.2, but its window was not available to the game-control backend, so the villager gesture was not verified interactively. Actual multiplayer modpack, remembered-chest reconnect and Timber compatibility remain unverified.
+
 # stow 0.5.13 — All log types and empty-stack refill
 
 - **Alt + S** now strips every vanilla log type, including poplar, plus crimson and warped Nether stems. The server companion strips and then harvests connected logs of the same type as the starting log. Each log keeps its orientation while stripping.

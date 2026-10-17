@@ -81,6 +81,7 @@ public final class StowSettingsScreen {
         dock.addEntry(new ScreenLinkEntry(Component.translatable("stow.dock.layout"),dev.stow.client.ui.DockLayoutScreen::new));
         var projectHud=builder.getOrCreateCategory(text("project"));
         projectHud.addEntry(new ResponsiveConfigEntries.Toggle(text("dock.materials"),config.dockMaterials,entry.getResetButtonKey(),true,v->config.dockMaterials=v));
+        projectHud.addEntry(new ResponsiveConfigEntries.Toggle(text("dock.finished"),config.dockFinished,entry.getResetButtonKey(),true,v->config.dockFinished=v));
         projectHud.addEntry(new ResponsiveConfigEntries.Toggle(text("chests.auto-assign"),config.autoAssignChests,entry.getResetButtonKey(),true,v->config.autoAssignChests=v));
         projectHud.addEntry(new ResponsiveConfigEntries.Slider(text("dock.rows"),config.dockRows,3,5,entry.getResetButtonKey(),3,v->config.dockRows=v));
         projectHud.addEntry(new ScreenLinkEntry(Component.translatable("stow.project.layout"),parentScreen->new dev.stow.client.ui.DockLayoutScreen(parentScreen,true)));
