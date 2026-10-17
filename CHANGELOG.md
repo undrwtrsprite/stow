@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.0.3+mc26.3 — 18 October 2026
+
+### Refill firework rockets
+
+- **Problem:** hand refill only watched main-hand block placement, so launching firework rockets never scheduled a refill. Vanilla consumes rockets on the server, after the local use call has returned.
+- **New behavior:** **Refill blocks and rockets** now tops up the hand that used a block or rocket, including offhand rockets and Elytra boosts. Rockets wait for the server-confirmed count decrease, for up to five seconds, before moving any reserve. The existing 0–16 threshold applies; 0 refills after the final item is used. Creative mode and unsuccessful uses do not refill.
+- **Matching/protection:** reserve rockets must have identical components, including flight duration and explosion data. Backpack reserves are preferred and pinned donor slots are skipped. Changing the item type/components, changing the selected slot for a pending main-hand refill, opening a menu, carrying a cursor item, or starting a sorting/deposit operation cancels the pending refill. No companion is required and existing refill preferences are retained.
+
+### Faster chest sorting with the companion
+
+- **Problem:** large chest sorts used many queued client clicks and took several ticks to finish.
+- **New behavior:** with the updated companion on the server, sorting a vanilla chest, trapped chest, barrel, ender chest or shulker box sends one bounded request and applies the validated result in one server tick. Stack combining and the selected client sort order, including localized name order, are preserved. Pinned slots are excluded and the cursor and player inventory are untouched. Other viewers receive the usual container updates.
+- **Controls/settings:** use the existing middle-click, Shift + middle-click and Ctrl + middle-click sort controls. Acceleration is automatic. Server owners can set `fastChestSorting=false` in `config/stow-companion.properties` and restart to retain the click queue.
+- **Safety and limits:** the server checks the open menu, distance/validity, cursor, current contents, slot permissions, stack limits and exact item/component totals before changing any slot. Changed snapshots are rejected without moving items. Requests cover at most 54 storage slots and 24 KiB. Player-inventory sorts, custom/restricted menus, older or absent companions and oversized item data retain the existing client queue. A pending request times out after five seconds without replaying it.
+- **Installation:** update both the client and companion for acceleration. Install both locally for single-player. Saved project and chest-memory data needs no migration.
+
+### Show armor durability as a percentage
+
+- **Problem:** enabling **Show percentage only** added the percentage beside the raw remaining durability, so the equipment HUD still displayed the durability number.
+- **New behavior:** when enabled, the equipment HUD and its layout preview show only the percentage (for example, `4%`). When disabled, they show only remaining durability (for example, `10`). Low-durability colors and warning thresholds are unchanged. The detailed Equipment Watch screen continues to show percentage and durability counts together.
+- **Compatibility:** no configuration or saved-data migration is needed.
+
+Validation: JDK 25 build and project checks passed. The final Minecraft 26.3 client passed 112 release checks and 37 Finish/Reopen checks; acceleration-disabled sorting passed 61 checks across all five sort orders. Block-refill regressions passed 8 checks and the dedicated companion server passed both GameTests. Runtime coverage includes villager gestures, percentage-only rendering, actual Elytra rocket consumption/refill in both hands, fast-sort networking and rejection of invalid item changes. The actual multiplayer modpack and its Timber/protection mods remain unverified; see `docs/DEVELOPMENT.md` for evidence and compatibility limits.
+
 ## 1.0.2+mc26.3 — 17 October 2026
 
 ### Prevent accidental trades while Shift-dragging
@@ -19,12 +43,6 @@
 
 - **Eligibility fix:** changing projects or reopening a finished project now invalidates cached Finish availability immediately. Clicking Finish also checks the current material counts again, so an outdated enabled button cannot finish a project whose targets are no longer met.
 - **Compact layout fix:** the Finish/Reopen button adapts to narrow menus, and the material range label has its own line above the footer. Pagination reserves that space so the controls and material rows do not overlap.
-
-### Show armor durability as a percentage
-
-- **Problem:** enabling **Show durability percentage** added the percentage beside the raw remaining durability, so the equipment HUD still displayed the durability number.
-- **New behavior:** when enabled, the equipment HUD and its layout preview show only the percentage (for example, `4%`). When disabled, they show only remaining durability (for example, `10`). Low-durability colors and warning thresholds are unchanged. The detailed Equipment Watch screen continues to show percentage and durability counts together.
-- **Compatibility:** no configuration or saved-data migration is needed.
 
 Validation (9 October 2026): JDK 25 build and metadata/translation checks pass. An isolated Minecraft 26.3 Fabric client passed 37 automated checks covering Finish/Reopen, Undo, project isolation, save/reload, older saved data, finished HUD visibility, stale eligibility and footer geometry at 320, 360, 480 and 720 GUI pixels. Existing importer/project checks (47), export checks (6) and the companion harvest GameTest also pass. A subsequent live singleplayer session verified the rendered menu at GUI scale 4, Finish/Reopen/Undo, neutral colors below target, HUD updates when placing a block and finished-state persistence after leaving/rejoining. Actual multiplayer modpack compatibility and remembered chest updates on that server remain unverified. See `docs/DEVELOPMENT.md` for the validation record.
 
@@ -92,7 +110,7 @@ Client and companion are packaged as **1.0.0+mc26.3**, for Minecraft **26.3**, F
 
 - Added a short **Glow off** notification when disabling chest glow from the inventory, Quick actions or settings, stopping it in Storage, or toggling off an already highlighted chest/material. It uses the same top-right position and 1.1-second duration as other glow feedback and respects the Action notifications setting. Automatic cleanup on disconnect/world changes or forgetting a chest remains quiet so it does not replace those actions' feedback.
 - Project material rows align right by default like the equipment HUD: icons share the right edge and each count sits to their left. Removed the artificial minimum content width that left short rows away from the edge.
-- Equipment HUD numbers default to remaining durability only, for example `1361`, and count down as equipment wears. **Show durability percentage** replaces that number with the percentage only, for example `4%`. The detailed Equipment Watch screen continues to show both. Low-durability colors and thresholds remain.
+- Equipment HUD numbers default to remaining durability only, for example `1361`, and count down as equipment wears. **Show durability percentage** optionally adds the percentage beside the remaining durability. The detailed Equipment Watch screen shows both. Low-durability colors and thresholds remain.
 - Equipment, project totals and building stock each have **left / center / right** alignment in their live layout editor. Dragging, corner selection and snap-to-edge control position; Reset restores that element's defaults. Alignment applies to the icon/count group and headings.
 - Added **Settings → Appearance → Block count layout** with independent 60–200% size and free positioning. **Beside hotbar** retains automatic hotbar/offhand placement; dragging or selecting a corner switches to **Free position**. Shared HUD size still scales all three elements, with individual sizes applied relative to it.
 - Action notifications render at the top-right screen edge after open menus, above their blur, and during gameplay, with a 140 ms entrance slide. Glow feedback lasts 1.1 seconds, sorting completion 1.2 seconds and routine feedback 1.8 seconds; recognized blocked, failed or interrupted actions stay for 2.8 seconds. New actions replace the current notice immediately instead of building a queue. Repeated identical notices do not extend the timer. **Appearance → Action notifications** controls these independently of HUD visibility.

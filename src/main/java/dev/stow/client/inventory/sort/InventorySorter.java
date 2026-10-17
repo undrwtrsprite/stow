@@ -46,6 +46,8 @@ public class InventorySorter {
 	private final AbstractContainerScreen<?> containerScreen;
 	private Slot[] inventorySlots;
 	private final ItemStack[] stacks;
+	private java.util.List<ItemStack> sortedStacks=java.util.List.of();
+	public java.util.List<ItemStack> sortedStacks(){return sortedStacks.stream().map(ItemStack::copy).toList();}
 
 	/**
 	 * @deprecated Use {@link #InventorySorter(ContainerScreenHelper, AbstractContainerScreen, Slot)} instead
@@ -149,6 +151,7 @@ public class InventorySorter {
 		}
 
 		sortIds = sortMode.sort(sortIds, stacks, new SortContext(containerScreen, Arrays.asList(inventorySlots)));
+		sortedStacks=Arrays.stream(sortIds).mapToObj(i->stacks[i].copy()).toList();
 
         this.reorderOnClient(sortIds);
     }

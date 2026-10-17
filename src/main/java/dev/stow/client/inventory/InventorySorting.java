@@ -2,6 +2,11 @@ package dev.stow.client.inventory;
 
 import dev.stow.Stow;
 import dev.stow.StowConfig.SortOrder;
+import dev.stow.companion.protocol.ChestSortProtocol;
+import dev.stow.companion.protocol.ChestSortProtocol.*;
+import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import dev.stow.client.inventory.sort.InventorySorter;
 import dev.stow.client.network.InteractionManager;
 import dev.stow.client.network.InteractionManager.ClickEvent;
@@ -14,11 +19,20 @@ import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.*;
 
-/** Runs Mouse Wheelie's original combining and permutation clicks in safe cursor cycles. */
+/** Uses companion-validated storage sorting when available, otherwise guarded Mouse Wheelie click cycles. */
 public final class InventorySorting {
     private static Session active;
     private static AbstractContainerScreen<?> owner;
+    private static int nextRequest;
     private InventorySorting(){}
+    public static void register(){
+        ChestSortProtocol.register();
+        ClientPlayNetworking.registerGlobalReceiver(Result.TYPE,(result,context)->context.client().execute(()->{
+            if(active==null||active.requestId!=result.id())return;
+            if(result.status()==ChestSortProtocol.FALLBACK){active.requestId=-1;return;}
+            dev.stow.client.ui.UiNotifications.show(result.status()==ChestSortProtocol.DONE?"stow.feedback.sort-done":"stow.feedback.sort-stopped");cancel();
+        }));
+    }
     public static boolean busy(AbstractContainerMenu menu){return active!=null&&active.menu==menu;}
     public static void cancel(){active=null;owner=null;}
     public static SortOrder selectedOrder(boolean shift,boolean control){return shift?Stow.config.shiftSortOrder:control?Stow.config.controlSortOrder:Stow.config.sortOrder;}
@@ -32,11 +46,13 @@ public final class InventorySorting {
         if(order==SortOrder.CREATIVE)CreativeSearchOrder.refreshItemSearchPositionLookup();
         cancel();owner=screen;
         active=new Session(screen.getMenu(),slots,order,(id,button)->mc.gameMode.handleContainerInput(screen.getMenu().containerId,id,button,ContainerInput.PICKUP,mc.player));
+        active.tryCompanion(mc);
         return true;
     }
     public static void tick(Minecraft mc){
         if(active==null)return;
         if(mc.player==null||mc.player.containerMenu!=active.menu||mc.gui.screen()!=owner){cancel();return;}
+        if(active.requestId>=0){if(++active.age>100){dev.stow.client.ui.UiNotifications.show("stow.feedback.sort-stopped");cancel();}return;}
         if(!active.step()){
             boolean completed=!active.failed&&active.position>=active.clicks.size()&&active.menu.getCarried().isEmpty();
             dev.stow.client.ui.UiNotifications.show(completed?"stow.feedback.sort-done":"stow.feedback.sort-stopped");cancel();
@@ -58,13 +74,28 @@ public final class InventorySorting {
         private final List<Slot> slots;
         private final BiConsumer<Integer,Integer> click;
         private final List<ClickEvent> clicks;
+        private List<ItemStack> sorted=List.of();
+        private int requestId=-1,age;
         private List<ItemStack> expected;
         private int position;
         private boolean failed;
         public Session(AbstractContainerMenu menu,List<Slot> slots,SortOrder order,BiConsumer<Integer,Integer> click){
             this.menu=menu;this.slots=List.copyOf(slots);this.click=click;expected=snapshot();
             var helper=ContainerScreenHelper.of(null,(slot,button,input)->new ClickEvent(menu.containerId,slot.index,button,input));
-            clicks=menu.getCarried().isEmpty()?InteractionManager.plan(()->new InventorySorter(helper,null,this.slots).sort(order.mode())):List.of();
+            var sorter=new InventorySorter(helper,null,this.slots);
+            clicks=menu.getCarried().isEmpty()?InteractionManager.plan(()->sorter.sort(order.mode())):List.of();sorted=sorter.sortedStacks();
+        }
+        private void tryCompanion(Minecraft mc){
+            if(clicks.isEmpty()||sorted.size()!=slots.size()||slots.size()>ChestSortProtocol.MAX_SLOTS
+                ||menu.getClass()!=ChestMenu.class&&menu.getClass()!=ShulkerBoxMenu.class
+                ||slots.stream().anyMatch(s->s.container==mc.player.getInventory())||!ClientPlayNetworking.canSend(Request.TYPE))return;
+            var changes=new ArrayList<Change>();for(int i=0;i<slots.size();i++)changes.add(new Change(slots.get(i).index,expected.get(i),sorted.get(i)));
+            var request=new Request(++nextRequest,menu.containerId,menu.getStateId(),changes);
+            var buffer=new RegistryFriendlyByteBuf(Unpooled.buffer(),mc.level.registryAccess());
+            try{
+                Request.CODEC.encode(buffer,request);if(buffer.readableBytes()>ChestSortProtocol.MAX_BYTES)return;
+            }catch(RuntimeException tooLarge){return;}finally{buffer.release();}
+            requestId=request.id();ClientPlayNetworking.send(request);
         }
         private List<ItemStack> snapshot(){return slots.stream().map(s->s.getItem().copy()).toList();}
         public boolean step(){

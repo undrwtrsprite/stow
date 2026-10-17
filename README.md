@@ -2,17 +2,17 @@
 
 # stow
 
-A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for log stripping and harvesting.
+A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for faster chest sorting and log harvesting.
 
 [Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](CHANGELOG.md) · [Older release notes](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
 
-## Stow 1.0.2: your build starts with a list
+## Stow 1.0.3: your build starts with a list
 
 Copy a materials list from a YouTube description, paste it into **Materials → Import**, review the items, and start gathering. Export your saved goals as plain text to share a plan or reuse it in another project. No schematic mod is required.
 
-This release also brings **more materials on screen**, Minecraft item icons, centered menu tabs, the familiar pixel priority star, helpful empty states, smooth import-list scrolling and finished-project tracking. Set each HUD's alignment, position and size; see **+N more materials**, count equipment durability down, and replace worn main-hand tools before they break or just after. Brief action feedback stays readable above open menus.
+This release adds **faster chest sorting with the companion**, rocket refill in either hand, percentage-only equipment counters and finished-project tracking. Import and export material lists, gather from remembered storage, and set each HUD's alignment, position and size. Brief action feedback stays readable above open menus.
 
-[Download on Modrinth](https://modrinth.com/mod/stow) · [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/stow) · [What's new in 1.0](CHANGELOG.md)
+[Download on Modrinth](https://modrinth.com/mod/stow) · [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/stow) · [What's new in 1.0.3](CHANGELOG.md)
 
 ## Why it exists
 
@@ -24,10 +24,10 @@ The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/m
 
 ## What it does
 
-- **Sort and move items:** Mouse Wheelie sorting, five sort orders, matching/all-item drag modes, inventory search and pinned slots.
+- **Sort and move items:** Mouse Wheelie sorting, five sort orders, matching/all-item drag modes, inventory search and pinned slots. The updated companion sorts supported vanilla storage in one validated server operation.
 - **Remember storage:** search previously opened chests, barrels and shulker boxes; rename them and highlight sources through walls.
 - **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters. Finish a project to keep tracking materials in a neutral display as you build.
-- **Deposit and refill:** immediate smart deposit with keep amounts, building stack refill and a remaining-block count beside the hotbar. Set “Refill at this many items” to **0** to refill after the held stack runs out.
+- **Deposit and refill:** immediate smart deposit with keep amounts, block and rocket refill in either hand, and a remaining-block count beside the hotbar. Set “Refill at this many items” to **0** to refill after the held stack runs out. Rocket flight/explosion data must match.
 - **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
 - **Strip and harvest logs:** hold an axe, aim at a placed log and press **Alt + S**. All vanilla log types and Nether stems are supported. With the optional stow companion on the server, it strips and harvests the connected group of the same type through tall columns, long rows and dense piles. Without the companion it only strips nearby visible logs. Press again to cancel; Sneak is unchanged.
 - **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
@@ -46,9 +46,11 @@ The check requests public release metadata from GitHub, Modrinth and [CFWidget](
 
 Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
 
-Put `stow-1.0.2+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+Put `stow-1.0.3+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
 
-To enable Alt + S stripping **and mining**, install `stow-companion-1.0.2+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config or client stow installation. For single-player, install both JARs on the client. The starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+To enable faster chest sorting and Alt + S stripping **and mining**, install `stow-companion-1.0.3+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config. For single-player, install both JARs locally. Fast sorting requires the updated client and companion and supports vanilla chests, barrels, ender chests and shulker boxes; other menus and older companions retain the client queue. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart.
+
+For harvesting, the starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
 
 ### Previous GitHub downloads — 0.5.13+mc26.3
 

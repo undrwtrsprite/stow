@@ -51,12 +51,23 @@ public abstract class MixinMultiPlayerGameMode {
     @org.spongepowered.asm.mixin.Unique private int stow_selected;
     @Inject(method="useItemOn",at=@At("HEAD"))
     private void stow_beforePlacement(LocalPlayer player,InteractionHand hand,BlockHitResult hit,CallbackInfoReturnable<InteractionResult> ci){
-        stow_selected=player.getInventory().getSelectedSlot();stow_before=hand==InteractionHand.MAIN_HAND?player.getInventory().getSelectedItem().copy():net.minecraft.world.item.ItemStack.EMPTY;
+        stow_selected=player.getInventory().getSelectedSlot();stow_before=player.getItemInHand(hand).copy();
     }
     @Inject(method="useItemOn",at=@At("RETURN"))
     private void stow_afterPlacement(LocalPlayer player,InteractionHand hand,BlockHitResult hit,CallbackInfoReturnable<InteractionResult> ci){
-        if(ci.getReturnValue().consumesAction())dev.stow.client.inventory.HandRefill.placed(player,stow_selected,stow_before);
+        if(ci.getReturnValue().consumesAction())dev.stow.client.inventory.HandRefill.used(player,hand,stow_selected,stow_before);
         stow_before=net.minecraft.world.item.ItemStack.EMPTY;
+    }
+    @org.spongepowered.asm.mixin.Unique private net.minecraft.world.item.ItemStack stow_beforeAirUse=net.minecraft.world.item.ItemStack.EMPTY;
+    @org.spongepowered.asm.mixin.Unique private int stow_airUseSelected;
+    @Inject(method="useItem",at=@At("HEAD"))
+    private void stow_beforeAirUse(net.minecraft.world.entity.player.Player player,InteractionHand hand,CallbackInfoReturnable<InteractionResult> ci){
+        stow_airUseSelected=player.getInventory().getSelectedSlot();stow_beforeAirUse=player.getItemInHand(hand).copy();
+    }
+    @Inject(method="useItem",at=@At("RETURN"))
+    private void stow_afterAirUse(net.minecraft.world.entity.player.Player player,InteractionHand hand,CallbackInfoReturnable<InteractionResult> ci){
+        if(ci.getReturnValue().consumesAction())dev.stow.client.inventory.HandRefill.used(player,hand,stow_airUseSelected,stow_beforeAirUse);
+        stow_beforeAirUse=net.minecraft.world.item.ItemStack.EMPTY;
     }
     @Inject(method={"interact","useItem"},at=@At("HEAD"))
     private void stow_clear(CallbackInfoReturnable<InteractionResult> ci){ChestMemory.clearPending();}

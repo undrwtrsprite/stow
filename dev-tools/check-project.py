@@ -55,9 +55,11 @@ for name,is_server in [('stow',False),('stow-companion',True)]:
         require(packaged==(companion if is_server else meta),'artifact metadata mismatch: '+name)
         files=jar.namelist()
         require('dev/stow/stripping/protocol/OakHarvestProtocol.class' in files,'missing shared protocol: '+name)
+        require('dev/stow/companion/protocol/ChestSortProtocol.class' in files,'missing chest-sort protocol: '+name)
         if is_server:
             require('dev/stow/stripping/server/OakHarvestServer.class' in files,'missing companion server')
-            require(all(not f.endswith('.class') or f.startswith('dev/stow/stripping/') for f in files),'client code bundled in companion')
+            require('dev/stow/companion/server/ChestSortServer.class' in files,'missing companion chest sorting')
+            require(all(not f.endswith('.class') or f.startswith(('dev/stow/stripping/','dev/stow/companion/')) for f in files),'client code bundled in companion')
         else:
-            require(all(not f.startswith('dev/stow/stripping/server/') for f in files),'server implementation bundled in client')
+            require(all(not f.startswith(('dev/stow/stripping/server/','dev/stow/companion/server/')) for f in files),'server implementation bundled in client')
 print('PASS: companion metadata and available client/server artifact separation')

@@ -1,8 +1,18 @@
-# stow 1.0.2+mc26.3 — 17 October 2026
+# stow 1.0.3+mc26.3 — 18 October 2026
+
+## Faster chest sorting with the companion
+
+Large chest sorts previously moved items through a queue of client clicks. With the updated client and companion, vanilla chests, trapped/double chests, barrels, ender chests and shulker boxes sort in one validated server operation. Existing middle-click, Shift and Ctrl sort orders, localized name order and stack combining are preserved. The server verifies the open menu, unchanged contents, slot permissions, stack limits and exact item/component totals before moving anything. Player inventory and cursor stay untouched.
+
+Acceleration is automatic. Update both JARs, or install both locally for single-player. Player-inventory sorts, custom/restricted menus, older or absent companions and requests above 54 storage slots or 24 KiB use the existing queue. Changed snapshots stop safely; missing acknowledgements time out after five seconds without replaying the request. Server owners can set `fastChestSorting=false` in `config/stow-companion.properties` and restart if a storage/protection mod requires individual click handling.
+
+## Refill firework rockets
+
+**Refill blocks and rockets** now supports both hands, including rockets used for Elytra boosts. It waits for the server-confirmed rocket count decrease before moving reserves; unsuccessful uses never refill. The existing threshold is 0–16 (default 8), with 0 refilling after the final block or rocket. Rocket components, including flight duration and explosion data, must match. Backpack reserves are preferred and pinned donors are skipped. Opening a menu, changing the item type/components or the selected slot for a pending main-hand refill, a cursor item or an active sort/deposit cancels pending refill. This fix does not require the companion and keeps existing settings.
 
 ## Show armor durability as a percentage
 
-Enabling **Show durability percentage** now replaces the raw durability number in the equipment HUD with the percentage alone (for example, `4%`). Disabling it continues to show remaining durability alone (for example, `10`). The HUD layout preview follows the same setting. Low-durability colors and warning thresholds are unchanged, and the detailed Equipment Watch screen continues to show the percentage together with current and maximum durability. No saved-data migration is required.
+Enabling **Show percentage only** now replaces the raw durability number in the equipment HUD with the percentage alone (for example, `4%`). Disabling it continues to show remaining durability alone (for example, `10`). The HUD layout preview follows the same setting. Low-durability colors and warning thresholds are unchanged, and the detailed Equipment Watch screen continues to show the percentage together with current and maximum durability. No saved-data migration is required.
 
 ## Finish and reopen a completed project
 
@@ -14,11 +24,11 @@ Enabling **Show durability percentage** now replaces the raw durability number i
 
 - Stow's matching/all-item Shift-drag and bundle-drag gestures skip vanilla recipe and trade result slots. Dragging across a villager trade output no longer invokes its repeat-trade handler.
 - Direct Shift-click on a result slot retains Minecraft's native behavior, including batch trading and crafting. Vanilla result transfers keep their menu rules, including how they can fill or merge into pinned slots.
-- The drag safeguard adds no setting, control or item-count limit. The optional companion is unchanged and is not required for client inventory features.
+- The drag safeguard adds no setting, control or item-count limit and does not require the companion.
 
-For Minecraft **26.3**, Fabric Loader **0.19.5+** and Java **25**. The client requires Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+**; Mod Menu **21.0.0** is optional. The companion requires Fabric API. Remove Mouse Wheelie before installing stow. Replace prior client and companion JARs rather than keeping multiple versions. The companion is only needed on the server for connected-log harvesting; single-player requires both JARs locally for that feature.
+For Minecraft **26.3**, Fabric Loader **0.19.5+** and Java **25**. The client requires Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+**; Mod Menu **21.0.0** is optional. The companion requires Fabric API. Remove Mouse Wheelie before installing stow. Replace prior client and companion JARs rather than keeping multiple versions. Saved project and chest-memory data remains compatible. The companion adds fast chest sorting and connected-log harvesting; install both JARs locally for those features in single-player.
 
-Validation: the JDK 25 release build and project metadata/translation checks passed after the percentage-only HUD change. The development client loaded Stow 1.0.2, but its window was not available to the game-control backend, so the villager gesture and percentage display were not verified interactively. Actual multiplayer modpack, remembered-chest reconnect and Timber compatibility remain unverified.
+Validation: the JDK 25 build and project checks passed. The final Minecraft 26.3 client passed 112 release checks plus 37 Finish/Reopen checks; the acceleration-disabled queue passed 61 checks across all five sort orders. Eight block-refill regressions and both dedicated-server GameTests also passed. These include actual Elytra rocket use/refill in both hands, rendered HUD checks, villager gestures and client/server sorting. The actual multiplayer modpack and its Timber/protection mods remain unverified. Detailed evidence and compatibility limits are recorded in [the development notes](https://github.com/undrwtrsprite/stow/blob/v1.0.3%2Bmc26.3/docs/DEVELOPMENT.md).
 
 # stow 0.5.13 — All log types and empty-stack refill
 

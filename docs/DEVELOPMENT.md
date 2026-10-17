@@ -13,6 +13,7 @@ When changing the release version, update `build.gradle`, both Fabric metadata f
 | Path | Purpose |
 | --- | --- |
 | `src/main/java/dev/stow/` | Mod configuration, client code, mixins and companion server code |
+| `src/main/java/dev/stow/companion/` | Shared chest-sort protocol and companion sort validator; server implementation is excluded from the client JAR |
 | `src/main/resources/` | Client metadata, English/German text and runtime assets |
 | `server-resources/` | Companion metadata |
 | `design/icons/mdi/` | Original third-party SVG icons and license |
@@ -48,6 +49,20 @@ Remaining compatibility validation before declaring the release ready: project s
 - Minecraft 26.3 with Fabric Loader 0.19.5 loaded Stow 1.0.2 in the isolated development run. The available game-control backend did not enumerate a controllable window, so the villager result-slot drag and direct Shift-click behavior were not verified interactively. Treat those as code-reviewed and compiled, not as live-game validated.
 - After the percentage-only equipment HUD change, the JDK 25 Gradle build and project checker passed again. Code review confirms the HUD and placement preview show only the percentage when enabled; the detailed Equipment Watch screen still shows percentage and current/maximum durability. No controllable game window was available for a visual check of this setting.
 - The companion source is unchanged. The actual multiplayer modpack/server, remembered-chest reconnect behavior and Timber installation remain unverified; this build makes no compatibility claim for that configuration.
+
+### 1.0.3 validation — 18 October 2026
+
+- Reviewed the villager result-slot guards, percentage-only HUD paths, companion request bounds/conservation checks, cursor handling and main/offhand refill state. Repaired a truncated GitHub source upload from release preparation and verified all 190 tracked files against the local source, allowing only line-ending differences. Subsequent changes use normal Git commits and pushes.
+- The JDK 25 Gradle build and project checker pass for the 1.0.3 client, companion and sources, including 396 English/German translation keys and the new shared chest-sort protocol/server-code separation.
+- The final isolated Minecraft 26.3 client with Fabric Loader 0.19.5, Fabric API 0.161.0+26.3 and Cloth Config 26.3.159 passed **112 release checks** plus the existing **37 Finish/Reopen checks**. These ran inside the loaded, transformed game classes in a copied test world, using programmatic input events and normal networking; user saves were not used.
+- Runtime coverage includes matching/all/Both Shift-drag modes, Ctrl+Shift, ordinary merchant inputs, protected outputs, direct vanilla result Shift-click and carried-bundle drag. Live HUD rows and empty placement previews show percentage alone or remaining durability alone, with unchanged colors and filtering. Actual rendered screenshots were inspected.
+- Companion checks cover single/double chests, barrels, ender chests and shulker boxes; combining; exact named-item components; rejected stale snapshots, forged/new/lost items, overstacking, duplicate/negative/player-inventory slots, menu/state mismatch and occupied cursor; 54-slot and 24 KiB decoding bounds; and oversized-data queue fallback. All five sort orders passed normal client-to-server requests against a 54-slot chest, with server/client contents agreeing and player inventory/cursor preserved.
+- Rocket checks used actual Elytra boosts in both hands at thresholds 0 and 8. Server inventory updates confirmed consumption and refill, including empty-hand replacement; differing flight durations and pinned donors stayed untouched. A missing consumption acknowledgement expired without moving reserves. The existing block-refill regression also passed **8 checks**, including threshold persistence/bounds, final-block refill, unchanged stacks, exact totals and an empty cursor.
+- A dedicated Fabric server with only the new companion and normal server dependencies passed both existing GameTests (vanilla smoke test and the extensive harvest fixture). This verifies dedicated-server loading and retention of the harvest behavior; it does not establish compatibility with the user's actual Timber installation.
+- A separate client/server run with acceleration disabled passed **61 checks**, including all five sort orders through the normal click queue, exact client/server contents and preserved player inventory/cursor. Evidence is in ignored `build/release-review-probe/`, `build/release-fallback-probe/`, `build/release-dedicated-probe/results.xml` and `build/refill-zero-1.0.3.log`; local probe sources are retained under `build/` and are excluded from release artifacts.
+- Two earlier test-client startups failed inside `jvm.dll` with native Windows exceptions before the checks ran (one `c0000005`, one `c0000409`). No Java or Mixin failure was reported. The final full run completed with four resource-loading workers; the native-startup cause has not been established.
+
+Actual multiplayer modpack/server behavior, remembered-chest reconnect on that server and its Timber/protection mods remain unverified. Custom/restricted inventories deliberately use the client queue; servers with mods that need to intercept every vanilla click can disable fast sorting. These are explicit compatibility limits, not claims inferred from compilation or local fixtures.
 
 ## GitHub Actions
 

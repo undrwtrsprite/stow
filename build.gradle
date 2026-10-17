@@ -1,5 +1,5 @@
 plugins { id 'net.fabricmc.fabric-loom' version '1.17.21' }
-version = '1.0.2+mc26.3'
+version = '1.0.3+mc26.3'
 group = 'dev.stow'
 base { archivesName = 'stow' }
 repositories {
@@ -15,10 +15,11 @@ dependencies {
 }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
 tasks.withType(JavaCompile).configureEach { options.release = 25; options.encoding = 'UTF-8' }
-jar { exclude('dev/stow/stripping/server/**'); from('LICENSE'); from('NOTICE') }
+jar { exclude('dev/stow/stripping/server/**','dev/stow/companion/server/**'); from('LICENSE'); from('NOTICE') }
 tasks.register('companionJar', Jar) {
     archiveBaseName = 'stow-companion'
     from(sourceSets.main.output.classesDirs) { include('dev/stow/stripping/**') }
+    from(sourceSets.main.output.classesDirs) { include('dev/stow/companion/**') }
     from('server-resources')
     from('LICENSE'); from('NOTICE')
     dependsOn(classes)
