@@ -46,6 +46,7 @@ Remaining compatibility validation before declaring the release ready: project s
 
 - JDK 25 Gradle `build` passed for client, companion and source artifacts. The project checker passed 396 English/German translation-key pairs, metadata, licenses, wrapper layout and client/server artifact separation.
 - Minecraft 26.3 with Fabric Loader 0.19.5 loaded Stow 1.0.2 in the isolated development run. The available game-control backend did not enumerate a controllable window, so the villager result-slot drag and direct Shift-click behavior were not verified interactively. Treat those as code-reviewed and compiled, not as live-game validated.
+- After the percentage-only equipment HUD change, the JDK 25 Gradle build and project checker passed again. Code review confirms the HUD and placement preview show only the percentage when enabled; the detailed Equipment Watch screen still shows percentage and current/maximum durability. No controllable game window was available for a visual check of this setting.
 - The companion source is unchanged. The actual multiplayer modpack/server, remembered-chest reconnect behavior and Timber installation remain unverified; this build makes no compatibility claim for that configuration.
 
 ## GitHub Actions

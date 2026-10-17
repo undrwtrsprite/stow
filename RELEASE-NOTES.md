@@ -1,5 +1,9 @@
 # stow 1.0.2+mc26.3 — 17 October 2026
 
+## Show armor durability as a percentage
+
+Enabling **Show durability percentage** now replaces the raw durability number in the equipment HUD with the percentage alone (for example, `4%`). Disabling it continues to show remaining durability alone (for example, `10`). The HUD layout preview follows the same setting. Low-durability colors and warning thresholds are unchanged, and the detailed Equipment Watch screen continues to show the percentage together with current and maximum durability. No saved-data migration is required.
+
 ## Finish and reopen a completed project
 
 - **Materials → Finish project** unlocks when every material goal in the active project meets its target. Finishing keeps inventory and selected-chest totals live as you build, while counts and the project HUD change to a neutral color and each row says **N used** instead of showing planning warnings or **N missing**.
@@ -14,7 +18,7 @@
 
 For Minecraft **26.3**, Fabric Loader **0.19.5+** and Java **25**. The client requires Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+**; Mod Menu **21.0.0** is optional. The companion requires Fabric API. Remove Mouse Wheelie before installing stow. Replace prior client and companion JARs rather than keeping multiple versions. The companion is only needed on the server for connected-log harvesting; single-player requires both JARs locally for that feature.
 
-Validation: JDK 25 release build and project metadata/translation checks passed. The development client loaded Stow 1.0.2, but its window was not available to the game-control backend, so the villager gesture was not verified interactively. Actual multiplayer modpack, remembered-chest reconnect and Timber compatibility remain unverified.
+Validation: the JDK 25 release build and project metadata/translation checks passed after the percentage-only HUD change. The development client loaded Stow 1.0.2, but its window was not available to the game-control backend, so the villager gesture and percentage display were not verified interactively. Actual multiplayer modpack, remembered-chest reconnect and Timber compatibility remain unverified.
 
 # stow 0.5.13 — All log types and empty-stack refill
 

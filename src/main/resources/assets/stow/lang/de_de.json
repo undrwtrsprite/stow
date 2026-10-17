@@ -357,7 +357,7 @@
   "stow.settings.tool-refill.after_break": "Nach dem Zerbrechen",
   "stow.settings.tool-refill.keep_one": "1 Haltbarkeit behalten",
   "stow.settings.tool-refill.tip": "Ersatz desselben Items; keine angehefteten Plätze. Bei 1 Haltbarkeit ohne Ersatz: letzte Nutzung gesperrt.",
-  "stow.settings.equipment.percent": "Haltbarkeit in Prozent anzeigen",
+  "stow.settings.equipment.percent": "Nur Prozent anzeigen",
   "stow.settings.chests.auto-assign": "Entdeckte Truhen dem aktuellen Projekt zuweisen",
   "stow.tool-refill.replaced": "Ersatz ausgerüstet: %s",
   "stow.tool-refill.protected": "Werkzeug geschützt — kein brauchbarer Ersatz verfügbar",

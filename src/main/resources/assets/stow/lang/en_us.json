@@ -357,7 +357,7 @@
   "stow.settings.tool-refill.after_break": "After break",
   "stow.settings.tool-refill.keep_one": "Keep 1 durability",
   "stow.settings.tool-refill.tip": "Same-item spares; pinned slots skipped. Keep 1 blocks the last use without a spare.",
-  "stow.settings.equipment.percent": "Show durability percentage",
+  "stow.settings.equipment.percent": "Show percentage only",
   "stow.settings.chests.auto-assign": "Assign discovered chests to current project",
   "stow.tool-refill.replaced": "Equipped spare %s",
   "stow.tool-refill.protected": "Tool preserved — no usable spare available",
