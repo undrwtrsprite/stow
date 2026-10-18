@@ -1,0 +1,9 @@
+## Stow 1.0.4 — Minecraft 26.3
+
+This full release brings the 1.0.4 beta features together and fixes villager bulk trading that previously stopped after the first payment stack. The refill follow-up now tops up matching payment slots in place, preserving partial stacks and two-item costs between batches. The client fallback tracks actual slot progress; the server companion performs bounded instant batches. Shift + left-click a villager output to trade the selected offer from your inventory and hotbar. Install the updated client and companion for instant trading and the companion refill fix. The client fallback remains paced when the companion is absent or older. Trading stops for missing payment, exhausted stock, insufficient result space, changed inputs/offers or no progress; each request is limited to 128 batches. Custom merchant menus use the client fallback.
+
+Other 1.0.4 features include Alt + A Hold Attack or configurable Interval clicks (50–60000 ms, 500 ms default), 27-slot shulker tooltip previews, Alt + M auto-mending through the offhand, and compact tooltips. The release also includes inventory-wide sorting/transfers and bundles, pinned slots, remembered storage, material planning, block/rocket refill, tool helpers, equipment HUDs, companion chest sorting and connected-log harvesting.
+
+For Minecraft 26.3: Java 25+, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 and Cloth Config 26.3.159+ are required on the client; Mod Menu 21.0.0 is optional. The companion requires Fabric API. Replace both prior Stow JARs; remove Mouse Wheelie because it conflicts with Stow. Existing data and companion settings are preserved.
+
+The refill follow-up compiled, but was not runtime-tested at the user's request; the reported villager behavior awaits their in-game validation. Earlier feature checks are recorded in CHANGELOG.md and docs/DEVELOPMENT.md. Compatibility with individual modpacks, server restrictions and merchant/protection mods is not claimed.

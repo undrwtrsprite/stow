@@ -6,7 +6,7 @@
 
 Paste a materials list, find what you already own, gather the rest and keep track while you build. Sort chests, move stacks, refill blocks and rockets, preview shulkers, trade with villagers and repair your Mending tools without a collection of separate inventory utilities.
 
-**The new trading, attack, shulker-preview and auto-mending features are available in 1.0.4 beta 2 and later.** They have been checked in an isolated Minecraft client/server; individual modpacks, server restrictions and protection mods still need compatibility testing.
+**Stow 1.0.4** adds trading from the whole inventory, optional instant trades with the companion, automatic attack, shulker previews and auto-mending. Earlier feature checks ran in an isolated Minecraft client/server; the 1.0.4 villager refill follow-up has only been compiled and awaits in-game validation. Individual modpacks, server restrictions and protection mods still need compatibility testing.
 
 ## Keep your inventory in order
 

@@ -27,6 +27,12 @@ Keep item names/components, pinned slots, cursor state and client/server synchro
 
 ## Release validation
 
+### Merchant refill follow-up — 19 October 2026
+
+The user reports beta 2 stops after the first loaded payment stack. The follow-up replaces `MerchantMenu.tryMoveItems` between batches with shared in-place payment top-ups using normal inventory pickup/place/return operations. Vanilla's method first returns both payment slots to inventory and only refills once both are empty, which can fail with partial payments and a full inventory. The client fallback now detects slot progress rather than predicted merchant-use counts and compares current offer values rather than object identity. Matching components, input orientation, slot permissions, cursor and stock/space/batch bounds remain enforced.
+
+Release client/companion version: `1.0.4+mc26.3`. Compilation only; no automated tests or Minecraft runtime were run, as explicitly requested by the user. The user will validate the reported trade/refill behavior. Publication does not establish runtime behavior or broad compatibility.
+
 A completed build does not establish in-game compatibility. Before treating a release as ready, record manual client and companion checks here and resolve remaining compatibility items. For 1.0, game-specific checks remain for server damage applied to an item already in use and custom modded durability costs, as noted in `CHANGELOG.md`.
 
 ### 1.0.4 beta 2 — 18 October 2026

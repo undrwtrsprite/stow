@@ -6,7 +6,7 @@ Install the [Stow client](https://modrinth.com/mod/stow) for the inventory inter
 
 ## Trade your whole inventory instantly
 
-With Stow **1.0.4 beta 2 or later** on both sides, **Shift + left-click a villager trade output** to trade every available payment stack in one server operation. The normal merchant selection and quick-move code handles both payment items, results, experience and stock. Trading stops when payment runs out, the offer sells out or the result cannot fit.
+With Stow **1.0.4 or later** on both sides, **Shift + left-click a villager trade output** to trade every available payment stack in one server operation. The normal merchant selection and quick-move code handles both payment items, results, experience and stock. The 1.0.4 release also tops up partial payment stacks between batches. Trading stops when payment runs out, the offer sells out or the result cannot fit.
 
 The server checks the open merchant menu and its revision, empty cursor and valid offer. Requests contain no proposed prices or item stacks. Each request is limited to **128 refill/quick-move batches** and one request per two server ticks. Completed instant work cannot be undone by a later cancellation. Pinned payment and result slots follow vanilla merchant behavior.
 
@@ -36,7 +36,7 @@ Press **Alt + S** again to cancel; work already completed is retained. Changing 
 - **Players using the features:** install the Stow client with Fabric API and Cloth Config **26.3.159+**. Mod Menu **21.0.0** is optional.
 - **Single-player:** install both the Stow client and companion locally.
 
-The companion does not require Cloth Config, Mod Menu or Mouse Wheelie. Replace older companion JARs instead of keeping several versions. Update both JARs to 1.0.4 beta 2 or later for instant trades. Existing server settings are preserved, and the new instant-trading option defaults to enabled.
+The companion does not require Cloth Config, Mod Menu or Mouse Wheelie. Replace older companion JARs instead of keeping several versions. Update both JARs to 1.0.4 or later for instant trades and the payment refill fix. Existing server settings are preserved, and the instant-trading option defaults to enabled.
 
 Stow's other inventory, storage-memory, material-planning, refill, shulker-preview, attack and auto-mending helpers belong to the client. They do not require this companion. This project does not change which servers permit automated actions.
 

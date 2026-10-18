@@ -2,7 +2,15 @@
 
 ## Unreleased
 
-No additional changes yet.
+## 1.0.4+mc26.3 — 19 October 2026
+
+### Refill villager payments between batches
+
+- **Reported problem:** whole-inventory trading still stopped after the first loaded payment stack. The previous implementation reused vanilla offer selection to refill; that operation first tries to unload both payment slots and can stop with partial payments still present. The client fallback also relied on predicted offer-use counts and the identity of an offer object to decide whether to continue.
+- **Change:** both the companion and client fallback now top up matching payments directly in the merchant's two input slots, using ordinary pickup/place/return operations. Leftover payment items stay in the menu, including costs that do not divide evenly into a stack and two-item payments. Reversed compatible payment slots are retained. Stack limits, item components, slot permissions and the empty-cursor requirement are preserved. Unsuitable input contents stop rather than being replaced.
+- **Client continuation:** progress is determined from actual slot changes rather than the client-side offer-use counter. Equivalent replacement offer objects no longer stop the operation; changed prices, payment/result components, inventory or user input still stop it. Stock, result-space and 128-batch limits remain.
+- **Distribution:** the stable client and companion builds include this refill change. Update both JARs to use the companion refill fix; older companions retain the paced client fallback. Existing data, settings and the trade protocol remain compatible.
+- **Validation:** compilation only. At the user's explicit request, no automated tests or in-game checks were run for this change. The reported behavior remains awaiting user validation.
 
 ## 1.0.4-beta.2+mc26.3 — 18 October 2026
 

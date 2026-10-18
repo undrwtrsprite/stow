@@ -1,5 +1,5 @@
 plugins { id 'net.fabricmc.fabric-loom' version '1.17.21' }
-version = '1.0.4-beta.2+mc26.3'
+version = '1.0.4+mc26.3'
 group = 'dev.stow'
 base { archivesName = 'stow' }
 repositories {

@@ -1,6 +1,7 @@
 package dev.stow.companion.server;
 
 import dev.stow.companion.protocol.MerchantTradeProtocol;
+import dev.stow.companion.protocol.MerchantPayments;
 import dev.stow.companion.protocol.MerchantTradeProtocol.*;
 import java.nio.file.*;
 import java.util.*;
@@ -45,7 +46,8 @@ public final class MerchantTradeServer implements ModInitializer {
         var offer=menu.getOffers().get(r.offer());int batches=0;
         while(batches<MerchantTradeProtocol.MAX_BATCHES&&!offer.isOutOfStock()&&menu.stillValid(p)
                 &&p.containerMenu==menu&&menu.getCarried().isEmpty()){
-            menu.setSelectionHint(r.offer());menu.tryMoveItems(r.offer());
+            menu.setSelectionHint(r.offer());
+            if(!MerchantPayments.refill(menu,r.offer(),p,slot->menu.clicked(slot,0,ContainerInput.PICKUP,p)))break;
             if(menu.getSlot(2).getItem().isEmpty()||!menu.getSlot(2).mayPickup(p))break;
             int uses=offer.getUses();
             menu.clicked(2,0,ContainerInput.QUICK_MOVE,p);
