@@ -53,6 +53,8 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
             add(all,"stow.glow.toggle","ui:EYE",null,()->{ChestMemory.setGlowEnabled(!Stow.config.chestGlow);onClose();},()->true);
             add(all,"stow.action.auto_tool","minecraft:iron_shovel",Action.AUTO_TOOL,()->{StowShortcuts.dispatch(Action.AUTO_TOOL,origin,null);onClose();},()->true);
             if(origin==null)add(all,"stow.action.bulk_strip","minecraft:iron_axe",Action.BULK_STRIP,()->{onClose();StowShortcuts.dispatch(Action.BULK_STRIP,null,null);},()->Stow.config.bulkStrip||BulkStrip.busy());
+            if(origin==null)add(all,"stow.action.auto_attack","minecraft:iron_sword",Action.AUTO_ATTACK,()->{onClose();StowShortcuts.dispatch(Action.AUTO_ATTACK,null,null);},()->true);
+            if(origin==null)add(all,"stow.action.auto_mend","minecraft:experience_bottle",Action.AUTO_MEND,()->{onClose();StowShortcuts.dispatch(Action.AUTO_MEND,null,null);},()->true);
         }
         String query=search.getValue().strip();String[] words=query.toLowerCase(Locale.ROOT).split("\\s+");
         var found=new ArrayList<Command>();

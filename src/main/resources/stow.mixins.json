@@ -5,6 +5,10 @@
   "client": [
     "MixinAbstractScrollArea",
     "MixinAbstractContainerScreen",
+    "MerchantScreenAccessor",
+    "KeyMappingAccessor",
+    "MinecraftAttackAccessor",
+    "MixinItemStack",
     "MixinClientPacketListener",
     "ClientLevelAccessor",
     "MixinMultiPlayerGameMode",

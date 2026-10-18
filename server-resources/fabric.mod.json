@@ -1,12 +1,25 @@
 {
   "schemaVersion": 1,
   "id": "stow_companion",
-  "version": "1.0.3+mc26.3",
+  "version": "1.0.4-beta.2+mc26.3",
   "name": "stow companion",
-  "description": "Optional server support for faster chest sorting and stripping and harvesting connected logs and Nether stems.",
+  "description": "Optional server support for instant bulk villager trades, fast chest sorting and connected-log stripping and harvesting.",
   "environment": "*",
   "license": "Apache-2.0",
-  "entrypoints": {"main": ["dev.stow.stripping.server.OakHarvestServer", "dev.stow.companion.server.ChestSortServer"]},
-  "depends": {"fabricloader": ">=0.19.5", "minecraft": "26.3", "java": ">=25", "fabric-api": ">=0.161.0+26.3"},
-  "contact": {"sources": "https://github.com/undrwtrsprite/stow"}
+  "entrypoints": {
+    "main": [
+      "dev.stow.stripping.server.OakHarvestServer",
+      "dev.stow.companion.server.ChestSortServer",
+      "dev.stow.companion.server.MerchantTradeServer"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.3"
+  },
+  "contact": {
+    "sources": "https://github.com/undrwtrsprite/stow"
+  }
 }

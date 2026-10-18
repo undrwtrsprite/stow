@@ -4,3 +4,4 @@
 - Release notes should explain the previous problem and new behavior, controls and settings, quantity/data limits, compatibility exceptions and migration effects where relevant. Preserve enough detail to publish useful GitHub, CurseForge and Modrinth notes.
 - Distinguish implementation from validation: do not claim in-game compatibility or a published release based only on compilation. Record remaining validation in development notes, and resolve it before declaring a release ready.
 - The user explicitly requested this changelog practice persist across future sessions.
+- Use `docs/PROJECT-DESCRIPTION.md` and `docs/COMPANION-DESCRIPTION.md` as the canonical default public descriptions. Keep the GitHub README and the main CurseForge/Modrinth project descriptions aligned with these complete feature overviews; release notes are separate and must not replace the permanent descriptions. Update availability, requirements and feature coverage as the mod changes.

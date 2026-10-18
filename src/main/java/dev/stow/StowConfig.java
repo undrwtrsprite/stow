@@ -23,6 +23,7 @@ public final class StowConfig {
     public enum DockCorner { BOTTOM_RIGHT,BOTTOM_LEFT,TOP_RIGHT,TOP_LEFT }
     public enum HudAlignment { LEFT,CENTER,RIGHT }
     public enum ToolRefillMode { AFTER_BREAK,KEEP_ONE }
+    public enum AttackMode { HOLD,INTERVAL }
     public record Shortcut(boolean mouse,int code,int modifiers) {}
     public java.util.Map<String,Shortcut> shortcuts=new java.util.LinkedHashMap<>();
     public java.util.Map<String,Integer> keepAmounts=new java.util.LinkedHashMap<>();
@@ -31,6 +32,7 @@ public final class StowConfig {
     public boolean chestGlow=true;
     public boolean pinProtectTransfers=true;
     public boolean bundleDrag=true;
+    public boolean shulkerPreviews=true;
     public boolean equipmentAll=true;
     public boolean equipmentPercent=false;
     public boolean notifications=true;
@@ -45,6 +47,8 @@ public final class StowConfig {
     public boolean toolPick=true;
     public boolean autoTool=false;
     public boolean bulkStrip=true;
+    public AttackMode attackMode=AttackMode.HOLD;
+    public int attackIntervalMs=500;
     public boolean depositKeepHotbar=true;
     public boolean depositMatchingOnly=true;
     public boolean dockEnabled=true;
@@ -106,6 +110,8 @@ public final class StowConfig {
                     if(loaded.stockAlignment==null)loaded.stockAlignment=HudAlignment.LEFT;
                     if(loaded.stockCorner==null)loaded.stockCorner=DockCorner.BOTTOM_RIGHT;
                     if(loaded.toolRefillMode==null)loaded.toolRefillMode=ToolRefillMode.KEEP_ONE;
+                    if(loaded.attackMode==null)loaded.attackMode=AttackMode.HOLD;
+                    loaded.attackIntervalMs=Math.clamp(loaded.attackIntervalMs,50,60_000);
                     loaded.stockOffsetX=Math.clamp(loaded.stockOffsetX,0,1000);loaded.stockOffsetY=Math.clamp(loaded.stockOffsetY,0,1000);loaded.stockScale=Math.clamp(loaded.stockScale,60,200);
                     loaded.projectScale=Math.clamp(loaded.projectScale,60,150);loaded.projectOffsetX=Math.clamp(loaded.projectOffsetX,0,1000);loaded.projectOffsetY=Math.clamp(loaded.projectOffsetY,0,1000);
                     if(loaded.dockCorner==null)loaded.dockCorner=DockCorner.BOTTOM_RIGHT;

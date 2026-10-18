@@ -45,6 +45,10 @@ Action feedback appears at the top-right screen edge above open menus and their 
 | Configure keep amounts, shortcuts or HUD placement | Settings: Smart deposit, Inventory, Equipment HUD or Project totals |
 | Equip the fastest suitable tool for a world block | Middle-click the block (Minecraft Pick Block binding) |
 | Toggle automatic mining tools (off by default) | Alt + T; editable in the Shortcut editor |
+| Toggle Hold Attack / interval clicks | Alt + A; choose mode and interval in Settings → Automatic attack |
+| Toggle inventory auto-mending | Alt + M; collect XP while tools cycle through the offhand |
+| Trade an offer using the whole inventory | Shift + left-click the villager output |
+| Preview shulker contents | Hover the shulker box; Settings → Inventory can disable it |
 | Fill a held bundle quickly | Hold it on the cursor; Shift + left-click or drag across items |
 | Unpack a held bundle quickly | Hold it on the cursor; Shift + right-click or drag across empty slots |
 | Unpack a bundle from its slot | Shift + left-drag from the bundle across empty or matching slots |
@@ -81,6 +85,36 @@ Chest memory records contents only after you open a chest, barrel or shulker box
 The right-aligned eye inventory button quickly hides/re-shows chest glow while retaining the selected chest. Clicking Glow in storage or right-clicking a material enables glow again, even if the eye was off. Right-click the same material counter again to stop its glow; the tooltip changes to “stop glow” while active. Stop glow clears the selection. Settings → Inventory also controls visibility.
 
 Loaded storage uses **Minecraft's native spectral-arrow/entity outline effect**, in white, visible through walls. Chests and shulkers use their animated block-entity models; barrels use their block model. Both halves of a double chest are included. stow extracts the selected storage even when a wall hides its render section, and transfers only outline geometry into vanilla's existing pass. It does not submit a second chest skin, alter scene depth or add a fullscreen tint. The existing distance-scaled HUD name/distance label remains; remembered storage outside loaded chunks retains the projected box fallback. Labels stay anchored to the per-frame camera and shrink smoothly with distance, with an eight-pixel readability floor at GUI scales 1–4.
+
+## Crafting and full-inventory trading
+
+**Shift + left-click a villager trade output** to trade the selected offer using materials throughout your main inventory and hotbar. Stow refills both payment inputs between vanilla trade batches until materials, villager stock or output space run out. Another click, a keypress (including Escape), scrolling, closing the menu or disconnecting cancels further batches. Changed inventory, offers, prices or components also stop the operation. Each gesture is bounded to 128 batches, with follow-up batches four client ticks apart after the initial click. No companion is required. Merchant refills follow vanilla selection rules, including using pinned payment stacks; results may fill pinned inventory positions under vanilla rules.
+
+Other recipe output slots keep their menu's vanilla Shift-click behavior, including batch crafting from the inventory, crafting table, stonecutter, smithing, loom, cartography table, grindstone and furnace. Stow's multi-slot Shift-drag and bundle-drag gestures skip result slots, even when the drag starts in a merchant input slot, so crossing a trade output cannot trigger repeated trades. **Keep Shift-transfers out of pinned slots** still protects ordinary item transfers; vanilla result transfers may fill or merge into pinned slots according to that menu's rules.
+
+**Instant companion trades:** update both JARs to 1.0.4 beta 2 or later to perform the whole-inventory trade in one server task using vanilla merchant operations. Payment, stock and result-space limits still apply, with a 128-batch cap. The server validates the open menu, revision, empty cursor and offer, accepts at most one request per two server ticks, and supplies all prices and items. Completed instant work cannot be cancelled afterward. Older/absent companions, custom merchant menus or servers setting `instantVillagerTrading=false` in `config/stow-companion.properties` and restarting retain paced client trades. Missing replies time out after five seconds without replay.
+
+## Shulker box previews
+
+Hover an undyed or colored shulker box to see its **27 slots in a 9 × 3 tooltip grid**, with item icons, counts and durability indicators. Empty slots retain their positions. Empty boxes show an empty grid. The grid replaces the written contents list to keep the tooltip compact; the name, lore and other item details remain. Toggle this under **Settings → Inventory → Shulker box previews** (on by default); disabling it restores the written list.
+
+The preview uses only item contents already supplied by the server. It does not open boxes or inspect nested containers. Hidden container details remain hidden, and another mod's existing tooltip image takes priority. No companion is required.
+
+## Auto-mending
+
+Press **Alt + M** or choose **Toggle auto-mending** in the command palette, then collect XP normally. Stow cycles damaged **Mending** items from the main inventory and hotbar into the offhand, starting with the most missing durability. Fully repaired items return to their original positions, and the original offhand item is restored. An existing damaged Mending item in the offhand is repaired first. Your selected main-hand slot stays available for XP farming; armor you wear and your held main-hand item keep vanilla Mending behavior.
+
+Pinned donor positions, the selected hotbar slot and items without Mending are skipped. Item names, enchantments and other components are preserved. XP is not created or collected remotely. The cycle finishes when no eligible inventory items remain. Change the shortcut in the shortcut editor.
+
+Toggle again to stop. Menus, focus loss, pause, death and spectator mode also stop activation; a borrowed item is returned after normal gameplay resumes with an empty cursor and no conflicting inventory operation. Manual changes to the borrowed item/reserved position, or selecting its hotbar position, stop the cycle without overwriting those changes. Disconnecting stops it too; if a return packet cannot be sent, the borrowed tool stays in the offhand and the prior offhand item stays in the reserved inventory position. Reconnecting does not reactivate it. No companion is required.
+
+## Automatic attack
+
+Press **Alt + A** to toggle automatic Attack, or use **Toggle automatic attack** in the command palette. Set a different shortcut in Stow's shortcut editor. **Settings → Automatic attack** offers **Hold Attack** (default) and **Interval clicks**, plus an interval of **50–60000 ms** (default 500 ms).
+
+Hold keeps the normal Attack control pressed: it continuously mines blocks and sends one initial attack. Choose Interval to click Attack repeatedly, including repeated attacks on entities. Clicks run on game ticks at most 20 times per second; delays do not cause catch-up bursts. Vanilla attack cooldowns, miss delays, item use and Stow's existing tool protection remain in effect.
+
+Toggle again to stop. Opening any menu or chat, losing game focus, pausing, dying, spectator mode or disconnecting also stops it and releases a held Attack control. It stays off when you return. The selected mode and interval are saved, while activation lasts only for the current uninterrupted gameplay session. No companion is required.
 
 ## Survival workspace
 
@@ -144,7 +178,3 @@ Inventory actions now use downloaded Material Design Icons rendered at 16 GUI pi
 ### Icon assets (0.5.6)
 
 The actual SVG artwork is downloaded from [Pictogrammers Material Design Icons](https://pictogrammers.com/library/mdi/), pinned to upstream commit `9e04201d4557e729822fb57f62a316c3dea1d4a8`. The selected 24 SVGs and manifest are in `design/icons/mdi`; the Apache 2.0 attribution is in NOTICE and the upstream license is retained alongside the sources and runtime textures. `python dev-tools/render-icons.py` uses Inkscape and Pillow to export white 64×64 PNGs with alpha, rendered at centered 16px in native Minecraft buttons. Development tools are optional: the game needs no SVG library, network request or new dependency. Minecraft's texture loader performs filtering as GUI size changes. Item icons remain actual Minecraft item models.
-
-### Vanilla crafting (0.5.8)
-
-Recipe and trade output slots keep their menu's vanilla Shift-click behavior, including batch crafting from the inventory, crafting table, stonecutter, smithing, loom, cartography table, grindstone, furnace and villager menus. Stow's multi-slot Shift-drag and bundle-drag gestures skip vanilla result slots, even when the drag starts in a merchant input slot, so crossing a trade output cannot trigger repeated trades. Direct Shift-clicks on result slots keep Minecraft's native behavior, including batch crafting or trading. **Keep Shift-transfers out of pinned slots** still protects ordinary item transfers; vanilla result transfers may fill or merge into pinned slots according to that menu's rules.

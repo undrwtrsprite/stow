@@ -1,3 +1,52 @@
+# stow 1.0.4-beta.2+mc26.3 — 18 October 2026
+
+Published as a **beta** while actual modpack/server and physical-input compatibility remain unverified. The updated companion adds instant bulk villager trading. Update both JARs for acceleration; older or absent companions retain paced client trading.
+
+Final beta 2 validation: **130 isolated Minecraft checks** passed for the exact client and companion artifacts. Actual modpack/server and physical-input compatibility remain unverified.
+
+### Instant trades with Stow companion
+
+- **New behavior:** with the updated client and companion, Shift + left-click a villager output trades from the whole inventory in one server task. Vanilla merchant selection and quick-move logic determine payments, outputs, experience and stock. No client-supplied item stacks or prices are accepted.
+- **Limits:** the server checks the open merchant menu, its revision, cursor and selected offer. It stops for exhausted stock, insufficient payment or result capacity, invalid menus and no progress, with a hard limit of 128 refill/quick-move batches per request. Requests are rate-limited to one per two server ticks. Work already completed instantly cannot be cancelled by a later click.
+- **Compatibility:** older/absent companions and servers setting `instantVillagerTrading=false` in `config/stow-companion.properties` (restart required) use the paced client fallback. Requests that receive no reply time out after five seconds without replay. Custom merchant menus are excluded from server acceleration. Pinned payment/result positions follow vanilla merchant behavior. Existing data and companion settings are preserved; the new server option defaults to true.
+
+### Compact hover descriptions
+
+- **Problem:** long help text made Stow's hover panels bulky, especially the new attack settings. Shulker boxes also repeated their contents as text below the full preview grid.
+- **New behavior:** English and German hover help for attack, previews, refill, sorting, tool replacement, log stripping and project completion now uses short summaries. Detailed behavior remains in the feature guide. When Stow's shulker grid is displayed, it replaces the duplicate written contents list; the name, custom lore and other item details remain visible.
+- **Compatibility/settings:** text size and GUI scale are unchanged. Disabling shulker previews restores vanilla's written contents. Other containers and another mod's existing tooltip image retain their existing behavior. No new setting, companion update or data migration is needed.
+
+Validation: the **1.0.4-test.2+mc26.3** development client builds successfully. Project checks pass with 414 bilingual keys. An isolated Minecraft client passed **56 tooltip checks**, including duplicate-list removal, retained title/lore, restoration of the written list when previews are disabled, ordinary container text, all box colors and existing preview protections. The rendered compact tooltip screenshot was inspected. Actual multiplayer modpack compatibility remains unverified.
+
+### Auto-mending across the inventory
+
+- **New control:** **Alt + M** toggles auto-mending; change or unbind it in the shortcut editor, or use **Toggle auto-mending** in the command palette. It starts off and stops when the eligible inventory cycle finishes.
+- **Repair behavior:** damaged items with **Mending** are temporarily moved from the main inventory/hotbar into the offhand, most missing durability first. Collect normal XP to repair them. Each fully repaired item returns to its original position before the next is selected, and the original offhand item is restored. A damaged Mending item already in the offhand is repaired first. The selected main-hand slot stays available for farming; worn armor and the held main-hand item retain vanilla Mending behavior. No XP is generated and items without Mending are skipped.
+- **Protection/interruption:** pinned donors and the selected hotbar slot are skipped. Names, enchantments and other components are preserved. Inventory operations and an occupied cursor delay swaps. Toggle off, opening menus, focus loss, pause, death or spectator mode stop activation; a borrowed item is returned once normal gameplay and a safe empty cursor allow it. Changing the borrowed item, its reserved position or selecting that hotbar position stops the cycle without overwriting the new state.
+- **Disconnect limit:** disconnecting clears activation. If a connection closes before a return swap can be sent, the borrowed tool remains in the offhand and the previous offhand item remains in its reserved inventory position. No automatic cycle resumes on reconnect. No companion or saved-data migration is required.
+
+### Shulker box previews
+
+- **New behavior:** hover a shulker box to see a 9 × 3 grid of its 27 inventory slots in the tooltip, including empty positions, item icons, stack counts and item durability indicators. Undyed and all 16 dyed boxes are supported; empty boxes show an empty grid. The grid replaces the duplicate written contents list; names, lore and other item details remain available.
+- **Setting:** **Settings → Inventory → Shulker box previews**, enabled by default. No Shift key or companion is required and existing settings files receive the default automatically.
+- **Compatibility/limits:** previews read the contents component already present on the item; they do not open containers, fetch hidden server contents, move items or load nested containers. Only the first 27 positions are shown. Hidden tooltips/hidden container details remain hidden, and an existing tooltip image supplied by another mod takes priority. Contents and components are not changed.
+
+### Hold Attack or click at an interval
+
+- **New controls:** **Alt + A** toggles automatic Attack while playing. Choose **Settings → Automatic attack → Attack mode → Hold Attack / Interval clicks**. Hold keeps the normal Attack binding pressed (continuous mining and one initial attack); Interval sends repeated normal Attack clicks. The shortcut can be changed or unbound in Stow's shortcut editor, and the command palette also includes **Toggle automatic attack**.
+- **Timing:** the interval is editable from **50 to 60000 milliseconds**, default **500 ms**. Clicks run on game ticks, at most 20 per second, without catch-up bursts after delays. Vanilla miss delays, attack cooldowns, item-use handling and Stow's tool protection still apply; this does not make a held attack repeatedly hit entities.
+- **Stopping/settings:** toggle again to stop. Opening a menu/chat, switching away from the game, pausing, dying, entering spectator mode, disconnecting or shutting down stops it and releases any held Attack binding. Mode and interval are saved; activation is never restored automatically after menus, reconnects or restarts. Existing settings files receive the defaults without migration. No companion is required.
+
+### Trade from the whole inventory
+
+- **Previous behavior:** Shift-clicking a villager output used only the payments already loaded into the trade inputs, usually one stack. The 1.0.2/1.0.3 output-slot fixes preserved that vanilla limit; they did not implement trading across the whole inventory.
+- **New behavior/control:** **Shift + left-click the trade output** to keep trading the selected offer, refilling both payment inputs from the main inventory and hotbar between batches. Trading stops when materials run out, the offer sells out, the output cannot fit, or a transfer makes no progress. Other recipe outputs retain their existing vanilla behavior; crossing a merchant output during Shift-drag still does not trade.
+- **Interruption and bounds:** another click, a keypress (including Escape), scrolling, closing/changing the menu or disconnecting stops further batches. Unexpected inventory, offer, price or item-component changes also stop the operation. Without companion acceleration, follow-up batches are spaced four client ticks apart and 128 batches run per gesture, bounding unusual modded offers that return their own payment or replenish stock.
+- **Compatibility/data:** uses vanilla merchant refill and transfer packets; no companion update, setting or saved-data migration is required. As with manually selecting and Shift-clicking a vanilla offer, merchant refills can use pinned payment stacks and result transfers can fill pinned inventory slots. The server remains responsible for trade availability and item matching.
+- **Related fix:** Shift-clicking an offer-list button now reaches the vanilla button instead of starting an empty Stow Shift-drag. Ordinary inventory Shift-drag modes are unchanged.
+
+Validation: JDK 25 Gradle build and project checks passed, including 414 English/German translation keys. The **1.0.4-test.1+mc26.3** development client passed **117 checks** inside an isolated Minecraft 26.3 client/server: 38 trading checks, 13 attack checks, 14 auto-mending checks using actual XP repair, and 52 shulker-preview checks. Actual preview screenshots were inspected. Published 1.0.3 baseline checks separately reproduced the single-input-stack limit. These earlier checks used a development build; the user's actual multiplayer modpack/server and physical-input compatibility remain unverified. See `docs/DEVELOPMENT.md` for evidence, test-fixture scope and the native-JVM startup workaround.
+
 # stow 1.0.3+mc26.3 — 18 October 2026
 
 ## Faster chest sorting with the companion

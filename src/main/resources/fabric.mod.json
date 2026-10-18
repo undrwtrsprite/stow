@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "stow",
-  "version": "1.0.3+mc26.3",
+  "version": "1.0.4-beta.2+mc26.3",
   "name": "stow",
-  "description": "A quiet home for your items. Inventory sorting, chest memory and material tracking.",
+  "description": "Inventory sorting, chest memory and build planning, with villager trading, shulker previews, refill and optional attack and Mending helpers.",
   "environment": "client",
   "license": "Apache-2.0",
   "icon": "assets/stow/icon.png",

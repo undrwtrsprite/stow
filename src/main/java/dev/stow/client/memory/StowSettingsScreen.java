@@ -50,6 +50,9 @@ public final class StowSettingsScreen {
         var bundleDrag=new ResponsiveConfigEntries.Toggle(text("bundle.drag"),config.bundleDrag,entry.getResetButtonKey(),true,v->config.bundleDrag=v);
         bundleDrag.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("bundle.drag.tip")}));
         inventory.addEntry(bundleDrag);
+        var shulkerPreviews=new ResponsiveConfigEntries.Toggle(text("shulker-previews"),config.shulkerPreviews,entry.getResetButtonKey(),true,v->config.shulkerPreviews=v);
+        shulkerPreviews.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("shulker-previews.tip")}));
+        inventory.addEntry(shulkerPreviews);
         inventory.addEntry(new ResponsiveConfigEntries.Toggle(text("glow"),config.chestGlow,entry.getResetButtonKey(),true,v->ChestMemory.setGlowEnabled(v)));
         var tools=entry.startSubCategory(text("building-tools")).setExpanded(false);
         tools.add(new ResponsiveConfigEntries.Toggle(text("stock"),config.buildingStock,entry.getResetButtonKey(),true,v->config.buildingStock=v));
@@ -67,6 +70,13 @@ public final class StowSettingsScreen {
         bulkStrip.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("bulk-strip.tip")}));
         tools.add(bulkStrip);
         inventory.addEntry(tools.build());
+        var attack=builder.getOrCreateCategory(text("attack"));
+        attack.addEntry(option(entry,"attack.mode",AttackMode.class,config.attackMode,AttackMode.HOLD,
+            value->text(value==AttackMode.INTERVAL?"attack.interval-mode":"attack.hold"),v->config.attackMode=v,"attack.mode.tip"));
+        var attackInterval=new ResponsiveConfigEntries.Number(text("attack.interval"),config.attackIntervalMs,50,60_000,entry.getResetButtonKey(),500,v->config.attackIntervalMs=v);
+        attackInterval.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("attack.interval.tip")}));
+        attack.addEntry(attackInterval);
+        attack.addEntry(new ScreenLinkEntry(Component.translatable("stow.shortcuts.title"),dev.stow.client.ui.ShortcutEditorScreen::new));
         inventory.addEntry(new ScreenLinkEntry(Component.translatable("stow.shortcuts.title"),dev.stow.client.ui.ShortcutEditorScreen::new));
         var deposit=builder.getOrCreateCategory(text("deposit"));
         deposit.addEntry(new ResponsiveConfigEntries.Toggle(text("deposit.matching"),config.depositMatchingOnly,entry.getResetButtonKey(),true,v->config.depositMatchingOnly=v));

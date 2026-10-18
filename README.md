@@ -1,112 +1,104 @@
-<img src="src/main/resources/assets/stow/icon.png" alt="stow icon" width="80" height="80">
+![stow icon](src/main/resources/assets/stow/icon.png)
 
 # stow
 
-A quiet home for your items. Inventory sorting, chest memory and material tracking for **Minecraft 26.3 · Fabric**, with an optional server companion for faster chest sorting and log harvesting.
+**A quiet home for your items.** Stow brings inventory sorting, remembered storage, build planning and everyday tool helpers together for **Minecraft 26.3 on Fabric**.
 
-[Downloads](https://github.com/undrwtrsprite/stow/releases) · [Builds](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml) · [Report a bug](https://github.com/undrwtrsprite/stow/issues) · [All features](docs/FEATURES.md) · [Changelog](CHANGELOG.md) · [Older release notes](RELEASE-NOTES.md) · [Version archive](docs/HISTORY.md)
+Paste a materials list, find what you already own, gather the rest and keep track while you build. Sort chests, move stacks, refill blocks and rockets, preview shulkers, trade with villagers and repair your Mending tools without a collection of separate inventory utilities.
 
-## Stow 1.0.3: your build starts with a list
+**The new trading, attack, shulker-preview and auto-mending features are available in 1.0.4 beta 2 and later.** They have been checked in an isolated Minecraft client/server; individual modpacks, server restrictions and protection mods still need compatibility testing.
 
-Copy a materials list from a YouTube description, paste it into **Materials → Import**, review the items, and start gathering. Export your saved goals as plain text to share a plan or reuse it in another project. No schematic mod is required.
+## Keep your inventory in order
 
-This release adds **faster chest sorting with the companion**, rocket refill in either hand, percentage-only equipment counters and finished-project tracking. Import and export material lists, gather from remembered storage, and set each HUD's alignment, position and size. Brief action feedback stays readable above open menus.
+- **Five sort orders:** creative catalogue, name, quantity, item type and combine-only. Middle-click sorts; Shift and Ctrl select your alternate orders.
+- **Move several stacks:** Shift-drag matching items, or use Ctrl + Shift-drag for every crossed item in Both mode. Result slots are excluded from drag gestures to prevent accidental crafting or trading.
+- **Search and pin:** find inventory items and pin positions you want sorting, drag and deposit actions to leave alone. Ordinary Shift-transfers can also avoid pinned destinations.
+- **Smart deposit:** move items into open storage immediately, with matching-only transfers, keep amounts and hotbar protection.
+- **Quick bundles:** Shift-left-drag to fill a held bundle, Shift-right-drag to unpack it, or drag from a placed bundle. Capacity, item components and pinned positions are respected.
+- **Shulker previews:** hover any undyed or colored shulker box for its 27-slot contents grid, including counts and durability indicators. The grid replaces the duplicate written item list; names and lore remain. Disable previews in Inventory settings if you prefer the normal list.
 
-[Download on Modrinth](https://modrinth.com/mod/stow) · [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/stow) · [What's new in 1.0.3](CHANGELOG.md)
+## Remember your storage
 
-## Why it exists
+Stow remembers snapshots of chests, barrels and shulker boxes you open. Search those snapshots, rename storage, review contents and highlight the chests holding a material through walls. Right-click a floating material counter to show or stop its source glow.
 
-I started stow for my friends and our Minecraft server. We wanted an inventory mod that worked the way we liked, so I used AI to build and change it around our ideas.
+Memory reflects the last time you opened a container. It cannot inspect unopened storage or see somebody else's changes until you reopen it. Forgetting a snapshot keeps its project selection; reopening refreshes its contents. Undo restores forgotten entries.
 
-**Much of stow's code, UI and documentation was generated or edited with AI.** I choose the features and test it, but this is a personal project, not a professionally developed mod. It will have rough edges. The source is public so people can see how it works, report problems and improve it.
+## Turn a materials list into a build plan
 
-The sorting system is adapted from [Mouse Wheelie](https://github.com/Siphalor/mouse-wheelie) by Siphalor and contributors. Their work is credited in [NOTICE](NOTICE); this project retains the Apache 2.0 license.
+Open **Materials → Import** and paste ordinary text, including a YouTube materials list. Formats such as `128 Oak Logs`, `Glass x64` and `2 stacks of Stone` work without a schematic mod. Review the results, correct uncertain names, skip unrelated lines and choose whether to add quantities or replace matching targets. Duplicates combine and Undo reverses the import.
 
-## What it does
+Create separate projects with their own material goals and counted chests. Totals can include your inventory, remembered storage or both. Newly discovered chests can join the active project automatically. Star the materials you want on the HUD, edit quantities and hide individual goals without deleting them.
 
-- **Sort and move items:** Mouse Wheelie sorting, five sort orders, matching/all-item drag modes, inventory search and pinned slots. The updated companion sorts supported vanilla storage in one validated server operation.
-- **Remember storage:** search previously opened chests, barrels and shulker boxes; rename them and highlight sources through walls.
-- **Plan builds:** project-specific material goals and selected chests, live inventory counts, progress colors and configurable floating HUD counters. Finish a project to keep tracking materials in a neutral display as you build.
-- **Deposit and refill:** immediate smart deposit with keep amounts, block and rocket refill in either hand, and a remaining-block count beside the hotbar. Set “Refill at this many items” to **0** to refill after the held stack runs out. Rocket flight/explosion data must match.
-- **Use tools:** middle-click a block to pick a suitable tool. Optional automatic hotbar tool switching while mining is **off by default**; toggle it with **Alt + T**.
-- **Strip and harvest logs:** hold an axe, aim at a placed log and press **Alt + S**. All vanilla log types and Nether stems are supported. With the optional stow companion on the server, it strips and harvests the connected group of the same type through tall columns, long rows and dense piles. Without the companion it only strips nearby visible logs. Press again to cancel; Sneak is unchanged.
-- **Move bundle contents:** Shift-drag to fill a held bundle or unpack entries quickly.
-- **Keep track of equipment:** durability for hotbar tools and worn armor, with configurable HUD placement.
-- **Make it yours:** editable shortcuts, a searchable command palette, HUD previews and Cloth Config settings.
+**Finish project** becomes available when every goal is met. Counts keep updating as you use materials, with neutral colors and “N used” instead of planning warnings. **Reopen** restores normal planning colors. Both support Undo.
 
-Chest memory uses snapshots of storage you have opened. It cannot read unopened chests or know what someone else changed until you reopen them. Material goals include your inventory by default; settings can count selected storage only.
+The paper icon copies every saved target as plain text with exact item IDs, ready to share or import into another project. Projects support **1,024 material types** and targets up to **1,000,000 items each**. Imports accept **65,536 characters and 2,048 lines**; unknown or ambiguous rows stay excluded until corrected.
 
-## Update notices
+## Keep building and look after your tools
 
-Starting with **0.5.12**, stow checks for newer stable Fabric releases for your Minecraft version on **GitHub, Modrinth and CurseForge**. A clickable in-game chat notice opens the release page. Each new version is announced once, and checks run in the background while you play. Successful checks repeat after 12 hours; unavailable services retry after an hour.
+- **Block and rocket refill:** top up the hand you used from matching inventory reserves, including offhand rockets and Elytra boosts. Choose a threshold from 0–16; 0 waits until the last item is used. Rocket flight and explosion data must match, and pinned reserves are skipped.
+- **Block-count HUD:** see your remaining building stock beside the hotbar or place the counter elsewhere.
+- **Tool selection:** middle-click a world block to choose a suitable hotbar tool. **Alt + T** toggles automatic mining-tool selection, which starts off. Hold Sneak to keep your own choice temporarily.
+- **Tool replacement:** replace worn main-hand tools from inventory using **Keep 1 durability** or **After break**. Keep 1 preserves the old tool and blocks a damaging use without a suitable spare. Pinned spares, armor and offhand equipment are excluded from this replacement feature.
+- **Equipment HUD:** watch hotbar-tool and worn-armor durability as remaining points or percentage only. The detailed equipment screen also shows backpack and offhand gear.
 
-The check requests public release metadata from GitHub, Modrinth and [CFWidget](https://cfwidget.com/) for CurseForge. It sends no player, world, server or account data. Listings and files awaiting platform approval become detectable after approval; CFWidget can cache CurseForge data for up to an hour.
+## Trade from your whole inventory
+
+**Shift + left-click the villager's output** to keep trading the selected offer, refilling both payment inputs from your main inventory and hotbar between batches. It stops when materials, villager stock or inventory space run out. Another click, a keypress, scrolling or closing the menu stops further batches.
+
+**With the updated Stow companion, these bulk trades complete instantly in one server operation.** Without it, Stow repeats normal transactions at a paced rate. Both paths stop at stock, payment and inventory-space limits, with at most 128 batches per gesture. The server controls all prices, experience and item matching. Instant work already completed cannot be cancelled afterward. Servers can disable acceleration with `instantVillagerTrading=false` in `config/stow-companion.properties` and a restart. Missing replies time out after five seconds without replay. Custom merchant menus use the client fallback. As with vanilla merchant selection and output transfers, payments and results can use pinned inventory positions. Other recipe outputs keep their normal Shift-click behavior.
+
+## Repair Mending items while you collect XP
+
+**Alt + M** toggles auto-mending. Damaged Mending items cycle from your inventory into the offhand, most missing durability first. Collect XP normally; Stow does not create XP or repair items without Mending. Each repaired item returns to its original position, and your original offhand item is restored.
+
+The selected main-hand slot remains available for farming, and pinned donor positions are skipped. Worn armor and your main-hand item still receive normal Mending repairs. Toggle off to stop; menus, focus loss, pause, death and spectator mode also stop activation. A pending return waits until normal gameplay allows a safe swap. Manual changes stop the cycle without overwriting them. If a disconnect prevents the return packet, the borrowed tool and original offhand item remain in their current swapped positions; reconnecting does not restart the cycle.
+
+## Hold Attack or click at an interval
+
+**Alt + A** toggles automatic Attack. In **Settings → Automatic attack**, choose **Hold Attack** for continuous mining with an initial attack, or **Interval clicks** for repeated attacks. The interval is **50–60000 ms**, with a **500 ms** default. Clicks follow game ticks, at most 20 per second; normal combat cooldowns and item-use handling still apply.
+
+Toggle again to stop. Opening a menu or chat, switching away from the game, pausing, dying, spectator mode or disconnecting stops it and releases held Attack. It stays off when you return.
+
+## Optional companion: faster sorting and connected logs
+
+The **Stow client works without a server-side Stow installation**. Add the separate [stow companion](https://modrinth.com/mod/stow-companion) for:
+
+- **Fast chest sorting:** supported vanilla chests, trapped/double chests, barrels, ender chests and shulker boxes sort in one validated server operation. The server checks the current contents, permissions, stack limits and exact item/component totals; player inventory and cursor stay untouched. Custom menus, older companions and oversized requests keep the normal client queue. Requests are bounded to 54 storage slots and 24 KiB. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart.
+- **Connected-log harvesting:** hold an axe, aim at an unstripped log and press **Alt + S**. The companion strips and then harvests the connected group of the same type, including all vanilla logs and Nether stems. Tall columns, long rows and dense piles are supported; the configurable count limit defaults to **16,384 logs**. Reach, loaded chunks, permissions, durability and normal loot rules apply. Press again to cancel. Without the companion, Alt + S only strips nearby visible logs and does not harvest them.
+
+For single-player, install both JARs locally to enable these companion features. Exact compatibility with individual Timber, storage or protection mods is not guaranteed.
+
+## Make it yours
+
+Open the command palette with **Ctrl + K**. Change shortcuts, sorting defaults and settings in-game. Drag and resize the material, equipment and block-count HUDs, choose their alignment and reset their placement. English and German translations are included, with compact hover help and brief action feedback.
+
+Common controls: **P** pins a hovered slot, **N** tracks a material and **H** prioritizes a hovered floating material counter. New attack and mending toggles start off. All listed shortcuts can be edited or unbound.
 
 ## Install
 
-Requires Java **25**, Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3** and Cloth Config **26.3.159+** for Fabric. Mod Menu **21.0.0** is optional for opening settings.
+For **Minecraft 26.3**:
 
-Put `stow-1.0.3+mc26.3.jar` in your client's `mods` folder. **Remove Mouse Wheelie first**; the two mods are incompatible. Your server does not need stow.
+1. Install **Java 25+**, **Fabric Loader 0.19.5+**, **Fabric API 0.161.0+26.3** and **Cloth Config 26.3.159+**.
+2. Put the Stow **client** JAR in your client's `mods` folder. Replace older Stow JARs and **remove Mouse Wheelie**; the two mods are incompatible.
+3. Optionally install **Mod Menu 21.0.0** for access to settings.
+4. For companion features, put the separate companion JAR and Fabric API on the server. In single-player, put both Stow JARs in the client. The companion does not need Cloth Config or Mod Menu.
 
-To enable faster chest sorting and Alt + S stripping **and mining**, install `stow-companion-1.0.3+mc26.3.jar` plus Fabric API in the server's `mods` folder. The companion needs Java 25 and Fabric Loader 0.19.5+, but no Cloth Config. For single-player, install both JARs locally. Fast sorting requires the updated client and companion and supports vanilla chests, barrels, ender chests and shulker boxes; other menus and older companions retain the client queue. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart.
+Existing Stow projects, chest memories, goals, selected chests and priorities are retained. Removing Stow stops its features; keep `config/stow/` if you want your saved plans and memories for a later reinstall. Client-only inventory helpers do not require the companion. Servers can impose their own restrictions on automated actions.
 
-For harvesting, the starting log must be reachable, and the group must be loaded and permitted. There is no fixed group height or length limit; a configurable count limit defaults to 16,384 logs. See [the changelog](CHANGELOG.md) for durability, Timber behavior and other limits.
+Stow checks public GitHub, Modrinth and CurseForge release listings for updates and shows a clickable notice. Those checks send no player, world, server or account data. Pending moderation can delay update notices.
 
-### Previous GitHub downloads — 0.5.13+mc26.3
+## About Stow
 
-| File | Install location | Required dependencies |
-| --- | --- | --- |
-| [stow client JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-0.5.13%2Bmc26.3.jar) | Player's client | Fabric API, Cloth Config |
-| [stow companion JAR](https://github.com/undrwtrsprite/stow/releases/download/v0.5.13%2Bmc26.3/stow-companion-0.5.13%2Bmc26.3.jar) | Server, or client for single-player | Fabric API |
+I made Stow for my friends and our Minecraft server with AI assistance. Much of its code, UI, translations, documentation and branding was generated or edited with AI. I choose the features and test them, but this is a personal project and may have rough edges.
 
-These previous downloads are in the [0.5.13 release](https://github.com/undrwtrsprite/stow/releases/tag/v0.5.13%2Bmc26.3), with checksums and source. The companion is a separate mod; install the client JAR to use stow's inventory features.
+Inventory sorting is adapted from [Mouse Wheelie](https://github.com/Siphalor/mouse-wheelie) by Siphalor and contributors. Stow retains the **Apache 2.0** license and upstream attribution. Material Design Icons are credited in the source. Fabric, Cloth Config and Mod Menu are separate projects and are not bundled.
 
-The [version archive](docs/HISTORY.md) preserves the 18 earlier stow builds, from 0.1.0 through 0.5.10, with checksums and source-availability notes.
+[Source and GitHub downloads](https://github.com/undrwtrsprite/stow) · [Detailed feature guide](https://github.com/undrwtrsprite/stow/blob/main/docs/FEATURES.md) · [Changelog](https://github.com/undrwtrsprite/stow/blob/main/CHANGELOG.md) · [Report a bug](https://github.com/undrwtrsprite/stow/issues)
 
-The source ZIP is for developers. CI-built JARs are also available under **Artifacts** on a successful [build run](https://github.com/undrwtrsprite/stow/actions/workflows/build.yml), or you can build it yourself. GitHub artifact downloads require signing in.
-
-## Quick controls
-
-| Action | Default control |
-| --- | --- |
-| Open command palette | Ctrl + K |
-| Sort inventory / quantity / name | Middle-click / Shift + middle-click / Ctrl + middle-click |
-| Move matching stacks | Shift + left-drag |
-| Move all crossed stacks in Both mode | Ctrl + Shift + left-drag |
-| Pin a slot | Hover and press P |
-| Track a material | Hover and press N, or `/need 1000 cobble` |
-| Prioritize a material on the HUD | Hover its floating counter and press H |
-| Find / stop a material's chest glow | Right-click its floating counter |
-| Toggle automatic mining tools | Alt + T; starts off |
-| Strip logs / harvest with companion / cancel | Alt + S; hold an axe and aim at a log |
-| Keep the current tool temporarily | Hold Sneak while mining |
-| Fill / unpack a held bundle | Shift + left-drag / Shift + right-drag |
+This is an independent project, not affiliated with Mojang or Microsoft. Minecraft and its assets are not included.
 
 ## Build from source
 
-Install a **JDK 25** and check `java -version`. The Gradle wrapper downloads the pinned Gradle version and the project dependencies; you do not need a separate Gradle installation.
+Use JDK 25 and the included Gradle wrapper: `./gradlew build` on Linux/macOS or `.\gradlew.bat build` in Windows PowerShell. Client, companion and source JARs appear in `build/libs/`. `runClient` launches the development client.
 
-**Windows PowerShell**, from the repository folder:
-
-```powershell
-.\gradlew.bat build
-```
-
-**Linux / macOS:**
-
-```sh
-./gradlew build
-```
-
-The client, companion and source JARs appear in `build/libs/`. `./gradlew runClient` launches the development client; use `.\gradlew.bat runClient` on Windows.
-
-[Development](docs/DEVELOPMENT.md) explains the project structure and dependency versions. [CONTRIBUTING.md](CONTRIBUTING.md) covers bug reports and changes.
-
-## Credits and license
-
-- **Mouse Wheelie:** original sorting code and earlier custom-port utilities, Siphalor and contributors, Apache 2.0.
-- **Material Design Icons:** Pictogrammers and contributors; original selected SVGs, their license and rasterized PNGs are included.
-- **Cloth Config, Fabric and Mod Menu:** separate dependencies, not bundled.
-- **stow icon:** made with AI for this project.
-
-stow is licensed under [Apache 2.0](LICENSE). See [NOTICE](NOTICE) for attribution. Minecraft and its assets are not included in this repository. This is an independent project, not affiliated with Mojang or Microsoft.
+[Development and validation](docs/DEVELOPMENT.md) · [Contributing](CONTRIBUTING.md) · [Historical versions](docs/HISTORY.md) · [License](LICENSE) · [Attribution](NOTICE)

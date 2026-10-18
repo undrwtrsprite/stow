@@ -56,9 +56,11 @@ for name,is_server in [('stow',False),('stow-companion',True)]:
         files=jar.namelist()
         require('dev/stow/stripping/protocol/OakHarvestProtocol.class' in files,'missing shared protocol: '+name)
         require('dev/stow/companion/protocol/ChestSortProtocol.class' in files,'missing chest-sort protocol: '+name)
+        require('dev/stow/companion/protocol/MerchantTradeProtocol.class' in files,'missing merchant-trade protocol: '+name)
         if is_server:
             require('dev/stow/stripping/server/OakHarvestServer.class' in files,'missing companion server')
             require('dev/stow/companion/server/ChestSortServer.class' in files,'missing companion chest sorting')
+            require('dev/stow/companion/server/MerchantTradeServer.class' in files,'missing companion instant trading')
             require(all(not f.endswith('.class') or f.startswith(('dev/stow/stripping/','dev/stow/companion/')) for f in files),'client code bundled in companion')
         else:
             require(all(not f.startswith(('dev/stow/stripping/server/','dev/stow/companion/server/')) for f in files),'server implementation bundled in client')

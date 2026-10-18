@@ -5,6 +5,8 @@ import dev.stow.client.inventory.SmartDeposit;
 import dev.stow.client.inventory.HandRefill;
 import dev.stow.client.inventory.BulkStrip;
 import dev.stow.client.inventory.CompanionHarvest;
+import dev.stow.client.inventory.MerchantTrading;
+import dev.stow.client.inventory.AutoMending;
 import dev.stow.client.hud.SurvivalDock;
 import dev.stow.client.hud.BuildingStockHud;
 import dev.stow.client.version.VersionChecker;
@@ -18,9 +20,12 @@ public final class StowClient implements ClientModInitializer {
         StowConfig.initialize();
         CompanionHarvest.register();
         InventorySorting.register();
+        MerchantTrading.register();
+        dev.stow.client.ui.ShulkerPreview.register();
         MaterialPlanner.register();ChestGlow.register();SurvivalDock.register();BuildingStockHud.register();dev.stow.client.ui.UiNotifications.register();
-        ClientTickEvents.END_CLIENT_TICK.register(mc->{InventorySorting.tick(mc);SmartDeposit.tick(mc);HandRefill.tick(mc);dev.stow.client.inventory.ToolRefill.tick(mc);BulkStrip.tick(mc);ChestMemory.tick(mc);VersionChecker.tick(mc);});
-        ClientPlayConnectionEvents.DISCONNECT.register((handler,mc)->{InventorySorting.cancel();SmartDeposit.cancel();HandRefill.cancel();dev.stow.client.inventory.ToolRefill.clear();BulkStrip.cancel();SurvivalDock.clear();ChestMemory.disconnect();});
-        ClientLifecycleEvents.CLIENT_STOPPING.register(mc->{InventorySorting.cancel();SmartDeposit.cancel();HandRefill.cancel();BulkStrip.cancel();ChestMemory.stop();});
+        ClientTickEvents.START_CLIENT_TICK.register(dev.stow.client.input.AttackAutomation::tick);
+        ClientTickEvents.END_CLIENT_TICK.register(mc->{InventorySorting.tick(mc);SmartDeposit.tick(mc);MerchantTrading.tick(mc);AutoMending.tick(mc);HandRefill.tick(mc);dev.stow.client.inventory.ToolRefill.tick(mc);BulkStrip.tick(mc);ChestMemory.tick(mc);VersionChecker.tick(mc);});
+        ClientPlayConnectionEvents.DISCONNECT.register((handler,mc)->{dev.stow.client.input.AttackAutomation.stop(mc);AutoMending.clear();InventorySorting.cancel();SmartDeposit.cancel();MerchantTrading.cancel();HandRefill.cancel();dev.stow.client.inventory.ToolRefill.clear();BulkStrip.cancel();SurvivalDock.clear();ChestMemory.disconnect();});
+        ClientLifecycleEvents.CLIENT_STOPPING.register(mc->{dev.stow.client.input.AttackAutomation.stop(mc);AutoMending.stop(mc);AutoMending.clear();InventorySorting.cancel();SmartDeposit.cancel();MerchantTrading.cancel();HandRefill.cancel();BulkStrip.cancel();ChestMemory.stop();});
     }
 }

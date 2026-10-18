@@ -146,6 +146,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Inject(method = "removed", at = @At("HEAD"))
     private void stow_saveChest(CallbackInfo ci) {
+        MerchantTrading.cancel();
         stow_bundleDragging=false;stow_bundleDrag.clear();
         stow_carriedBundleButton=-1;stow_carriedBundleDrag.clear();
         ChestMemory.screenRemoved(menu);
@@ -153,6 +154,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void stow_searchAndPinKeys(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+        MerchantTrading.cancel();
         if((InventorySorting.busy(menu)||SmartDeposit.busy(menu)) && !event.isEscape()){cir.setReturnValue(true);return;}
         if (stow_search != null && StowShortcuts.matches(Action.SEARCH,StowShortcuts.chord(event))) {
             stow_searchVisible = true;
@@ -243,6 +245,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Inject(method="mouseClicked",at=@At("HEAD"),cancellable=true)
     private void stow_click(MouseButtonEvent event,boolean doubleClick,CallbackInfoReturnable<Boolean> cir){
+        MerchantTrading.cancel();
         if(stow_modeButton==null)return;
         if(InventorySorting.busy(menu)||SmartDeposit.busy(menu)){cir.setReturnValue(true);return;}
         double x=event.x(),y=event.y();
@@ -256,6 +259,11 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         Slot slot=getHoveredSlot(x,y);
         if(stow_search!=null&&StowShortcuts.matches(Action.SEARCH,StowShortcuts.chord(event.buttonInfo()))){stow_searchVisible=true;stow_search.setVisible(true);setFocused(stow_search);stow_controlClick=true;cir.setReturnValue(true);return;}
         if(StowShortcuts.inventoryMouse(this,slot,event)){stow_controlClick=true;cir.setReturnValue(true);return;}
+        if((Object)this instanceof net.minecraft.client.gui.screens.inventory.MerchantScreen merchant
+                &&slot==menu.getSlot(2)&&event.button()==InputConstants.MOUSE_BUTTON_LEFT&&event.hasShiftDown()
+                &&!event.hasControlDown()&&!event.hasAltDown()&&MerchantTrading.start(merchant)){
+            stow_controlClick=true;lastClickSlot=null;isQuickCrafting=false;cir.setReturnValue(true);return;
+        }
         if(PinnedTransfer.isVanillaResultSlot(menu,slot))return;
         if(Stow.config.bundleDrag&&slot!=null&&event.hasShiftDown()&&!event.hasControlDown()&&!event.hasAltDown()
                 &&(event.button()==InputConstants.MOUSE_BUTTON_LEFT||event.button()==InputConstants.MOUSE_BUTTON_RIGHT)
@@ -270,7 +278,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
             stow_bundleDragging=true;stow_bundleDistance=0;lastClickSlot=null;isQuickCrafting=false;cir.setReturnValue(true);return;
         }
         var mode=Stow.config.dragMode;
-        if(event.button()==InputConstants.MOUSE_BUTTON_LEFT&&event.hasShiftDown()&&(!event.hasControlDown()||mode==StowConfig.DragMode.BOTH)&&!event.hasAltDown()&&menu.getCarried().isEmpty()){
+        if(slot!=null&&event.button()==InputConstants.MOUSE_BUTTON_LEFT&&event.hasShiftDown()&&(!event.hasControlDown()||mode==StowConfig.DragMode.BOTH)&&!event.hasAltDown()&&menu.getCarried().isEmpty()){
             stow_matchingDragging=true;
             boolean matching=mode!=StowConfig.DragMode.ALL_ITEMS&&!(mode==StowConfig.DragMode.BOTH&&event.hasControlDown());
             stow_matchingDrag.begin(slot,matching);lastClickSlot=null;isQuickCrafting=false;stow_moveMatchingSlot(slot);cir.setReturnValue(true);
@@ -293,6 +301,7 @@ public abstract class MixinAbstractContainerScreen extends Screen {
     }
     @Inject(method="mouseScrolled",at=@At("HEAD"),cancellable=true)
     private void stow_scroll(double x,double y,double horizontal,double vertical,CallbackInfoReturnable<Boolean> cir){
+        MerchantTrading.cancel();
         if(stow_tracker!=null&&stow_tracker.mouseScrolled(x,y,horizontal,vertical))cir.setReturnValue(true);
     }
 }
