@@ -59,7 +59,14 @@ public final class ChestGlow {
     public static void drawProjected(GuiGraphicsExtractor g,Target target,Vec3 camera,Matrix4f projection){
         drawProjected(g,target,camera,projection,true);
     }
+    /** Outline a world box in one colour, with an optional label above it. Used by the area-selection camera. */
+    public static void drawBox(GuiGraphicsExtractor g,AABB box,String label,Vec3 camera,Matrix4f projection,int color){
+        drawProjected(g,new Target(box,label),camera,projection,true,color);
+    }
     private static void drawProjected(GuiGraphicsExtractor g,Target target,Vec3 camera,Matrix4f projection,boolean fallbackOutline){
+        drawProjected(g,target,camera,projection,fallbackOutline,0xFFF4F4F4);
+    }
+    private static void drawProjected(GuiGraphicsExtractor g,Target target,Vec3 camera,Matrix4f projection,boolean fallbackOutline,int color){
         Vector4f[] corners=new Vector4f[8];AABB box=target.box();
         for(int i=0;i<8;i++)corners[i]=project(new Vec3((i&1)==0?box.minX:box.maxX,(i&2)==0?box.minY:box.maxY,(i&4)==0?box.minZ:box.maxZ),camera,projection);
         int halo=0x30FFFFFF;
@@ -70,8 +77,9 @@ public final class ChestGlow {
             if(b.w<NEAR)b.lerp(a,(NEAR-b.w)/(a.w-b.w));
             double[] line={(a.x/a.w+1)*g.guiWidth()/2.0,(1-a.y/a.w)*g.guiHeight()/2.0,(b.x/b.w+1)*g.guiWidth()/2.0,(1-b.y/b.w)*g.guiHeight()/2.0};
             if(!clip(line,g.guiWidth(),g.guiHeight()))continue;
-            stroke(g,line,2.5f,halo);stroke(g,line,0.75f,0xFFF4F4F4);
+            stroke(g,line,2.5f,halo);stroke(g,line,0.75f,color);
         }
+        if(target.label()==null||target.label().isEmpty())return;
         Vec3 center=box.getCenter();Vector4f label=project(new Vec3(center.x,box.maxY,center.z),camera,projection);
         if(label.w<=NEAR)return;
         float x=(label.x/label.w+1)*g.guiWidth()/2,y=(1-label.y/label.w)*g.guiHeight()/2;

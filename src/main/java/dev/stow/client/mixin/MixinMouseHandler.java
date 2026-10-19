@@ -15,7 +15,7 @@ public abstract class MixinMouseHandler {
         if(action==1&&window==Minecraft.getInstance().getWindow().handle()&&StowShortcuts.global(StowShortcuts.chord(event)))ci.cancel();
     }
     @Inject(method="onScroll",at=@At("HEAD"),cancellable=true)
-    private void stow_cameraScroll(CallbackInfo ci){if(dev.stow.client.memory.AreaSelection.active())ci.cancel();}
+    private void stow_cameraScroll(long window,double xOffset,double yOffset,CallbackInfo ci){if(window==Minecraft.getInstance().getWindow().handle()&&dev.stow.client.memory.AreaSelection.scroll(yOffset!=0?yOffset:-xOffset))ci.cancel();}
     @Redirect(method="turnPlayer",at=@At(value="INVOKE",target="Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"))
     private void stow_cameraLook(net.minecraft.client.player.LocalPlayer player,double dx,double dy){if(!dev.stow.client.memory.AreaSelection.turn(dx,dy))player.turn(dx,dy);}
 }

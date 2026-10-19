@@ -17,6 +17,7 @@
     "GameRendererAccessor",
     "MixinKeyboardHandler",
     "MixinMouseHandler",
+    "MixinHud",
     "MixinMinecraft",
     "LevelRenderStateOutlineMixin",
     "LevelExtractorOutlineMixin",
