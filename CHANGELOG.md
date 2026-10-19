@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.5+mc26.3 — 20 October 2026
 
 ### Select and claim existing storage with a local camera
 
