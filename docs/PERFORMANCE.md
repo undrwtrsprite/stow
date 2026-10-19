@@ -1,6 +1,6 @@
-# Performance pass — 19 October 2026
+# Performance pass — Stow 1.0.5 (19–20 October 2026)
 
-The unreleased **1.0.5-test.3+mc26.3 client** combines the performance pass, Matching/Both Mouse Tweaks fix, shulker memory lifecycle/cards and equipment HUD order. It is not a published release or a claim of complete modpack compatibility. No companion implementation was changed.
+This document records the performance work behind **Stow and Stow Companion 1.0.5+mc26.3**. The pass was measured on the **1.0.5-test.3+mc26.3 client**, which combines the performance pass, Matching/Both Mouse Tweaks fix, shulker memory lifecycle/cards and equipment HUD order. It is not a claim of complete modpack compatibility. The test.3 changes were client-only and changed no companion code. **The Stow Companion did change in 1.0.5:** it adds storage owner labels (test.5) and Claim area (test.6), described in the follow-up sections below. The performance, Mouse Tweaks, shulker and HUD fixes still work without the companion.
 
 ## Coverage and decisions
 
@@ -66,7 +66,7 @@ Delivery artifact: `build/libs/stow-1.0.5-test.3+mc26.3.jar`. SHA-256: `059982b3
 
 ## Follow-up: icons, player labels and inventory effects (test.5)
 
-The **1.0.5-test.5+mc26.3 client/companion pair** retains the measured full-pass changes above. The client adds chest/double-chest/barrel icons alongside dyed shulkers, owner filters and an inventory material-list layout that reserves vanilla status-effect space. The matching companion adds placer/claim/shared labels. This section supersedes the earlier statement that companion requirements are unchanged only for this new optional ownership feature; the earlier performance/shulker/HUD fixes still work without it.
+The **1.0.5-test.5+mc26.3 client/companion pair** retains the measured full-pass changes above. The client adds chest/double-chest/barrel icons alongside dyed shulkers, owner filters and an inventory material-list layout that reserves vanilla status-effect space. The matching companion adds placer/claim/shared labels. The companion therefore changed in 1.0.5: this optional ownership feature needs Stow Companion 1.0.5, while the earlier performance/shulker/HUD fixes still work without it.
 
 Player-label work is event driven. Rendering reuses page strings/icons; the filter catalogue is an immutable cached metadata map, with no contents traversal or distance sorting. Metadata-only edits retain the material totals/source-age index and immutable goal views. Identical replies do not advance the revision. Ownership has no world scan, background polling or per-frame request; the server checks one/two loaded block entities per request. Client pending/reply caps are 32/five seconds and 256, with a server limit of 32 handled requests per player per 20 ticks. In the isolated server-thread cache probe, **100,000 cached catalogue reads took 2.4374 ms and allocated 0 thread bytes**. This measures that accessor only, not whole-feature or full-modpack FPS.
 
@@ -98,9 +98,16 @@ The exact delivery client passed the established **770 regression assertions** (
 
 The integrated `area-claim-probe` exercises bounded scan slices/replies, overflow/size/distance rejection, old chest/barrel/shulker/double claiming, foreign/shared preservation, boundary-double exclusion and chunk serialization; real camera keyboard/mouse corner selection, neutral player position, original input/perspective restoration, real claim/cancel messages, immediate Mine updates without replacing a chest, and unchanged material caches. It also exercises twelve animated geometry steps while the data-cache deadline is frozen, recipe-book reopening alignment, denser pagination and native text insertion/deletion. The final run passes **85 area/camera/UI assertions** (`area-claim-probe/output-visual-final.log`, `result.txt`). **21 further effects/layout/no-companion checks** pass on the same final client (`effects-overlap-area-final/output-delivery.log`, `result.txt`), for **876 total isolated assertions** including the established suite. Camera, review coordinates/actions, an actual focused vertical caret, compact normal/selection cards and narrow claim screen were inspected. Capture waits were added for the review/caret so screenshots show the updated frame rather than the preceding screen. Build, 454 bilingual keys, canonical README alignment, fixture exclusion and client/server packaging checks pass. Earlier failed camera initialization lacked a required local ID (fixed); a test corner aimed at air correctly hit the floor (the fixture now uses a solid marker).
 
-Dedicated-server/full-modpack/protection-mod free-camera compatibility, physical-input usability across all bindings/languages and full-pack frame times remain unverified. No live server/user world or installed mod was changed, and this is a development build, not a published release.
+Dedicated-server/full-modpack/protection-mod free-camera compatibility, physical-input usability across all bindings/languages and full-pack frame times remain unverified. No live server/user world or installed mod was changed. The test.6 artifacts listed below are development builds; the 1.0.5 release artifacts are listed in the next section.
 
 Final development artifacts:
 
 - `build/libs/stow-1.0.5-test.6+mc26.3.jar` — SHA-256 `0c7015f0d860c55f38a922493c2dc2d48f0a8fb8c561385fc54dddf07ec627dc`.
 - `build/libs/stow-companion-1.0.5-test.6+mc26.3.jar` — SHA-256 `0e5ac5d2ef1d79fa4788cc7729fbb934cee721157c338ffe2c50f79e235b3f48`.
+
+## Release artifacts (1.0.5+mc26.3)
+
+The release JARs are separate builds from the test artifacts above; the measurements and checks in this document were recorded on the listed test artifacts.
+
+- `stow-1.0.5+mc26.3.jar` — SHA-256 `234cf0f9da07acd4b85da4b6615acc97a1ccd8def01287fe12a001be5f9f42ae`.
+- `stow-companion-1.0.5+mc26.3.jar` — SHA-256 `d9fe36155fcfba5944a9316109a9afa62b7181b400c1f040af7dbdc8ffde373c`.
