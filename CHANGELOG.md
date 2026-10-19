@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Area-selection camera controls
+
+- Fixed the **Claim area → Fly and select corners** camera moving in the wrong direction. The view followed the camera's head rotation, which was never updated, while movement used a separate, mouse-driven yaw, so W drifted sideways/upward and horizontal mouse look did not turn the view; A/D strafing was also mirrored. The camera now uses one rotation for view, aiming and movement: W/S fly toward/away from where you are looking (including up/down pitch), A/D strafe left/right, Space/Shift move straight up/down and Ctrl still speeds up. The character keeps receiving neutral input and does not move. Range, loaded-chunk limits and controls are unchanged; no setting or data migration is needed. Compiled and checked only; in-game validation is pending.
+
 ## 1.0.5+mc26.3 — 20 October 2026
 
 ### Select and claim existing storage with a local camera
