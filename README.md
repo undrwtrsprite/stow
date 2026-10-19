@@ -8,6 +8,8 @@ Paste a materials list, find what you already own, gather the rest and keep trac
 
 **Stow 1.0.4** adds trading from the whole inventory, optional instant trades with the companion, automatic attack, shulker previews and auto-mending. Earlier feature checks ran in an isolated Minecraft client/server; the 1.0.4 villager refill follow-up has only been compiled and awaits in-game validation. Individual modpacks, server restrictions and protection mods still need compatibility testing.
 
+The **unreleased 1.0.5 test client** includes the performance improvements, Mouse Tweaks drag compatibility, shulker placement/removal tracking and colored storage cards described below. These changes are not yet part of the published stable release.
+
 ## Keep your inventory in order
 
 - **Five sort orders:** creative catalogue, name, quantity, item type and combine-only. Middle-click sorts; Shift and Ctrl select your alternate orders.
@@ -19,9 +21,11 @@ Paste a materials list, find what you already own, gather the rest and keep trac
 
 ## Remember your storage
 
-Stow remembers snapshots of chests, barrels and shulker boxes you open. Search those snapshots, rename storage, review contents and highlight the chests holding a material through walls. Right-click a floating material counter to show or stop its source glow.
+Stow remembers snapshots of chests, barrels and shulker boxes you open. The development client also remembers the known contents of a shulker you place once the server confirms it, removes entries for observed removed boxes and reconciles stale shulker positions when their chunks load. All storage cards show their container icon. Shulkers have matching dye-color icons and tinted storage cards; older unknown-color records use a neutral style until refreshed. Search snapshots, rename storage, review contents and highlight the chests holding a material through walls. Right-click a floating material counter to show or stop its source glow. In the player inventory, the floating material list moves below active potion/status effects to keep them readable, including with the recipe book open; tight layouts retain scrolling or the Materials button.
 
-Memory reflects the last time you opened a container. It cannot inspect unopened storage or see somebody else's changes until you reopen it. Forgetting a snapshot keeps its project selection; reopening refreshes its contents. Undo restores forgotten entries.
+With the matching **unreleased 1.0.5 companion**, newly placed chests, barrels and shulkers gain a player label. The storage list can filter by player, Mine, Shared or Unclaimed. Open older storage and use **Rename → Storage owner** to claim it or mark it shared. Only its owner or an operator can change an existing label; labels do not lock storage or alter project totals. Different owners on double-chest halves appear as Mixed owners. For existing storage, **Storage → Claim area** lets you fly a local camera, select two block corners and review a one-time claim of unassigned containers. Existing owners and Shared labels are preserved; claims are saved by the companion with the server containers. This assigns a label rather than recovering historic placers. Only loaded chunks are visited, in bounded server-tick batches, with at most 262,144 positions and corners within 64 blocks per axis of your character. Escape exits selection; cancelling a scan retains its completed claims. Unknown container contents still require opening. Existing remote labels reflect the last observation. Labels and the player filter catalogue are cached; they add no per-frame ownership scans or network polling, and label updates retain cached material totals. This feature needs the updated companion on the server (or locally in single-player); ordinary memory and the other client features still work without it.
+
+Memory reflects the last opening or confirmed placement from your known shulker item contents. It cannot inspect hidden server contents or reliably identify an identical-color replacement made while unobserved; reopen to refresh those contents. Real identical boxes at different positions remain separate. Forgetting a snapshot keeps its project selection; reopening refreshes its contents. Undo restores manually forgotten entries; server-confirmed shulker removal does not create Undo history.
 
 ## Turn a materials list into a build plan
 
@@ -39,7 +43,7 @@ The paper icon copies every saved target as plain text with exact item IDs, read
 - **Block-count HUD:** see your remaining building stock beside the hotbar or place the counter elsewhere.
 - **Tool selection:** middle-click a world block to choose a suitable hotbar tool. **Alt + T** toggles automatic mining-tool selection, which starts off. Hold Sneak to keep your own choice temporarily.
 - **Tool replacement:** replace worn main-hand tools from inventory using **Keep 1 durability** or **After break**. Keep 1 preserves the old tool and blocks a damaging use without a suitable spare. Pinned spares, armor and offhand equipment are excluded from this replacement feature.
-- **Equipment HUD:** watch hotbar-tool and worn-armor durability as remaining points or percentage only. The detailed equipment screen also shows backpack and offhand gear.
+- **Equipment HUD:** watch hotbar-tool and worn-armor durability as remaining points or percentage only. The development client orders hotbar equipment from left to right, then armor from helmet to boots, with warning filtering and colors preserved. The detailed equipment screen also shows backpack and offhand gear and retains durability ordering.
 
 ## Trade from your whole inventory
 
@@ -96,9 +100,3 @@ Inventory sorting is adapted from [Mouse Wheelie](https://github.com/Siphalor/mo
 [Source and GitHub downloads](https://github.com/undrwtrsprite/stow) · [Detailed feature guide](https://github.com/undrwtrsprite/stow/blob/main/docs/FEATURES.md) · [Changelog](https://github.com/undrwtrsprite/stow/blob/main/CHANGELOG.md) · [Report a bug](https://github.com/undrwtrsprite/stow/issues)
 
 This is an independent project, not affiliated with Mojang or Microsoft. Minecraft and its assets are not included.
-
-## Build from source
-
-Use JDK 25 and the included Gradle wrapper: `./gradlew build` on Linux/macOS or `.\gradlew.bat build` in Windows PowerShell. Client, companion and source JARs appear in `build/libs/`. `runClient` launches the development client.
-
-[Development and validation](docs/DEVELOPMENT.md) · [Contributing](CONTRIBUTING.md) · [Historical versions](docs/HISTORY.md) · [License](LICENSE) · [Attribution](NOTICE)

@@ -10,7 +10,9 @@
     "main": [
       "dev.stow.stripping.server.OakHarvestServer",
       "dev.stow.companion.server.ChestSortServer",
-      "dev.stow.companion.server.MerchantTradeServer"
+      "dev.stow.companion.server.MerchantTradeServer",
+      "dev.stow.companion.server.StorageOwnerServer",
+      "dev.stow.companion.server.AreaClaimServer"
     ]
   },
   "depends": {
@@ -21,5 +23,8 @@
   },
   "contact": {
     "sources": "https://github.com/undrwtrsprite/stow"
-  }
+  },
+  "mixins": [
+    "stow-companion.mixins.json"
+  ]
 }

@@ -13,23 +13,34 @@ public final class EquipmentWatch {
     }
     private EquipmentWatch(){}
     public static List<Entry> entries(Inventory inventory){
+        return entries(inventory,false);
+    }
+    private static List<Entry> entries(Inventory inventory,boolean hudOnly){
         if(inventory==null)return List.of();var result=new ArrayList<Entry>();
         for(int slot=0;slot<inventory.getContainerSize();slot++){
+            if(hudOnly&&!hudSlot(slot))continue;
             ItemStack item=inventory.getItem(slot);if(item.isEmpty()||item.getMaxDamage()<=0)continue;
             int maximum=item.getMaxDamage(),remaining=Math.max(0,maximum-item.getDamageValue());
             int percent=(int)Math.ceil(remaining*100.0/maximum);
             result.add(new Entry(slot,item.copy(),remaining,maximum,percent));
         }
-        result.sort(Comparator.comparingInt(Entry::percent).thenComparingInt(Entry::slot));return List.copyOf(result);
+        result.sort(hudOnly?Comparator.comparingInt(entry->hudOrder(entry.slot())):Comparator.comparingInt(Entry::percent).thenComparingInt(Entry::slot));return List.copyOf(result);
     }
     public static List<Entry> warnings(Inventory inventory){return Stow.config.equipmentWatch?entries(inventory).stream().filter(Entry::low).toList():List.of();}
     /** The screen HUD is reserved for active hotbar equipment and worn armor. */
     public static List<Entry> hudEntries(Inventory inventory){
-        return entries(inventory).stream().filter(entry->{
-            if(entry.slot()>=0&&entry.slot()<9)return true;
-            var worn=Inventory.EQUIPMENT_SLOT_MAPPING.get(entry.slot());
-            return worn==net.minecraft.world.entity.EquipmentSlot.HEAD||worn==net.minecraft.world.entity.EquipmentSlot.CHEST
-                    ||worn==net.minecraft.world.entity.EquipmentSlot.LEGS||worn==net.minecraft.world.entity.EquipmentSlot.FEET;
-        }).toList();
+        return entries(inventory,true);
+    }
+    private static boolean hudSlot(int slot){
+        if(slot>=0&&slot<9)return true;
+        var worn=Inventory.EQUIPMENT_SLOT_MAPPING.get(slot);
+        return worn==net.minecraft.world.entity.EquipmentSlot.HEAD||worn==net.minecraft.world.entity.EquipmentSlot.CHEST
+                ||worn==net.minecraft.world.entity.EquipmentSlot.LEGS||worn==net.minecraft.world.entity.EquipmentSlot.FEET;
+    }
+    private static int hudOrder(int slot){
+        if(slot>=0&&slot<9)return slot;
+        var worn=Inventory.EQUIPMENT_SLOT_MAPPING.get(slot);
+        return worn==net.minecraft.world.entity.EquipmentSlot.HEAD?9:worn==net.minecraft.world.entity.EquipmentSlot.CHEST?10
+                :worn==net.minecraft.world.entity.EquipmentSlot.LEGS?11:12;
     }
 }

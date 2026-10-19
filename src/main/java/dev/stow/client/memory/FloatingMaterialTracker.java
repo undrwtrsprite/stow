@@ -17,6 +17,7 @@ public final class FloatingMaterialTracker extends AbstractWidget {
     private ChestMemoryStore store;
     private List<MaterialGoal> goals=List.of();
     private int offset,rows;
+    private boolean footer;
     private final dev.stow.client.ui.ListMotion motion=new dev.stow.client.ui.ListMotion();
     private float renderOffset;
     private String hoveredGoal;
@@ -34,7 +35,8 @@ public final class FloatingMaterialTracker extends AbstractWidget {
         int available=maxHeight;
         rows=Math.max(1,(available-(goals.size()*22>available?12:0))/22);
         offset=Math.max(0,Math.min(offset,Math.max(0,goals.size()-rows)));
-        setHeight(Math.min(rows,goals.size())*22+(goals.size()>rows?12:0));
+        footer=goals.size()>rows&&maxHeight>=rows*22+12;
+        setHeight(Math.min(rows,goals.size())*22+(footer?12:0));
         visible=!goals.isEmpty() && width>=38 && maxHeight>=22;active=canOpen;
     }
     public List<MaterialGoal> displayedGoals(){return goals.subList(offset,Math.min(goals.size(),offset+rows));}
@@ -73,7 +75,7 @@ public final class FloatingMaterialTracker extends AbstractWidget {
             }
         }
         graphics.pose().popMatrix();graphics.disableScissor();
-        if(goals.size()>rows)graphics.text(font,(offset+1)+"–"+Math.min(goals.size(),offset+rows)+" / "+goals.size(),getX(),getY()+shown.size()*22+2,0xFFBDC6CC);
+        if(footer)graphics.text(font,(offset+1)+"–"+Math.min(goals.size(),offset+rows)+" / "+goals.size(),getX(),getY()+shown.size()*22+2,0xFFBDC6CC);
     }
     private void drawCount(GuiGraphicsExtractor graphics,String text,int y,int color){
         var font=Minecraft.getInstance().font;float scale=Math.min(1,(width-23)/(float)Math.max(1,font.width(text)));

@@ -5,6 +5,7 @@
   "client": [
     "MixinAbstractScrollArea",
     "MixinAbstractContainerScreen",
+    "MixinMouseTweaks",
     "MerchantScreenAccessor",
     "KeyMappingAccessor",
     "MinecraftAttackAccessor",
@@ -19,7 +20,8 @@
     "MixinMinecraft",
     "LevelRenderStateOutlineMixin",
     "LevelExtractorOutlineMixin",
-    "LevelRendererOutlineMixin"
+    "LevelRendererOutlineMixin",
+    "MixinStowEditBox"
   ],
   "injectors": {
     "defaultRequire": 1

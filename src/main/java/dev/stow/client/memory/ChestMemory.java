@@ -27,6 +27,7 @@ public final class ChestMemory {
     private static final ExecutorService SAVER = Executors.newSingleThreadExecutor(r -> {
         Thread thread = new Thread(r, "stow chest memory"); thread.setDaemon(true); return thread;
     });
+    private static final Set<ChestMemoryStore> QUEUED_SAVES=ConcurrentHashMap.newKeySet();
     private static String worldKey;
     private static ChestMemoryStore store;
     private static Location pending;
@@ -36,6 +37,8 @@ public final class ChestMemory {
     private static Location activeLocation;
     private static String activeTitle;
     private static boolean receivedContents;
+    private static AbstractContainerMenu snapshottedMenu;
+    private static int snapshottedTick;
     private static Location selected;
     private static String selectedMaterial;
     private static int ticks;
@@ -58,6 +61,7 @@ public final class ChestMemory {
     public static ChestMemoryStore currentStore() {
         String current = currentWorldKey();
         if (!Objects.equals(worldKey, current)) {
+            ShulkerMemory.clear();AreaClaims.clear();StorageOwners.clear();
             saveLater(store);
             pending = null; activeMenu = null; forgottenMenu=null; activeLocation = null; clearGlow();
             worldKey = current; store = null;
@@ -98,6 +102,7 @@ public final class ChestMemory {
         activeMenu = null;forgottenMenu=null;
         if (store != null && pending != null && System.nanoTime()-pendingAt <= TimeUnit.SECONDS.toNanos(5)) {
             activeMenu = menu; activeLocation = pending; activeTitle = screen.getTitle().getString(); receivedContents = false;
+            StorageOwners.request(store,activeLocation,dev.stow.companion.protocol.StorageOwnerProtocol.QUERY);
         }
         pending = null;
     }
@@ -109,6 +114,14 @@ public final class ChestMemory {
     }
 
     public static void clearPending() { pending = null; }
+    static ChestMemoryStore observedStore(){return store;}
+    static void shulkerRemoved(Location location){
+        if(activeLocation!=null&&activeLocation.key().equals(location.key())){
+            activeMenu=null;activeLocation=null;receivedContents=false;snapshottedMenu=null;forgottenMenu=null;
+        }
+        if(pending!=null&&pending.key().equals(location.key()))pending=null;
+        if(selected!=null&&selected.key().equals(location.key()))clearGlow();
+    }
 
     public static void slotReceived(int containerId) {
         if (activeMenu != null && activeMenu.containerId == containerId && receivedContents) snapshot(false);
@@ -131,15 +144,21 @@ public final class ChestMemory {
     private static void snapshot(boolean refreshTime) {
         if (store == null || activeMenu == null || activeLocation == null || !receivedContents) return;
         if(activeMenu==forgottenMenu){if(store.get(activeLocation)==null)return;forgottenMenu=null;} // Undo Forget resumes live snapshots.
+        snapshottedMenu=activeMenu;snapshottedTick=Minecraft.getInstance().player==null?0:Minecraft.getInstance().player.tickCount;
         List<MemoryItem> items = collectItems(activeMenu);
         SavedChest old = store.get(activeLocation);
         if (refreshTime || old == null || !old.items().equals(items)){
-            store.remember(new SavedChest(activeLocation, activeTitle, System.currentTimeMillis(), items),Stow.config.autoAssignChests);
+            var mc=Minecraft.getInstance();var previous=store.get(activeLocation);
+            String color=mc.level!=null&&mc.level.hasChunkAt(activeLocation.pos())?ShulkerMemory.color(mc.level.getBlockState(activeLocation.pos())):previous==null?null:previous.shulkerColor();
+            store.remember(new SavedChest(activeLocation, activeTitle, System.currentTimeMillis(), items,color,StorageOwners.known(activeLocation)),Stow.config.autoAssignChests);
             if(old==null)dev.stow.client.ui.UiNotifications.show(store.isIncluded(activeLocation)?"stow.feedback.chest-assigned":"stow.feedback.chest-remembered",activeTitle,store.projectName());
         }
     }
 
-    public static void refreshSnapshot() { snapshot(false); }
+    public static void refreshSnapshot() {
+        var player=Minecraft.getInstance().player;
+        if(activeMenu!=snapshottedMenu||player==null||player.tickCount!=snapshottedTick)snapshot(false);
+    }
     public static void forget(ChestMemoryStore fromStore,Location location){
         if(fromStore==store&&Objects.equals(activeLocation,location))forgottenMenu=activeMenu;
         fromStore.forget(location);
@@ -162,6 +181,8 @@ public final class ChestMemory {
     }
 
     public static void disconnect() {
+        ShulkerMemory.clear();
+        snapshottedMenu=null;
         MaterialPlanner.disconnect();
         snapshot(true); saveLater(store);
         pending = null; activeMenu = null;forgottenMenu=null; activeLocation = null; clearGlow();
@@ -175,8 +196,14 @@ public final class ChestMemory {
     }
 
     public static void saveLater(ChestMemoryStore toSave) {
-        if (toSave == null || SAVER.isShutdown()) return;
-        SAVER.submit(() -> { try { toSave.save(); } catch (IOException e) { LOG.warn("Could not save chest memory", e); } });
+        if (toSave == null || SAVER.isShutdown() || !toSave.needsSave() || !QUEUED_SAVES.add(toSave)) return;
+        try{
+            SAVER.execute(() -> {
+                // Remove before taking the snapshot: changes during the write may queue a follow-up.
+                QUEUED_SAVES.remove(toSave);
+                try { toSave.save(); } catch (IOException e) { LOG.warn("Could not save chest memory", e); }
+            });
+        }catch(RejectedExecutionException stopped){QUEUED_SAVES.remove(toSave);}
     }
 
     public static Location selected() { return selected; }

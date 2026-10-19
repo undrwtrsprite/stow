@@ -21,8 +21,8 @@ final class MaterialImportRowScreen extends MemoryScreenBase {
     @Override protected void init(){
         layoutDialog(480);left=contentLeft();bodyWidth=contentWidth();start=workspaceTop()+58;pageSize=Math.max(1,(height-start-94)/26);
         String query=search==null?draft.query:search.getValue(),quantity=amount==null?draft.amount:amount.getValue();
-        search=addRenderableWidget(new EditBox(font,left+8,workspaceTop()+24,bodyWidth-16,22,Component.translatable("stow.need.search")));search.setMaxLength(256);search.setValue(query);search.setHint(Component.translatable("stow.need.search"));
-        amount=addRenderableWidget(new EditBox(font,left+8,height-82,120,22,Component.translatable("stow.need.amount")));amount.setMaxLength(64);amount.setValue(quantity);amount.setHint(Component.literal("64 / 2 stacks + 16"));
+        search=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+8,workspaceTop()+24,bodyWidth-16,22,Component.translatable("stow.need.search")));search.setMaxLength(256);search.setValue(query);search.setHint(Component.translatable("stow.need.search"));
+        amount=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+8,height-82,120,22,Component.translatable("stow.need.amount")));amount.setMaxLength(64);amount.setValue(quantity);amount.setHint(Component.literal("64 / 2 stacks + 16"));
         amount.setTooltip(Tooltip.create(Component.translatable("stow.import.quantity-hint")));
         confirm=addRenderableWidget(new PlannerButton(Component.translatable("stow.import.use-row"),b->{if(!valid())return;draft.query=selected.name();draft.item=selected;draft.amount=amount.getValue();draft.included=true;draft.skipped=false;onClose();},left+bodyWidth-112,height-30,104,22,true));
         addRenderableWidget(new PlannerButton(Component.translatable("gui.cancel"),b->onClose(),left+8,height-30,66,22,false));

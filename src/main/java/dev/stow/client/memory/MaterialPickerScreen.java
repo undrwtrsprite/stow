@@ -32,10 +32,10 @@ public final class MaterialPickerScreen extends MemoryScreenBase {
         String query=search==null?initialQuery:search.getValue(),value=amount==null?Integer.toString(initialAmount):amount.getValue();
         bodyWidth=contentWidth();left=contentLeft();gridTop=76;gridBottom=dialogHeight-100;
         pageSize=Math.max(1,(gridBottom-gridTop)/28)*2;
-        search=addRenderableWidget(new EditBox(font,left+8,44,bodyWidth-16,22,Component.translatable("stow.need.search")));
+        search=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+8,44,bodyWidth-16,22,Component.translatable("stow.need.search")));
         search.setMaxLength(80);search.setHint(Component.translatable("stow.need.search"));search.setValue(query);
         int footer=dialogHeight-90;
-        amount=addRenderableWidget(new EditBox(font,left+88,footer+28,80,22,Component.translatable("stow.need.amount")));
+        amount=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+88,footer+28,80,22,Component.translatable("stow.need.amount")));
         amount.setMaxLength(7);amount.setValue(value);
         confirm=addRenderableWidget(new PlannerButton(Component.translatable("stow.need.confirm-add"),b -> {
             if(selected==null || target()==0)return;
@@ -102,6 +102,5 @@ public final class MaterialPickerScreen extends MemoryScreenBase {
         if(!error.isEmpty())graphics.text(font,font.plainSubstrByWidth(error,bodyWidth-96),left+82,dialogHeight-23,0xFFFFAA91);
         else graphics.text(font,listRange(page,pageSize,results.size()),left+84,dialogHeight-23,0xFFAAAAAA);
         graphics.pose().popMatrix();beginList(graphics);endList(graphics);listScrollbar(graphics,page,pageSize,results.size(),gridTop,gridBottom);super.extractRenderState(graphics,mx,my,delta);
-        if(search.isFocused()&&search.getValue().isEmpty())graphics.text(font,font.plainSubstrByWidth(Component.translatable("stow.need.search").getString(),search.getWidth()-16),search.getX()+8,search.getY()+7,0xFF777777);
     }
 }

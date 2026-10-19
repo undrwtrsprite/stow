@@ -2,6 +2,7 @@ package dev.stow.client.memory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.stow.client.util.TextQuery;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -38,6 +39,12 @@ public final class ChestMemoryStore {
         SavedProject snapshot(){return new SavedProject(id,name,List.copyOf(goals),customSelection,Set.copyOf(selectedChests),Set.copyOf(hiddenGoals),hudGoals==null?null:List.copyOf(hudGoals),finished);}
     }
     private final Map<String,Long> cachedCounts=new HashMap<>();
+    private final Map<String,Long> cachedOldest=new HashMap<>();
+    private boolean countsReady;
+    private int cachedIncluded;
+    private List<MaterialGoal> cachedGoals,cachedVisible,cachedStarred,cachedHud;
+    private int cachedHudLimit;
+    private Map<String,String> cachedOwners;
     private final Object writeLock=new Object();
     private long revision;
     private boolean dirty;
@@ -47,7 +54,10 @@ public final class ChestMemoryStore {
         public BlockPos pos() { return new BlockPos(x, y, z); }
     }
     public record MemoryItem(String id, String name, int count) {}
-    public record SavedChest(Location location, String title, long lastSeen, List<MemoryItem> items) {}
+    public record SavedChest(Location location, String title, long lastSeen, List<MemoryItem> items,String shulkerColor,dev.stow.companion.protocol.StorageOwnerProtocol.Owner owner) {
+        public SavedChest(Location location,String title,long lastSeen,List<MemoryItem> items,String shulkerColor){this(location,title,lastSeen,items,shulkerColor,null);}
+        public SavedChest(Location location,String title,long lastSeen,List<MemoryItem> items){this(location,title,lastSeen,items,null);}
+    }
     public record SearchResult(SavedChest chest, int count, List<MemoryItem> matches) {}
     public record MaterialGoal(String itemId, int target) {}
     private record DiskData(int version, List<SavedChest> chests, Map<String,String> names,
@@ -63,7 +73,7 @@ public final class ChestMemoryStore {
             if (data == null || data.version < 1 || data.version > 4 || data.chests == null) throw new IOException("Invalid chest memory format");
             for (SavedChest chest : data.chests) {
                 if (!valid(chest)) continue;
-                chests.put(chest.location.key(), new SavedChest(chest.location, chest.title, chest.lastSeen, List.copyOf(chest.items)));
+                chests.put(chest.location.key(), new SavedChest(chest.location, chest.title, chest.lastSeen, List.copyOf(chest.items),chest.shulkerColor,chest.owner));
             }
             trim();
             if(data.names != null) data.names.forEach((key,value) -> {
@@ -119,9 +129,11 @@ public final class ChestMemoryStore {
     public synchronized String undoLabel(){return history.isEmpty()?"":history.getFirst().label;}
     public synchronized boolean undo(){if(history.isEmpty())return false;history.removeFirst().restore.run();changed();return true;}
     public synchronized SavedChest nearestSource(String itemId,String dimension,BlockPos player) {
-        return search("",dimension,player).stream().map(SearchResult::chest).filter(c -> c.location.dimension.equals(dimension) && isIncluded(c.location) && countIn(c.location,itemId)>0).findFirst().orElse(null);
+        return chests.values().stream().filter(c->c.location.dimension.equals(dimension)&&isIncluded(c.location)&&countItems(c,itemId)>0)
+                .min(Comparator.<SavedChest>comparingDouble(c->player==null?Double.MAX_VALUE:player.distSqr(c.location.pos()))
+                        .thenComparing(Comparator.comparingLong(SavedChest::lastSeen).reversed())).orElse(null);
     }
-    public synchronized long oldestSourceTime(String itemId){return chests.values().stream().filter(c -> isIncluded(c.location) && countIn(c.location,itemId)>0).mapToLong(SavedChest::lastSeen).min().orElse(0);}
+    public synchronized long oldestSourceTime(String itemId){indexCounts();return cachedOldest.getOrDefault(itemId,0L);}
     public static String age(long timestamp){long seconds=Math.max(0,(System.currentTimeMillis()-timestamp)/1000);return seconds<60?seconds+"s":seconds<3600?seconds/60+"m":seconds<86400?seconds/3600+"h":seconds/86400+"d";}
 
     public static Path pathFor(Path directory, String worldKey) {
@@ -133,11 +145,15 @@ public final class ChestMemoryStore {
 
     private static boolean valid(SavedChest chest) {
         return chest != null && chest.location != null && chest.location.dimension != null
-                && chest.location.kind != null && chest.title != null && chest.items != null && chest.items.size() <= 128
+                && validOwner(chest.owner) && chest.location.kind != null && chest.title != null && chest.items != null && chest.items.size() <= 128
                 && chest.items.stream().allMatch(item -> item != null && item.id != null && item.id.contains(":")
                 && item.name != null && item.count > 0 && item.count <= 1_000_000);
     }
 
+    private static boolean validOwner(dev.stow.companion.protocol.StorageOwnerProtocol.Owner owner){
+        if(owner==null)return true;if(owner.id()==null||owner.name()==null||owner.name().length()>48)return false;
+        if(owner.id().isEmpty()||owner.id().equals("mixed"))return true;try{UUID.fromString(owner.id());return !owner.name().isBlank();}catch(IllegalArgumentException e){return false;}
+    }
     private void trim() {
         while (chests.size() > LIMIT) {
             String key=chests.values().stream().min(Comparator.comparingLong(SavedChest::lastSeen)).orElseThrow().location.key();
@@ -153,10 +169,20 @@ public final class ChestMemoryStore {
     public synchronized void remember(SavedChest chest,boolean assignToProject) {
         if (!valid(chest)) throw new IllegalArgumentException("Invalid container snapshot");
         boolean discovered=!chests.containsKey(chest.location.key());
-        chests.put(chest.location.key(), new SavedChest(chest.location, chest.title, chest.lastSeen, List.copyOf(chest.items)));
+        if(chest.owner==null&&!discovered){var old=chests.get(chest.location.key());chest=new SavedChest(chest.location,chest.title,chest.lastSeen,chest.items,chest.shulkerColor,old.owner);}
+        chests.put(chest.location.key(), new SavedChest(chest.location, chest.title, chest.lastSeen, List.copyOf(chest.items),chest.shulkerColor,chest.owner));
         if(discovered&&assignToProject&&customSelection)selectedChests.add(chest.location.key());
         trim();
         changed();
+    }
+    public synchronized void owner(Location location,dev.stow.companion.protocol.StorageOwnerProtocol.Owner owner){
+        var old=get(location);if(old==null||Objects.equals(old.owner,owner))return;
+        chests.put(location.key(),new SavedChest(old.location,old.title,old.lastSeen,old.items,old.shulkerColor,owner));
+        revision++;dirty=true;cachedOwners=null;
+    }
+    /** Metadata-only catalogue: no storage search, contents traversal or distance sorting. */
+    public synchronized Map<String,String> ownerChoices(){
+        if(cachedOwners==null){var owners=new TreeMap<String,String>();for(var chest:chests.values()){var o=chest.owner;if(o!=null&&!o.id().isEmpty()&&!o.id().equals("mixed")&&!o.shared())owners.put(o.id(),o.name());}cachedOwners=Collections.unmodifiableMap(owners);}return cachedOwners;
     }
     public synchronized void forget(Location location) {
         String key=location.key();SavedChest previous=chests.remove(key);if(previous==null)return;
@@ -169,10 +195,24 @@ public final class ChestMemoryStore {
             if(chests.containsKey(key) && alias!=null)names.putIfAbsent(key,alias);
         });changed();
     }
+    /** Server-confirmed removal is not a user Forget operation and must not fill Undo history. */
+    public synchronized boolean invalidateShulker(Location location){
+        SavedChest found=chests.get(location.key());
+        if(found==null||!found.location.kind.equals("Shulker box"))return false;
+        chests.remove(location.key());names.remove(location.key());changed();return true;
+    }
+    public synchronized List<SavedChest> shulkersInChunk(String dimension,int x,int z){
+        return chests.values().stream().filter(c->c.location.kind.equals("Shulker box")&&c.location.dimension.equals(dimension)
+                &&(c.location.x>>4)==x&&(c.location.z>>4)==z).toList();
+    }
 
     private static boolean validSelectionKey(String key){return key!=null&&key.length()<=160&&key.matches("[a-z0-9_.-]+:[a-z0-9_./-]+:-?[0-9]{1,11},-?[0-9]{1,11},-?[0-9]{1,11}");}
 
-    private void changed() { projects.get(activeProject).customSelection=customSelection;revision++; dirty=true; cachedCounts.clear(); }
+    private void changed() {
+        projects.get(activeProject).customSelection=customSelection;revision++;dirty=true;
+        countsReady=false;cachedCounts.clear();cachedOldest.clear();cachedOwners=null;
+        cachedGoals=cachedVisible=cachedStarred=cachedHud=null;
+    }
     private static String cleanName(String name) {
         String clean=name.replaceAll("[\\p{Cntrl}§]", "").strip();
         return clean.substring(0,Math.min(clean.length(),48));
@@ -190,22 +230,28 @@ public final class ChestMemoryStore {
     }
     public synchronized int materialPage(){return projects.get(activeProject).materialPage;}
     public synchronized void setMaterialPage(int value){projects.get(activeProject).materialPage=Math.max(0,value);}
-    public synchronized List<MaterialGoal> goals() { return List.copyOf(goals); }
-    public synchronized List<MaterialGoal> visibleGoals() { return goals.stream().filter(g -> !hiddenGoals.contains(g.itemId)).toList(); }
+    public synchronized List<MaterialGoal> goals() { if(cachedGoals==null)cachedGoals=List.copyOf(goals);return cachedGoals; }
+    public synchronized List<MaterialGoal> visibleGoals() { if(cachedVisible==null)cachedVisible=goals.stream().filter(g -> !hiddenGoals.contains(g.itemId)).toList();return cachedVisible; }
     /** Stars are priorities; unstarred visible goals fill the remaining HUD rows. */
     public synchronized List<MaterialGoal> starredGoals(int limit){
-        var selected=projects.get(activeProject).hudGoals;
-        if(selected==null)return List.of();
-        return selected.stream().map(id->goals.stream().filter(g->g.itemId.equals(id)).findFirst().orElse(null)).filter(Objects::nonNull).limit(Math.max(0,limit)).toList();
+        if(cachedStarred==null){
+            var selected=projects.get(activeProject).hudGoals;
+            cachedStarred=selected==null?List.of():selected.stream().map(id->goals.stream().filter(g->g.itemId.equals(id)).findFirst().orElse(null)).filter(Objects::nonNull).toList();
+        }
+        return cachedStarred.subList(0,Math.min(cachedStarred.size(),Math.max(0,limit)));
     }
     public synchronized List<MaterialGoal> hudGoals(int limit){
-        var shown=new ArrayList<>(starredGoals(limit));
-        for(var goal:visibleGoals())if(shown.size()<limit&&!shown.contains(goal))shown.add(goal);
-        return List.copyOf(shown);
+        if(cachedHud==null||cachedHudLimit!=limit){
+            var shown=new ArrayList<>(starredGoals(limit));
+            for(var goal:visibleGoals()){if(shown.size()>=limit)break;if(!shown.contains(goal))shown.add(goal);}
+            cachedHud=List.copyOf(shown);cachedHudLimit=limit;
+        }
+        return cachedHud;
     }
     public synchronized int additionalHudGoals(int limit){
         var shown=hudGoals(limit);
-        return (int)visibleGoals().stream().filter(goal->!shown.contains(goal)).count();
+        int visibleShown=0;for(var goal:shown)if(!hiddenGoals.contains(goal.itemId))visibleShown++;
+        return visibleGoals().size()-visibleShown;
     }
     public synchronized boolean isHudGoal(String id,int limit){return starredGoals(Integer.MAX_VALUE).stream().anyMatch(g->g.itemId.equals(id));}
     public synchronized boolean toggleHudGoal(String id,int limit){
@@ -278,25 +324,36 @@ public final class ChestMemoryStore {
         if(!selectedChests.remove(location.key())) selectedChests.add(location.key());
         changed();
     }
-    public synchronized int includedChestCount() { return customSelection?(int)selectedChests.stream().filter(chests::containsKey).count():chests.size(); }
+    public synchronized int includedChestCount() { return !customSelection?chests.size():countsReady?cachedIncluded:(int)selectedChests.stream().filter(chests::containsKey).count(); }
     public synchronized long chestCount(String itemId) {
-        Long cached=cachedCounts.get(itemId);if(cached!=null)return cached;
-        long count=0;
-        for(SavedChest chest:chests.values()) if(isIncluded(chest.location))
-            for(MemoryItem item:chest.items) if(item.id.equals(itemId)) count+=item.count;
-        cachedCounts.put(itemId,count);return count;
+        indexCounts();return cachedCounts.getOrDefault(itemId,0L);
+    }
+    /** One traversal serves all material rows and source ages until stored data changes. */
+    private void indexCounts(){
+        if(countsReady)return;
+        cachedCounts.clear();cachedOldest.clear();cachedIncluded=0;
+        for(var chest:chests.values())if(isIncluded(chest.location)){
+            cachedIncluded++;
+            for(var item:chest.items){
+                cachedCounts.merge(item.id,(long)item.count,Long::sum);
+                cachedOldest.merge(item.id,chest.lastSeen,Math::min);
+            }
+        }
+        countsReady=true;
     }
     public synchronized long countIn(Location location,String itemId) {
         SavedChest chest=chests.get(location.key());
-        return chest==null?0:chest.items.stream().filter(i -> i.id.equals(itemId)).mapToLong(MemoryItem::count).sum();
+        return chest==null?0:countItems(chest,itemId);
     }
+    private static long countItems(SavedChest chest,String itemId){long count=0;for(var item:chest.items)if(item.id.equals(itemId))count+=item.count;return count;}
 
     public synchronized List<SearchResult> search(String query, String dimension, BlockPos player) {
+        TextQuery parsed=TextQuery.of(query);
         List<SearchResult> results = new ArrayList<>();
         for (SavedChest chest : chests.values()) {
-            List<MemoryItem> matches = chest.items.stream().filter(item -> matches(item, query)).toList();
+            List<MemoryItem> matches = query.isBlank()?chest.items:chest.items.stream().filter(item -> parsed.matches(item.name,item.id,true)).toList();
             if (!query.isBlank() && matches.isEmpty()) {
-                if(!matches(new MemoryItem("stow:container",displayName(chest),1),query)) continue;
+                if(!parsed.matches(displayName(chest),"stow:container",true)) continue;
                 matches=chest.items;
             }
             results.add(new SearchResult(chest, matches.stream().mapToInt(MemoryItem::count).sum(), matches));
@@ -309,20 +366,11 @@ public final class ChestMemoryStore {
     }
 
     public static boolean matches(MemoryItem item, String query) {
-        String name = item.name.toLowerCase(Locale.ROOT);
-        String id = item.id.toLowerCase(Locale.ROOT);
-        for (String word : query.strip().toLowerCase(Locale.ROOT).split("\\s+")) {
-            if (word.startsWith("@")) {
-                if (!id.substring(0, id.indexOf(':')).contains(word.substring(1))) return false;
-            } else if (!name.contains(word) && !id.contains(word)) {
-                String singular = word.endsWith("s") && word.length() > 3 ? word.substring(0, word.length()-1) : word;
-                if (!name.contains(singular) && !id.contains(singular)) return false;
-            }
-        }
-        return true;
+        return TextQuery.of(query).matches(item.name,item.id,true);
     }
 
     /** Called on the dedicated saver thread; the main thread never waits for disk writes. */
+    public synchronized boolean needsSave(){return dirty;}
     public void save() throws IOException {
         synchronized(writeLock){saveSnapshot();}
     }

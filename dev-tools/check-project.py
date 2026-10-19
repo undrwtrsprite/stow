@@ -18,6 +18,8 @@ companion=json.loads((ROOT/'server-resources/fabric.mod.json').read_text(encodin
 require(companion['version']==meta['version'],'companion and client versions differ')
 require(companion['id']=='stow_companion' and companion['environment']=='*','invalid companion mod identity/environment')
 require(set(companion['depends'])=={'minecraft','fabricloader','fabric-api','java'},'companion must not depend on client UI libraries')
+for config in companion.get('mixins',[]):
+    require((ROOT/'server-resources'/config).is_file(),'companion mixin configuration is missing: '+config)
 for dependency in companion['depends']:
     require(companion['depends'][dependency]==meta['depends'][dependency],'companion dependency differs: '+dependency)
 for entrypoint in companion['entrypoints']['main']:
@@ -57,7 +59,13 @@ for name,is_server in [('stow',False),('stow-companion',True)]:
         require('dev/stow/stripping/protocol/OakHarvestProtocol.class' in files,'missing shared protocol: '+name)
         require('dev/stow/companion/protocol/ChestSortProtocol.class' in files,'missing chest-sort protocol: '+name)
         require('dev/stow/companion/protocol/MerchantTradeProtocol.class' in files,'missing merchant-trade protocol: '+name)
+        require('dev/stow/companion/protocol/StorageOwnerProtocol.class' in files,'missing storage-owner protocol: '+name)
+        require('dev/stow/companion/protocol/AreaClaimProtocol.class' in files,'missing area-claim protocol: '+name)
         if is_server:
+            require('dev/stow/companion/server/AreaClaimServer.class' in files,'missing companion area claims')
+            require('dev/stow/companion/server/StorageOwnerServer.class' in files,'missing companion ownership labels')
+            require('dev/stow/companion/server/mixin/MixinStoragePlacement.class' in files and 'dev/stow/companion/server/mixin/MixinStorageOwner.class' in files,'missing ownership persistence/placement hooks')
+            require('stow-companion.mixins.json' in files,'missing companion mixin configuration')
             require('dev/stow/stripping/server/OakHarvestServer.class' in files,'missing companion server')
             require('dev/stow/companion/server/ChestSortServer.class' in files,'missing companion chest sorting')
             require('dev/stow/companion/server/MerchantTradeServer.class' in files,'missing companion instant trading')

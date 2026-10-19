@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
-    @Inject(method="handleKeybinds",at=@At("HEAD"))
-    private void stow_attack(CallbackInfo ci){dev.stow.client.input.AttackAutomation.prepare((Minecraft)(Object)this);}
+    @Inject(method="handleKeybinds",at=@At("HEAD"),cancellable=true)
+    private void stow_attack(CallbackInfo ci){if(dev.stow.client.memory.AreaSelection.active()){ci.cancel();return;}dev.stow.client.input.AttackAutomation.prepare((Minecraft)(Object)this);}
     @Inject(method="pickBlockOrEntity",at=@At("HEAD"),cancellable=true)
     private void stow_pickTool(CallbackInfo ci){if(ToolPicker.pick((Minecraft)(Object)this))ci.cancel();}
 }

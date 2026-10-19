@@ -22,7 +22,7 @@ public final class ProjectsScreen extends MemoryScreenBase {
         layoutDialog(480);String draft=name==null?store.projectName():name.getValue();bodyWidth=contentWidth();left=contentLeft();listTop=workspaceTop();
         boolean split=bodyWidth>=480;listWidth=split?(bodyWidth-24)*2/5:bodyWidth-16;editorWidth=split?bodyWidth-listWidth-32:bodyWidth-16;editorX=split?left+listWidth+24:left+8;editorY=split?listTop+14:height-112;
         pageSize=Math.max(1,((split?height-38:editorY-20)-listTop)/28);
-        name=addRenderableWidget(new EditBox(font,editorX,editorY,editorWidth,22,Component.translatable("stow.need.project-name")));name.setMaxLength(48);name.setValue(draft);
+        name=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,editorX,editorY,editorWidth,22,Component.translatable("stow.need.project-name")));name.setMaxLength(48);name.setValue(draft);
         int w=(editorWidth-8)/3;
         create=addRenderableWidget(new PlannerButton(Component.translatable("stow.need.project-create"),b->{try{store.createProject(name.getValue());dev.stow.client.ui.UiNotifications.show("stow.feedback.project-created",store.projectName());error="";page=0;save();}catch(IllegalArgumentException e){error=e.getMessage();}},editorX,editorY+28,w,22,true));
         rename=addRenderableWidget(new PlannerButton(Component.translatable("stow.need.project-rename"),b->{try{store.renameProject(name.getValue());dev.stow.client.ui.UiNotifications.show("stow.feedback.project-renamed",store.projectName());error="";save();}catch(IllegalArgumentException e){error=e.getMessage();}},editorX+w+4,editorY+28,w,22,false));

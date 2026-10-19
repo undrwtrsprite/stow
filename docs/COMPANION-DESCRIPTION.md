@@ -2,7 +2,17 @@
 
 **Optional server support for Stow's instant bulk villager trading, fast chest sorting and connected-log harvesting.** For Minecraft **26.3 on Fabric**.
 
-Install the [Stow client](https://modrinth.com/mod/stow) for the inventory interface and controls. The companion adds three server features; it does not add its own client menus, HUDs, attack controls or Mending cycle.
+Install the [Stow client](https://modrinth.com/mod/stow) for the inventory interface and controls. The stable companion adds three server features; it does not add its own client menus, HUDs, attack controls or Mending cycle.
+
+## Player labels for storage — development client/companion only
+
+The unreleased **1.0.5 test client and matching companion** record who places vanilla/trapped chests, barrels and shulker boxes. The player's UUID/name is saved with the placed container in its chunk; removal/replacement removes the old association, and a moved box is labeled with its new placer. Existing storage is **Unclaimed**, not automatically assigned to the first opener.
+
+Stow's storage list displays and filters by player, Mine, Shared, Unclaimed and Mixed owners. Open storage, then choose **Rename → Storage owner** to claim older storage, mark your storage shared or restore its player label. Shared storage retains its assigning player's authority. Existing labels can be changed only by that player or an operator; mixed double chests require authority over both halves. Labels organize the list and do not lock containers, change project counts, grant access or share remembered contents with other players.
+
+The matching **test.6 or later development pair** also offers **Storage → Claim area**: use a detached local camera to select two block corners, review the box, then assign its older unclaimed storage to yourself without replacing blocks. This cannot recover historic placers. Every existing owner/Shared label is skipped, including for operators; double chests require both unclaimed halves inside the selection. The companion saves claims with the containers in their chunks. It does not discover unopened contents. The explicit finite scan never loads remote chunks: at most 262,144 positions, corners within 64 blocks per axis, eight simultaneous jobs/one per player, and a combined 512-position/eight-container budget per server tick. Cancel retains completed claims; moving more than eight blocks from the starting point, switching dimension or disconnecting stops the job. Unloaded positions are skipped.
+
+Individual label changes require the real supported storage menu to remain open, normal menu/access checks and a loaded container within eight blocks. Requests carry no item contents and never load remote chunks; the server handles at most 32 requests per player per 20 ticks. Labels refresh on opening or viewing nearby remembered storage; saved remote labels can be stale. Names reflect the last recorded name; UUIDs identify players. Ender chests, minecarts and custom containers are excluded. Clients without the matching companion keep normal features and last saved labels, with ownership editing unavailable. Full-modpack and dedicated multiplayer validation remain pending; this is not a published release.
 
 ## Trade your whole inventory instantly
 

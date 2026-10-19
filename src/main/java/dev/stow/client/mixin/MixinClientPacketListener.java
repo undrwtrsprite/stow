@@ -7,6 +7,10 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public abstract class MixinClientPacketListener {
+    @Inject(method="handleBlockUpdate",at=@At("TAIL"))
+    private void stow_shulkerBlock(ClientboundBlockUpdatePacket packet,CallbackInfo ci){dev.stow.client.memory.ShulkerMemory.updated(packet.getPos(),packet.getBlockState());}
+    @Inject(method="handleChunkBlocksUpdate",at=@At("TAIL"))
+    private void stow_shulkerSection(ClientboundSectionBlocksUpdatePacket packet,CallbackInfo ci){packet.runUpdates(dev.stow.client.memory.ShulkerMemory::updated);}
     @Inject(method="handleEntityEvent",at=@At("TAIL"))
     private void stow_toolBroken(ClientboundEntityEventPacket packet,CallbackInfo ci){var mc=net.minecraft.client.Minecraft.getInstance();if(packet.getEventId()==47&&mc.level!=null&&packet.getEntity(mc.level)==mc.player)dev.stow.client.inventory.ToolRefill.broke(mc);}
     @Inject(method="handleContainerSetSlot",at=@At("TAIL"))
@@ -16,5 +20,6 @@ public abstract class MixinClientPacketListener {
     @Inject(method="handleBlockChangedAck",at=@At("TAIL"))
     private void stow_stripped(ClientboundBlockChangedAckPacket packet,CallbackInfo ci){
         dev.stow.client.inventory.BulkStrip.acknowledged(net.minecraft.client.Minecraft.getInstance(),packet.sequence());
+        dev.stow.client.memory.ShulkerMemory.acknowledged(net.minecraft.client.Minecraft.getInstance(),packet.sequence());
     }
 }

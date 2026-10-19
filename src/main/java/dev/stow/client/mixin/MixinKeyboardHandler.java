@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinKeyboardHandler {
     @Inject(method="keyPress",at=@At("HEAD"),cancellable=true)
     private void stow_shortcut(long window,int action,KeyEvent event,CallbackInfo ci){
+        if(window==Minecraft.getInstance().getWindow().handle()&&dev.stow.client.memory.AreaSelection.key(action,event.key())){ci.cancel();return;}
         if(window==Minecraft.getInstance().getWindow().handle()
                 &&(action==1&&StowShortcuts.global(StowShortcuts.chord(event))
                 ||action==2&&StowShortcuts.bulkStripRepeat(StowShortcuts.chord(event))))ci.cancel();

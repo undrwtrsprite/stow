@@ -58,7 +58,7 @@ public final class MaterialsScreen extends MemoryScreenBase {
         },left+bodyWidth-120,toolbarY,28,22,true).icon(dev.stow.client.ui.UIIcons.Kind.PLUS));add.active=store!=null;add.setTooltip(Tooltip.create(Component.translatable("stow.need.add")));
         addRenderableWidget(new PlannerButton(Component.translatable("stow.import.open"),b->minecraft.gui.setScreen(new MaterialImportScreen(this,store)),left+bodyWidth-88,toolbarY,80,22,false)).active=store!=null;
         chests=addRenderableWidget(new PlannerButton(Component.empty(),b -> minecraft.gui.setScreen(new ChestMemoryScreen(this,store,"",true,null)),left+bodyWidth-120,toolbarY+24,112,22,false));
-        String query=search==null?"":search.getValue();search=addRenderableWidget(new EditBox(font,left+8,toolbarY+24,bodyWidth-134,22,Component.translatable("stow.need.search")));search.setMaxLength(80);search.setHint(Component.translatable("stow.need.search"));search.setValue(query);search.setResponder(v->{page=0;refresh();});
+        String query=search==null?"":search.getValue();search=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+8,toolbarY+24,bodyWidth-134,22,Component.translatable("stow.need.search")));search.setMaxLength(80);search.setHint(Component.translatable("stow.need.search"));search.setValue(query);search.setResponder(v->{page=0;refresh();});
         finish=addRenderableWidget(new PlannerButton(Component.empty(),b->{
             if(store==null)return;
             boolean finishing=!store.isFinished();
@@ -87,7 +87,7 @@ public final class MaterialsScreen extends MemoryScreenBase {
         widgets.forEach(this::removeWidget);widgets.clear();rows.clear();
         for(int i=page;i<Math.min(goals.size(),(page+pageSize));i++) {
             MaterialGoal goal=goals.get(i);int y=startY+(i-page)*ROW_HEIGHT,x=left+8;
-            EditBox amount=new EditBox(font,x+38,y+18,56,20,Component.translatable("stow.need.amount"));amount.setMaxLength(7);
+            EditBox amount=new dev.stow.client.ui.StowEditBox(font,x+38,y+18,56,20,Component.translatable("stow.need.amount"));amount.setMaxLength(7);
             amount.setValue(drafts.getOrDefault(goal.itemId(),Integer.toString(goal.target())));
             PlannerButton save=new PlannerButton(Component.translatable("stow.need.confirm-save"),b -> saveTarget(goal,amount),x+98,y+18,22,20,false).icon(dev.stow.client.ui.UIIcons.Kind.CHECK);
             amount.setResponder(value -> {drafts.put(goal.itemId(),value);save.active=parseAmount(value)>0 && parseAmount(value)!=goal.target();amount.setTextColor(parseAmount(value)>0?0xFFE9F0F3:0xFFFFAA91);amount.setTooltip(parseAmount(value)>0?null:Tooltip.create(Component.translatable("stow.need.amount-range")));});
@@ -187,6 +187,5 @@ public final class MaterialsScreen extends MemoryScreenBase {
         String range=listRange(page,pageSize,goals.size());
         graphics.text(font,range,left+(bodyWidth-font.width(range))/2,dialogHeight-46,0xFFAAAAAA);
         graphics.pose().popMatrix();super.extractRenderState(graphics,mx,my,delta);
-        if(search.isFocused()&&search.getValue().isEmpty())graphics.text(font,font.plainSubstrByWidth(Component.translatable("stow.need.search").getString(),search.getWidth()-16),search.getX()+8,search.getY()+7,0xFF777777);
     }
 }

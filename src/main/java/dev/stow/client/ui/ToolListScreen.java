@@ -20,7 +20,7 @@ public abstract class ToolListScreen extends MemoryScreenBase {
     protected void begin(int rowHeight,Component hint){
         layoutDialog(height);this.rowHeight=rowHeight;searchHint=hint;left=contentLeft();bodyWidth=contentWidth();pageSize=Math.max(1,(height-126)/rowHeight);
         String query=search==null?initialQuery:search.getValue();rowWidgets.clear();
-        search=addRenderableWidget(new EditBox(font,left+8,44,bodyWidth-16,22,hint));search.setHint(hint);search.setMaxLength(80);search.setValue(query);
+        search=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+8,44,bodyWidth-16,22,hint));search.setHint(hint);search.setMaxLength(80);search.setValue(query);
         addRenderableWidget(new PlannerButton(Component.translatable("gui.back"),b->onClose(),left+8,height-30,66,22,false));
         previous=addRenderableWidget(new PlannerButton(Component.literal("<"),b->{page-=pageSize;refresh();},left+bodyWidth-68,height-30,26,22,false));
         next=addRenderableWidget(new PlannerButton(Component.literal(">"),b->{page+=pageSize;refresh();},left+bodyWidth-36,height-30,26,22,false));
@@ -41,7 +41,6 @@ public abstract class ToolListScreen extends MemoryScreenBase {
     }
     @Override public void extractRenderState(GuiGraphicsExtractor g,int x,int y,float delta){
         super.extractRenderState(g,x,y,delta);
-        if(search!=null&&search.isFocused()&&search.getValue().isEmpty())g.text(font,font.plainSubstrByWidth(searchHint.getString(),search.getWidth()-16),search.getX()+10,search.getY()+7,0xFF777777);
     }
     @Override public boolean mouseScrolled(double x,double y,double horizontal,double vertical){
         if(vertical!=0&&x>=left&&x<left+bodyWidth&&y>=80&&y<height-38){page=scrollIndex(vertical,page,total,pageSize,1);refresh();return true;}

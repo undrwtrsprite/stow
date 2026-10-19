@@ -29,7 +29,7 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
     @Override protected void init(){
         panelWidth=Math.min(480,width-24);visible=Math.max(1,Math.min(6,(height-126)/28));panelHeight=96+visible*28;
         left=(width-panelWidth)/2;top=Math.max(12,(height-panelHeight)/2);rows.clear();
-        search=addRenderableWidget(new EditBox(font,left+10,top+30,panelWidth-20,22,Component.translatable("stow.palette.search")));
+        search=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,left+10,top+30,panelWidth-20,22,Component.translatable("stow.palette.search")));
         search.setMaxLength(80);search.setHint(Component.translatable("stow.palette.search"));search.setValue(lastQuery);
         search.setResponder(value->{selected=0;first=0;lastQuery=value;refresh();});refresh();setFocused(search);
     }
@@ -105,7 +105,6 @@ public final class CommandPaletteScreen extends MemoryScreenBase {
         else if(!commands.get(selected).enabled().getAsBoolean())g.text(font,Component.translatable(commands.get(selected).icon().equals("ui:DEPOSIT")?"stow.deposit.open-container":"stow.palette.unavailable"),left+10,top+55,0xFFFFC388);
         if(commands.size()>visible){int track=visible*28-2;int thumb=Math.max(12,track*visible/commands.size());int y0=top+66+(track-thumb)*first/Math.max(1,commands.size()-visible);g.fill(left+panelWidth-8,top+66,left+panelWidth-6,top+66+track,0xFF353535);g.fill(left+panelWidth-8,y0,left+panelWidth-6,y0+thumb,0xFFAAAAAA);}
         beginList(g);endList(g);super.extractRenderState(g,x,y,delta);
-        if(search.isFocused()&&search.getValue().isEmpty())g.text(font,font.plainSubstrByWidth(Component.translatable("stow.palette.search").getString(),panelWidth-36),search.getX()+8,search.getY()+7,0xFF777777);
     }
     private final class PaletteButton extends Button {
         private final Command command;private final int index;

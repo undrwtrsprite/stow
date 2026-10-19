@@ -32,7 +32,7 @@ public final class KeepAmountsScreen extends ToolListScreen {
         resetRows(results.size());
         for(int i=page;i<Math.min(results.size(),(page+pageSize));i++){
             var item=results.get(i);int y=rowY(i-page);
-            var amount=row(new EditBox(font,left+bodyWidth-108,y,64,22,Component.translatable("stow.keep.amount")));amount.setMaxLength(7);amount.setValue(draft.getOrDefault(item.id(),"0"));
+            var amount=row(new dev.stow.client.ui.StowEditBox(font,left+bodyWidth-108,y,64,22,Component.translatable("stow.keep.amount")));amount.setMaxLength(7);amount.setValue(draft.getOrDefault(item.id(),"0"));
             amount.setTextColor(parse(amount.getValue())<0?0xFFFFAA91:0xFFFFFFFF);
             amount.setResponder(value->{draft.put(item.id(),value);amount.setTextColor(parse(value)<0?0xFFFFAA91:0xFFFFFFFF);sync();});
             row(new PlannerButton(Component.literal("×"),b->{draft.remove(item.id());refresh();},left+bodyWidth-38,y,30,22,false));

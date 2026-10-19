@@ -99,7 +99,7 @@ public final class BulkStrip {
         HandRefill.cancel();message(mc,"started",batch.targets.size());return true;
     }
     public static void tick(Minecraft mc){
-        CompanionHarvest.tick(mc,Stow.config.bulkStrip&&ready(mc));
+        if(CompanionHarvest.busy())CompanionHarvest.tick(mc,Stow.config.bulkStrip&&ready(mc));
         var current=batch;if(current==null)return;
         if(!Stow.config.bulkStrip||!ready(mc)||mc.player!=current.player||mc.level!=current.level
                 ||mc.player.getInventory().getSelectedSlot()!=current.selected

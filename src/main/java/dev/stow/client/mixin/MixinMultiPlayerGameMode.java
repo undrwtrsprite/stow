@@ -51,10 +51,12 @@ public abstract class MixinMultiPlayerGameMode {
     @org.spongepowered.asm.mixin.Unique private int stow_selected;
     @Inject(method="useItemOn",at=@At("HEAD"))
     private void stow_beforePlacement(LocalPlayer player,InteractionHand hand,BlockHitResult hit,CallbackInfoReturnable<InteractionResult> ci){
+        dev.stow.client.memory.ShulkerMemory.prepare(player,hand,hit);
         stow_selected=player.getInventory().getSelectedSlot();stow_before=player.getItemInHand(hand).copy();
     }
     @Inject(method="useItemOn",at=@At("RETURN"))
     private void stow_afterPlacement(LocalPlayer player,InteractionHand hand,BlockHitResult hit,CallbackInfoReturnable<InteractionResult> ci){
+        dev.stow.client.memory.ShulkerMemory.placed(ci.getReturnValue());
         if(ci.getReturnValue().consumesAction())dev.stow.client.inventory.HandRefill.used(player,hand,stow_selected,stow_before);
         stow_before=net.minecraft.world.item.ItemStack.EMPTY;
     }

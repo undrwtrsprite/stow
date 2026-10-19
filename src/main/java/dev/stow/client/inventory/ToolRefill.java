@@ -68,6 +68,7 @@ public final class ToolRefill {
         if(eligible(item)){broken=item.copyWithCount(1);brokenSlot=selected;age=0;}
     }
     public static void tick(Minecraft mc){
+        if(!Stow.config.toolRefill){clear();return;}
         if(mc.player==null){clear();return;}var inventory=mc.player.getInventory();int selected=inventory.getSelectedSlot();
         if(!broken.isEmpty()){
             if(!Stow.config.toolRefill||Stow.config.toolRefillMode!=ToolRefillMode.AFTER_BREAK||selected!=brokenSlot||++age>40){broken=ItemStack.EMPTY;}
@@ -77,7 +78,7 @@ public final class ToolRefill {
         if(Stow.config.toolRefill&&Stow.config.toolRefillMode==ToolRefillMode.KEEP_ONE&&ready(mc)&&remaining(inventory.getSelectedItem())<=1)protect(mc,1);
         if(selected!=observedSlot){observed=ItemStack.EMPTY;observedSlot=selected;observedAge=0;}
         var held=inventory.getSelectedItem();
-        if(eligible(held)){observed=held.copy();observedAge=0;}
+        if(eligible(held)){if(!ItemStack.matches(observed,held))observed=held.copy();observedAge=0;}
         // The empty-slot update and break event may arrive on different client ticks.
         else if(!held.isEmpty()||++observedAge>40)observed=ItemStack.EMPTY;
     }

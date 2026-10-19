@@ -22,10 +22,11 @@ public final class StowClient implements ClientModInitializer {
         InventorySorting.register();
         MerchantTrading.register();
         dev.stow.client.ui.ShulkerPreview.register();
+        ShulkerMemory.register();StorageOwners.register();AreaClaims.register();AreaSelection.register();
         MaterialPlanner.register();ChestGlow.register();SurvivalDock.register();BuildingStockHud.register();dev.stow.client.ui.UiNotifications.register();
-        ClientTickEvents.START_CLIENT_TICK.register(dev.stow.client.input.AttackAutomation::tick);
+        ClientTickEvents.START_CLIENT_TICK.register(mc->{if(!AreaSelection.active())dev.stow.client.input.AttackAutomation.tick(mc);AreaSelection.tick(mc);ShulkerMemory.tick(mc);});
         ClientTickEvents.END_CLIENT_TICK.register(mc->{InventorySorting.tick(mc);SmartDeposit.tick(mc);MerchantTrading.tick(mc);AutoMending.tick(mc);HandRefill.tick(mc);dev.stow.client.inventory.ToolRefill.tick(mc);BulkStrip.tick(mc);ChestMemory.tick(mc);VersionChecker.tick(mc);});
-        ClientPlayConnectionEvents.DISCONNECT.register((handler,mc)->{dev.stow.client.input.AttackAutomation.stop(mc);AutoMending.clear();InventorySorting.cancel();SmartDeposit.cancel();MerchantTrading.cancel();HandRefill.cancel();dev.stow.client.inventory.ToolRefill.clear();BulkStrip.cancel();SurvivalDock.clear();ChestMemory.disconnect();});
+        ClientPlayConnectionEvents.DISCONNECT.register((handler,mc)->{dev.stow.client.input.AttackAutomation.stop(mc);AutoMending.clear();InventorySorting.cancel();SmartDeposit.cancel();MerchantTrading.cancel();HandRefill.cancel();dev.stow.client.inventory.ToolRefill.clear();BulkStrip.cancel();SurvivalDock.clear();AreaClaims.clear();StorageOwners.clear();ChestMemory.disconnect();});
         ClientLifecycleEvents.CLIENT_STOPPING.register(mc->{dev.stow.client.input.AttackAutomation.stop(mc);AutoMending.stop(mc);AutoMending.clear();InventorySorting.cancel();SmartDeposit.cancel();MerchantTrading.cancel();HandRefill.cancel();BulkStrip.cancel();ChestMemory.stop();});
     }
 }

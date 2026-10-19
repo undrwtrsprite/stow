@@ -16,13 +16,19 @@ import net.minecraft.world.item.ItemStack;
 public final class SurvivalDock {
     public record Row(ItemStack icon,String label,int color) {}
     public record Bounds(int x,int y,int width,int height,float scale) {}
+    private record Rows(List<Row> equipment,List<Row> project) {}
+    private static Rows cachedRows;
+    private static Object cachedPlayer,cachedStore,cachedConfig;
+    private static long cachedRevision,nextRowsUpdate;
+    private static int cachedOptions;
+    private static int cachedThreshold;
     private SurvivalDock(){}
     public static void register(){HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,Identifier.fromNamespaceAndPath("stow","survival_dock"),(g,delta)->{
         var mc=Minecraft.getInstance();if(mc.player==null||mc.gui.screen()!=null||mc.gui.hud.isHidden())return;
         draw(g,ChestMemory.currentStore());
     });}
     public static void notice(String key,Object... values){dev.stow.client.ui.UiNotifications.show(key,values);}
-    public static void clear(){dev.stow.client.ui.UiNotifications.clear();}
+    public static void clear(){cachedRows=null;cachedPlayer=cachedStore=cachedConfig=null;dev.stow.client.ui.UiNotifications.clear();}
     public static List<Row> equipmentRows(){
         var mc=Minecraft.getInstance();var rows=new ArrayList<Row>();
         if(Stow.config.equipmentWatch&&mc.player!=null){var entries=EquipmentWatch.hudEntries(mc.player.getInventory()).stream().filter(entry->Stow.config.equipmentAll||entry.low()).toList();
@@ -50,9 +56,24 @@ public final class SurvivalDock {
         return new Bounds(x,y,w,h,scale);
     }
     public static void draw(GuiGraphicsExtractor g,ChestMemoryStore store){
-        var equipment=equipmentRows();
+        var rows=renderRows(store);var equipment=rows.equipment();
         if(Stow.config.dockEnabled)drawRows(g,equipment,null,Stow.config.dockCorner,Stow.config.dockOffsetX,Stow.config.dockOffsetY,Stow.config.dockScale,Stow.config.dockAlignment);
-        var project=projectRows(store);if(!project.isEmpty())drawRows(g,project,Component.literal(store.projectName()),Stow.config.projectCorner,Stow.config.projectOffsetX,Stow.config.projectOffsetY,Stow.config.projectScale,Stow.config.projectAlignment);
+        var project=rows.project();if(!project.isEmpty())drawRows(g,project,Component.literal(store.projectName()),Stow.config.projectCorner,Stow.config.projectOffsetX,Stow.config.projectOffsetY,Stow.config.projectScale,Stow.config.projectAlignment);
+    }
+    /** Counts change on game ticks; retain rows between frames, including at high FPS. */
+    private static Rows renderRows(ChestMemoryStore store){
+        var mc=Minecraft.getInstance();var config=Stow.config;long now=System.nanoTime();
+        long revision=store==null?0:store.revision();
+        int options=(config.dockRows<<6)|(config.dockEnabled?1:0)|(config.equipmentWatch?2:0)
+                |(config.equipmentAll?4:0)|(config.equipmentPercent?8:0)|(config.dockMaterials?16:0)|(config.dockFinished?32:0);
+        if(cachedRows==null||now>=nextRowsUpdate||cachedPlayer!=mc.player||cachedStore!=store
+                ||cachedConfig!=config||cachedRevision!=revision||cachedOptions!=options||cachedThreshold!=config.equipmentThreshold){
+            cachedRows=new Rows(config.dockEnabled?equipmentRows():List.of(),projectRows(store));
+            cachedPlayer=mc.player;cachedStore=store;cachedConfig=config;cachedRevision=revision;cachedOptions=options;
+            cachedThreshold=config.equipmentThreshold;
+            nextRowsUpdate=now+50_000_000L;
+        }
+        return cachedRows;
     }
     public static int contentWidth(List<Row> rows,Component heading){
         var font=Minecraft.getInstance().font;int width=1;

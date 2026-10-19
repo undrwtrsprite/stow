@@ -19,7 +19,7 @@ public final class ChestRenameScreen extends MemoryScreenBase {
         layoutDialog(height);
         String value=name==null?store.customName(chest.location()):name.getValue();
         int w=Math.min(480,contentWidth()-16),x=contentLeft()+(contentWidth()-w)/2,y=height/2;
-        name=addRenderableWidget(new EditBox(font,x,y-10,w,22,title));name.setMaxLength(48);name.setValue(value);
+        name=addRenderableWidget(new dev.stow.client.ui.StowEditBox(font,x,y-10,w,22,title));name.setMaxLength(48);name.setValue(value);
         name.setHint(Component.literal(chest.title()));setFocused(name);
         addRenderableWidget(PlannerButton.plan(Component.translatable("stow.memory.save-name"),b -> {
             store.rename(chest.location(),name.getValue());ChestMemory.saveLater(store);dev.stow.client.ui.UiNotifications.show("stow.feedback.chest-renamed");onClose();
@@ -27,6 +27,7 @@ public final class ChestRenameScreen extends MemoryScreenBase {
         addRenderableWidget(PlannerButton.plan(Component.translatable("stow.memory.reset-name"),b -> {
             store.rename(chest.location(),"");ChestMemory.saveLater(store);dev.stow.client.ui.UiNotifications.show("stow.feedback.chest-renamed");onClose();
         }).pos(x+(w+8)/2,y+20).size((w-8)/2,22).build());
+        addRenderableWidget(new PlannerButton(Component.translatable("stow.owner.title"),b->minecraft.gui.setScreen(new ChestOwnerScreen(this,store,chest.location())),x,y+50,w,22,false));
         addRenderableWidget(PlannerButton.plan(Component.translatable("gui.back"),b -> onClose()).pos(contentLeft()+8,height-30).size(66,22).build());
     }
     @Override public boolean keyPressed(KeyEvent event){if(name.isFocused() && (event.key()==InputConstants.KEY_RETURN || event.key()==InputConstants.KEY_NUMPADENTER)){store.rename(chest.location(),name.getValue());ChestMemory.saveLater(store);dev.stow.client.ui.UiNotifications.show("stow.feedback.chest-renamed");onClose();return true;}return super.keyPressed(event);}
@@ -39,6 +40,5 @@ public final class ChestRenameScreen extends MemoryScreenBase {
         graphics.textWithWordWrap(font,notice,left+8,height/2-54,bodyWidth-16,0xFFACB9BA);
         MemoryItems.drawPreview(graphics,chest.items(),sidebarWidth()+(width-sidebarWidth())/2-65,height/2-36,5,mx,my);
         super.extractRenderState(graphics,mx,my,delta);
-        if(name.isFocused()&&name.getValue().isEmpty())graphics.text(font,font.plainSubstrByWidth(chest.title(),name.getWidth()-16),name.getX()+8,name.getY()+7,0xFF777777);
     }
 }
