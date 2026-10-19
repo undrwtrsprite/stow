@@ -4,14 +4,12 @@
 
 Paste a materials list, find what you already own, gather the rest and keep track while you build. Sort chests, move stacks, refill blocks and rockets, preview shulkers, trade with villagers and repair your Mending tools without a collection of separate inventory utilities.
 
-**Stow 1.0.4** adds trading from the whole inventory, optional instant trades with the companion, automatic attack, shulker previews and auto-mending. Earlier feature checks ran in an isolated Minecraft client/server; the 1.0.4 villager refill follow-up has only been compiled and awaits in-game validation. Individual modpacks, server restrictions and protection mods still need compatibility testing.
-
-The **unreleased 1.0.5 test client** includes the performance improvements, Mouse Tweaks drag compatibility, shulker placement/removal tracking and colored storage cards described below. These changes are not yet part of the published stable release.
+**Stow 1.0.5** adds storage owner labels with an Owner filter, Claim area with a free camera for older storage, and a compact storage list with container icons. The floating material list no longer covers your status effects. The release also includes a performance pass, shulker memory fixes, a new equipment HUD order and a Mouse Tweaks Shift-drag fix. Storage owner labels and Claim area need the updated 1.0.5 companion; the rest works with the client alone. Features were checked in an isolated Minecraft client/server. Individual modpacks, dedicated servers and protection mods still need compatibility testing.
 
 ## Keep your inventory in order
 
 - **Five sort orders:** creative catalogue, name, quantity, item type and combine-only. Middle-click sorts; Shift and Ctrl select your alternate orders.
-- **Move several stacks:** Shift-drag matching items, or use Ctrl + Shift-drag for every crossed item in Both mode. Result slots are excluded from drag gestures to prevent accidental crafting or trading.
+- **Move several stacks:** Shift-drag matching items, or use Ctrl + Shift-drag for every crossed item in Both mode. With Mouse Tweaks installed, Stow's drags keep their Matching filter, and Mouse Tweaks' other gestures and wheel actions keep working. Result slots are excluded from drag gestures to prevent accidental crafting or trading.
 - **Search and pin:** find inventory items and pin positions you want sorting, drag and deposit actions to leave alone. Ordinary Shift-transfers can also avoid pinned destinations.
 - **Smart deposit:** move items into open storage immediately, with matching-only transfers, keep amounts and hotbar protection.
 - **Quick bundles:** Shift-left-drag to fill a held bundle, Shift-right-drag to unpack it, or drag from a placed bundle. Capacity, item components and pinned positions are respected.
@@ -19,11 +17,24 @@ The **unreleased 1.0.5 test client** includes the performance improvements, Mous
 
 ## Remember your storage
 
-Stow remembers snapshots of chests, barrels and shulker boxes you open. The development client also remembers the known contents of a shulker you place once the server confirms it, removes entries for observed removed boxes and reconciles stale shulker positions when their chunks load. All storage cards show their container icon. Shulkers have matching dye-color icons and tinted storage cards; older unknown-color records use a neutral style until refreshed. Search snapshots, rename storage, review contents and highlight the chests holding a material through walls. Right-click a floating material counter to show or stop its source glow. In the player inventory, the floating material list moves below active potion/status effects to keep them readable, including with the recipe book open; tight layouts retain scrolling or the Materials button.
+Stow remembers snapshots of chests, barrels and shulker boxes you open. Search those snapshots, rename storage, review contents and highlight the chests holding a material through walls. Right-click a floating material counter to show or stop its source glow.
 
-With the matching **unreleased 1.0.5 companion**, newly placed chests, barrels and shulkers gain a player label. The storage list can filter by player, Mine, Shared or Unclaimed. Open older storage and use **Rename → Storage owner** to claim it or mark it shared. Only its owner or an operator can change an existing label; labels do not lock storage or alter project totals. Different owners on double-chest halves appear as Mixed owners. For existing storage, **Storage → Claim area** lets you fly a local camera, select two block corners and review a one-time claim of unassigned containers. Existing owners and Shared labels are preserved; claims are saved by the companion with the server containers. This assigns a label rather than recovering historic placers. Only loaded chunks are visited, in bounded server-tick batches, with at most 262,144 positions and corners within 64 blocks per axis of your character. Escape exits selection; cancelling a scan retains its completed claims. Unknown container contents still require opening. Existing remote labels reflect the last observation. Labels and the player filter catalogue are cached; they add no per-frame ownership scans or network polling, and label updates retain cached material totals. This feature needs the updated companion on the server (or locally in single-player); ordinary memory and the other client features still work without it.
+- **Compact storage list:** denser cards in up to three columns, with a chest, barrel or shulker icon on every card. Shulker cards take the box's dye color; undyed and older unknown-color entries use a neutral style until refreshed.
+- **Shulker tracking:** a shulker you place is remembered from its known contents once the server confirms it. Picked-up or moved boxes are removed instead of leaving stale entries or duplicate totals.
+- **Status effects stay visible:** in the player inventory, the floating material list moves below active potion/status effects, including with the recipe book open. Tight layouts keep scrolling or the Materials button.
 
-Memory reflects the last opening or confirmed placement from your known shulker item contents. It cannot inspect hidden server contents or reliably identify an identical-color replacement made while unobserved; reopen to refresh those contents. Real identical boxes at different positions remain separate. Forgetting a snapshot keeps its project selection; reopening refreshes its contents. Undo restores manually forgotten entries; server-confirmed shulker removal does not create Undo history.
+Memory reflects the last time you opened a container or confirmed a shulker placement. It cannot inspect unopened storage or see somebody else's changes until you reopen it. Forgetting a snapshot keeps its project selection; reopening refreshes its contents. Undo restores forgotten entries.
+
+## Label and claim your storage (companion)
+
+With the **updated 1.0.5 companion** on the server, or locally in single-player:
+
+- **Storage owner labels:** newly placed chests, trapped chests, barrels and shulker boxes are labeled with the player who placed them. Cards show a player, **Shared**, **Unclaimed** or **Mixed** owners for double chests with different owners.
+- **Owner filter:** cycle the storage and project storage-selection lists through Everyone, Mine, Shared, Unclaimed, Mixed and individual players. Project totals are not affected.
+- **Change a label:** open the storage and use **Rename → Storage owner** to claim unclaimed storage, mark it Shared or restore its player label. Only the labeling player or an operator can change an existing label.
+- **Claim area:** use **Storage → Claim area → Fly and select corners** to fly a local free camera (W/A/S/D, Space, Shift, Ctrl), left-click two block corners, review the box and claim its unclaimed storage in one step. Existing owners and Shared labels are always kept. The companion visits only loaded chunks, up to 262,144 positions, with corners within 64 blocks of you on each axis. Cancelling keeps the claims already made.
+
+Existing storage starts **Unclaimed**; opening it does not claim it. Labels organize your list. They do not lock containers, grant access, reveal unopened contents or identify who originally placed older storage. Without the updated companion, Stow keeps working and shows labels you have already seen, but you can't edit them.
 
 ## Turn a materials list into a build plan
 
@@ -41,11 +52,11 @@ The paper icon copies every saved target as plain text with exact item IDs, read
 - **Block-count HUD:** see your remaining building stock beside the hotbar or place the counter elsewhere.
 - **Tool selection:** middle-click a world block to choose a suitable hotbar tool. **Alt + T** toggles automatic mining-tool selection, which starts off. Hold Sneak to keep your own choice temporarily.
 - **Tool replacement:** replace worn main-hand tools from inventory using **Keep 1 durability** or **After break**. Keep 1 preserves the old tool and blocks a damaging use without a suitable spare. Pinned spares, armor and offhand equipment are excluded from this replacement feature.
-- **Equipment HUD:** watch hotbar-tool and worn-armor durability as remaining points or percentage only. The development client orders hotbar equipment from left to right, then armor from helmet to boots, with warning filtering and colors preserved. The detailed equipment screen also shows backpack and offhand gear and retains durability ordering.
+- **Equipment HUD:** watch hotbar-tool and worn-armor durability as remaining points or percentage only. Equipment appears in hotbar order from left to right, then armor from helmet to boots. The detailed equipment screen also shows backpack and offhand gear, sorted by durability.
 
 ## Trade from your whole inventory
 
-**Shift + left-click the villager's output** to keep trading the selected offer, refilling both payment inputs from your main inventory and hotbar between batches. It stops when materials, villager stock or inventory space run out. Another click, a keypress, scrolling or closing the menu stops further batches.
+**Shift + left-click the villager's output** to keep trading the selected offer, topping up both payment slots in place from your main inventory and hotbar, including partial stacks and two-item costs. It stops when materials, villager stock or inventory space run out. Another click, a keypress, scrolling or closing the menu stops further batches.
 
 **With the updated Stow companion, these bulk trades complete instantly in one server operation.** Without it, Stow repeats normal transactions at a paced rate. Both paths stop at stock, payment and inventory-space limits, with at most 128 batches per gesture. The server controls all prices, experience and item matching. Instant work already completed cannot be cancelled afterward. Servers can disable acceleration with `instantVillagerTrading=false` in `config/stow-companion.properties` and a restart. Missing replies time out after five seconds without replay. Custom merchant menus use the client fallback. As with vanilla merchant selection and output transfers, payments and results can use pinned inventory positions. Other recipe outputs keep their normal Shift-click behavior.
 
@@ -61,12 +72,14 @@ The selected main-hand slot remains available for farming, and pinned donor posi
 
 Toggle again to stop. Opening a menu or chat, switching away from the game, pausing, dying, spectator mode or disconnecting stops it and releases held Attack. It stays off when you return.
 
-## Optional companion: faster sorting and connected logs
+## Optional companion: faster sorting, connected logs and storage labels
 
 The **Stow client works without a server-side Stow installation**. Add the separate [stow companion](https://modrinth.com/mod/stow-companion) for:
 
+- **Instant trades:** whole-inventory villager trades complete in one server operation (see above).
 - **Fast chest sorting:** supported vanilla chests, trapped/double chests, barrels, ender chests and shulker boxes sort in one validated server operation. The server checks the current contents, permissions, stack limits and exact item/component totals; player inventory and cursor stay untouched. Custom menus, older companions and oversized requests keep the normal client queue. Requests are bounded to 54 storage slots and 24 KiB. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart.
 - **Connected-log harvesting:** hold an axe, aim at an unstripped log and press **Alt + S**. The companion strips and then harvests the connected group of the same type, including all vanilla logs and Nether stems. Tall columns, long rows and dense piles are supported; the configurable count limit defaults to **16,384 logs**. Reach, loaded chunks, permissions, durability and normal loot rules apply. Press again to cancel. Without the companion, Alt + S only strips nearby visible logs and does not harvest them.
+- **Storage owner labels and Claim area (new in 1.0.5):** placer labels, label editing and area claims for older storage, as described above. These need companion 1.0.5.
 
 For single-player, install both JARs locally to enable these companion features. Exact compatibility with individual Timber, storage or protection mods is not guaranteed.
 
@@ -76,6 +89,8 @@ Open the command palette with **Ctrl + K**. Change shortcuts, sorting defaults a
 
 Common controls: **P** pins a hovered slot, **N** tracks a material and **H** prioritizes a hovered floating material counter. New attack and mending toggles start off. All listed shortcuts can be edited or unbound.
 
+Stow 1.0.5 also does less repeated work in inventory menus and HUDs. Storage totals, searches and previews are calculated once per change instead of every frame, and owner labels add no per-frame checks.
+
 ## Install
 
 For **Minecraft 26.3**:
@@ -83,9 +98,9 @@ For **Minecraft 26.3**:
 1. Install **Java 25+**, **Fabric Loader 0.19.5+**, **Fabric API 0.161.0+26.3** and **Cloth Config 26.3.159+**.
 2. Put the Stow **client** JAR in your client's `mods` folder. Replace older Stow JARs and **remove Mouse Wheelie**; the two mods are incompatible.
 3. Optionally install **Mod Menu 21.0.0** for access to settings.
-4. For companion features, put the separate companion JAR and Fabric API on the server. In single-player, put both Stow JARs in the client. The companion does not need Cloth Config or Mod Menu.
+4. For companion features, put the separate companion JAR and Fabric API on the server. Update it to 1.0.5 for storage owner labels and Claim area. In single-player, put both Stow JARs in the client. The companion does not need Cloth Config or Mod Menu.
 
-Existing Stow projects, chest memories, goals, selected chests and priorities are retained. Removing Stow stops its features; keep `config/stow/` if you want your saved plans and memories for a later reinstall. Client-only inventory helpers do not require the companion. Servers can impose their own restrictions on automated actions.
+Existing Stow projects, chest memories, goals, selected chests and priorities are retained; 1.0.5 needs no migration. Removing Stow stops its features; keep `config/stow/` if you want your saved plans and memories for a later reinstall. Client-only inventory helpers do not require the companion. Servers can impose their own restrictions on automated actions.
 
 Stow checks public GitHub, Modrinth and CurseForge release listings for updates and shows a clickable notice. Those checks send no player, world, server or account data. Pending moderation can delay update notices.
 
