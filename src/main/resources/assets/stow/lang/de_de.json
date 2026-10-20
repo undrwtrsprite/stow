@@ -836,6 +836,7 @@
   "stow.ui.containers.claim": "Bereich beanspruchen…",
   "stow.ui.containers.claim-short": "Beanspruchen…",
   "stow.ui.containers.claim-tip": "Bereich mit der Kamera wählen; der Server beansprucht die Behälter darin",
+  "stow.ui.containers.needs-companion": "Besitz braucht Stow Companion auf dem Server",
   "stow.ui.containers.in": "Zählt",
   "stow.ui.containers.out": "Zählt nicht",
   "stow.ui.containers.detail.where": "Position",

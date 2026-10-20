@@ -49,7 +49,7 @@ public final class InventoryStrip {
         }
         return out;
     }
-    public static int legendWidth(){var font=Minecraft.getInstance().font;int w=0;for(var e:legend())w=Math.max(w,font.width(e.key())+10+font.width(e.action()));return Math.max(w,font.width(Component.translatable("stow.strip.legend.title")))+12;}
+    public static int legendWidth(){var font=Minecraft.getInstance().font;int keyW=0,actW=0;for(var e:legend()){keyW=Math.max(keyW,font.width(e.key()));actW=Math.max(actW,font.width(e.action()));}return Math.max(keyW+8+actW+12,font.width(Component.translatable("stow.strip.legend.title").getString())+12);}
     public static int legendHeight(){return 16+legend().size()*10+4;}
     public static void drawLegend(GuiGraphicsExtractor g,int x,int y){
         var font=Minecraft.getInstance().font;var entries=legend();int w=legendWidth(),h=legendHeight();

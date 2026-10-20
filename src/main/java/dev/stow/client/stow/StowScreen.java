@@ -763,7 +763,7 @@ public final class StowScreen extends Screen {
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.distance").getString(),d>=0?distance(d):shortDimension(loc.dimension()));y+=11;
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.seen").getString(),ChestMemoryStore.age(chest.lastSeen()));y+=11;
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.owner").getString(),StorageOwners.label(chest));y+=11;
-        if(!AreaClaims.available()){text(g,Component.translatable("stow.owner.requires-companion").getString(),x,y,iw,DIM);y+=11;}
+        if(!AreaClaims.available()){text(g,Component.translatable("stow.ui.containers.needs-companion").getString(),x,y,iw,DIM);y+=11;}
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.project",store.projectName()).getString(),Component.translatable(store.isIncluded(loc)?"stow.ui.containers.in":"stow.ui.containers.out").getString());y+=11;
         if(StowIndex.stale(chest)){text(g,Component.translatable("stow.ui.containers.detail.stale").getString(),x,y,iw,OCHRE);y+=11;}
         y+=4;section(g,Component.translatable("stow.ui.containers.detail.contents",chest.items().size()).getString(),x,y);y+=10;
@@ -809,7 +809,7 @@ public final class StowScreen extends Screen {
         int index=showingNow?-1:rowAt(mx,my);
         if(index>=0){
             select(index,false);
-            if(event.button()==1&&rows.get(index).kind()==Kind.ITEM){activate(true);return true;}
+            if(event.button()==InputConstants.MOUSE_BUTTON_RIGHT&&rows.get(index).kind()==Kind.ITEM){activate(true);return true;}
             if(twice||rows.get(index).kind()==Kind.MORE)activate(false);else if(!wide)openDetail();
             return true;
         }

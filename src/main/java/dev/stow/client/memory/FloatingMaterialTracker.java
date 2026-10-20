@@ -54,8 +54,9 @@ public final class FloatingMaterialTracker extends AbstractWidget {
         renderOffset=motion.offset();
         String header=store==null?"":allDone?Component.translatable("stow.strip.project-done",store.projectName()).getString():Component.translatable("stow.strip.project-missing",store.projectName(),goals.size()).getString();
         graphics.text(font,font.plainSubstrByWidth(header,width),getX(),getY()+1,allDone?0xFF8FB58A:0xFFC9A548);
-        graphics.pose().pushMatrix();graphics.pose().translate(0,HEADER);
+        // The scissor follows the pose, so set it before shifting the rows below the header.
         graphics.enableScissor(getX(),getY()+HEADER,getRight(),getY()+HEADER+shown.size()*22);
+        graphics.pose().pushMatrix();graphics.pose().translate(0,HEADER);
         graphics.pose().pushMatrix();graphics.pose().translate(0,renderOffset);my-=HEADER;
         for(int i=0;i<shown.size();i++) {
             MaterialGoal goal=shown.get(i);var progress=MaterialPlanner.progress(store,goal);int y=getY()+i*22;
@@ -84,7 +85,7 @@ public final class FloatingMaterialTracker extends AbstractWidget {
                 PlannerTooltips.show(graphics,mx,my,lines.toArray(Component[]::new));
             }
         }
-        graphics.pose().popMatrix();graphics.disableScissor();graphics.pose().popMatrix();
+        graphics.pose().popMatrix();graphics.pose().popMatrix();graphics.disableScissor();
         if(footer)graphics.text(font,(offset+1)+"–"+Math.min(goals.size(),offset+rows)+" / "+goals.size(),getX(),getY()+HEADER+shown.size()*22+2,0xFFBDC6CC);
     }
     private void drawCount(GuiGraphicsExtractor graphics,String text,int y,int color){

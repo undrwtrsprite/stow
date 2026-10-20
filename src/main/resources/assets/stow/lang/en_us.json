@@ -836,6 +836,7 @@
   "stow.ui.containers.claim": "Claim an area…",
   "stow.ui.containers.claim-short": "Claim…",
   "stow.ui.containers.claim-tip": "Select an area with the camera; the server claims the containers in it",
+  "stow.ui.containers.needs-companion": "Ownership needs Stow Companion on the server",
   "stow.ui.containers.in": "Counted",
   "stow.ui.containers.out": "Not counted",
   "stow.ui.containers.detail.where": "Position",

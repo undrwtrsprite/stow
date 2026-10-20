@@ -343,7 +343,9 @@ public final class SettingsScreen extends Screen {
             if(hover)help=action.description();
             return;
         }
-        String keep=line.keepId();if(keep==null||keep.startsWith("#"))return;
+        String keep=line.keepId();
+        if("#open".equals(keep)){text(g,Component.translatable("stow.keep.title").getString(),x,y+8,labelW,CREAM);return;}
+        if(keep==null||keep.startsWith("#"))return;
         String id=keep.startsWith("+")?keep.substring(1):keep;
         g.item(MemoryItems.icon(id),x,y+4);text(g,MemoryItems.name(id),x+20,y+8,labelW-20,keep.startsWith("+")?MUTED:CREAM);
         if(hover)help=Component.translatable("stow.keep.hint");
@@ -379,6 +381,11 @@ public final class SettingsScreen extends Screen {
         if(getFocused()==search&&(event.key()==InputConstants.KEY_DOWN||event.key()==InputConstants.KEY_TAB)&&!body.isEmpty()){
             for(var wd:body)if(!(wd instanceof EditBox)||wd!=keepAdd){setFocused(wd);return true;}}
         return super.keyPressed(event);
+    }
+    /** Typing with a button or nothing focused goes to the search, as in the Stow screen. */
+    @Override public boolean charTyped(CharacterEvent event){
+        if(waiting==null&&!(getFocused() instanceof EditBox)){setFocused(search);search.moveCursorToEnd(false);return search.charTyped(event);}
+        return super.charTyped(event);
     }
     @Override public void onClose(){
         Stow.config.save();setFocused(null);Screen back=parent;

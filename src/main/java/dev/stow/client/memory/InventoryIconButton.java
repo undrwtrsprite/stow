@@ -23,6 +23,9 @@ public final class InventoryIconButton extends Button {
             case HUD->UIIcons.Kind.STAR;case LEGEND->UIIcons.Kind.KEYBOARD;case STOP_GLOW->UIIcons.Kind.EYE_OFF;
             case DRAG->switch(Stow.config.dragMode){case MATCHING_ONLY->UIIcons.Kind.COPY;case ALL_ITEMS->UIIcons.Kind.GRID;case BOTH->UIIcons.Kind.BOTH;};
         };
+        if(kind==Kind.LEGEND){ // a plain "?" reads as help at every GUI scale
+            var font=net.minecraft.client.Minecraft.getInstance().font;
+            g.text(font,"?",getX()+(getWidth()-font.width("?"))/2+1,getY()+(getHeight()-8)/2,selected?0xFFC9A548:0xFFEFE6CF);return;}
         int color=!active?0xFF737A80:kind==Kind.HUD?(selected?0xFFFFD486:0xFF999999):kind==Kind.STOP_GLOW?0xFFC9A548:0xFFE7ECEF;
         int x=getX()+(getWidth()-UIIcons.SIZE)/2,y=getY()+(getHeight()-UIIcons.SIZE)/2;
         UIIcons.draw(g,icon,x,y,color);
