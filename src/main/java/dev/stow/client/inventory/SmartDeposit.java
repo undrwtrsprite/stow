@@ -22,10 +22,11 @@ public final class SmartDeposit {
     }
     private static Session active;
     private static AbstractContainerScreen<?> owner;
+    private static String doneKey="stow.deposit.done",stoppedKey="stow.deposit.stopped";
     private SmartDeposit(){}
     public static boolean supported(AbstractContainerMenu menu){return menu instanceof ChestMenu||menu instanceof ShulkerBoxMenu;}
     public static boolean busy(AbstractContainerMenu menu){return active!=null&&active.menu==menu;}
-    public static void cancel(){active=null;owner=null;}
+    public static void cancel(){active=null;owner=null;doneKey="stow.deposit.done";stoppedKey="stow.deposit.stopped";}
     public static String itemId(ItemStack stack){return BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();}
     public static Plan plan(AbstractContainerMenu menu,Player player,Map<String,Integer> keep,boolean protectHotbar){
         return plan(menu,player,keep,protectHotbar,true);
@@ -67,6 +68,13 @@ public final class SmartDeposit {
         if(plan.amount()==0){feedback(emptyReason(menu,Stow.config.depositKeepHotbar,Stow.config.depositMatchingOnly));return false;}
         owner=screen;active=new Session(menu,plan,(slot,button)->mc.gameMode.handleContainerInput(menu.containerId,slot,button,ContainerInput.PICKUP,mc.player));return true;
     }
+    /** Runs another verified pickup plan (e.g. Take missing) through the same guarded session. */
+    public static boolean startTransfer(AbstractContainerScreen<?> screen,Plan plan,String done,String stopped){
+        var mc=Minecraft.getInstance();var menu=screen.getMenu();
+        if(mc.player==null||mc.gameMode==null||InventorySorting.busy(menu)||busy(menu)||!menu.getCarried().isEmpty()||plan.amount()==0)return false;
+        owner=screen;doneKey=done;stoppedKey=stopped;
+        active=new Session(menu,plan,(slot,button)->mc.gameMode.handleContainerInput(menu.containerId,slot,button,ContainerInput.PICKUP,mc.player));return true;
+    }
     public static String emptyReason(AbstractContainerMenu menu,boolean hotbar,boolean matching){
         var mc=Minecraft.getInstance();if(!menu.getCarried().isEmpty())return "stow.deposit.cursor";
         if(plan(menu,mc.player,Stow.config.keepAmounts,false,matching).amount()>0)return "stow.deposit.hotbar-blocked";
@@ -83,7 +91,7 @@ public final class SmartDeposit {
         if(active==null)return;
         if(mc.player==null||mc.player.containerMenu!=active.menu||mc.gui.screen()!=owner){cancel();return;}
         if(!active.step()){
-            feedback(active.failed?"stow.deposit.stopped":"stow.deposit.done",active.moved);cancel();
+            feedback(active.failed?stoppedKey:doneKey,active.moved);cancel();
         }
     }
     /** One source stack per tick; finish every cycle with an empty cursor. */

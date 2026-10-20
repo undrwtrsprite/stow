@@ -18,9 +18,17 @@ import net.minecraft.world.item.ItemStack;
 
 public final class StowShortcuts {
     public enum Action {
-        PALETTE,PIN,HUD_GOAL,TRACK,SEARCH,SORT,DEPOSIT,KEEP,EQUIPMENT,PROJECTS,CYCLE_DRAG,DOCK,AUTO_TOOL,BULK_STRIP,AUTO_ATTACK,AUTO_MEND;
+        PALETTE,PIN,HUD_GOAL,TRACK,FIND_HOVERED,SEARCH,SORT,DEPOSIT,KEEP,EQUIPMENT,PROJECTS,CYCLE_DRAG,DOCK,AUTO_TOOL,BULK_STRIP,AUTO_ATTACK,AUTO_MEND;
         public Component title(){return Component.translatable("stow.action."+name().toLowerCase(Locale.ROOT));}
-        public Component group(){return Component.translatable("stow.shortcuts."+switch(this){case PIN,HUD_GOAL,TRACK,SEARCH,SORT,CYCLE_DRAG->"inventory";case DEPOSIT,KEEP->"storage";default->"workspace";});}
+        public Component group(){return Component.translatable("stow.shortcuts."+switch(this){case PIN,HUD_GOAL,TRACK,FIND_HOVERED,SEARCH,SORT,CYCLE_DRAG->"inventory";case DEPOSIT,KEEP->"storage";default->"workspace";});}
+        /** Where the chord is read: anywhere, inventory screens, chest/shulker screens or in the world. */
+        public String where(){return switch(this){
+            case PALETTE,EQUIPMENT,PROJECTS,DOCK,AUTO_TOOL->"anywhere";
+            case DEPOSIT->"container";
+            case BULK_STRIP,AUTO_ATTACK,AUTO_MEND->"world";
+            default->"inventory";
+        };}
+        public Component description(){return Component.translatable("stow.action."+name().toLowerCase(Locale.ROOT)+".tip");}
         public Shortcut defaults(){return switch(this){
             case PALETTE->new Shortcut(false,InputConstants.KEY_K,InputConstants.MOD_CONTROL);
             case AUTO_TOOL->new Shortcut(false,InputConstants.KEY_T,InputConstants.MOD_ALT);
@@ -82,13 +90,14 @@ public final class StowShortcuts {
         if(container!=null&&(InventorySorting.busy(container.getMenu())||SmartDeposit.busy(container.getMenu())))return false;
         var store=ChestMemory.currentStore();ItemStack item=hovered!=null&&hovered.hasItem()?hovered.getItem().copy():mc.player==null?ItemStack.EMPTY:mc.player.getInventory().getSelectedItem().copy();
         switch(action){
-            case PALETTE->mc.gui.setScreen(new CommandPaletteScreen(parent,item));
+            case PALETTE->mc.gui.setScreen(dev.stow.client.stow.StowScreen.open(parent,hovered!=null&&hovered.hasItem()?item:ItemStack.EMPTY,dev.stow.client.stow.StowSession.Segment.FIND));
+            case FIND_HOVERED->{if(hovered==null||!hovered.hasItem())return false;dev.stow.client.stow.StowFind.findHovered(parent,item);}
             case PIN->{return PinnedSlots.toggle(hovered);}
             case TRACK->{if(item.isEmpty()||store==null)return false;MaterialPlanner.quickAdd(parent,store,item);}
             case DEPOSIT->{return container!=null&&SmartDeposit.supported(container.getMenu())&&SmartDeposit.start(container);}
-            case KEEP->mc.gui.setScreen(new KeepAmountsScreen(parent,item.isEmpty()?"":SmartDeposit.itemId(item)));
+            case KEEP->mc.gui.setScreen(dev.stow.client.stow.SettingsScreen.keep(parent,item.isEmpty()?"":SmartDeposit.itemId(item)));
             case EQUIPMENT->mc.gui.setScreen(new EquipmentScreen(parent));
-            case PROJECTS->{if(store==null)return false;mc.gui.setScreen(new ProjectsScreen(parent,store));}
+            case PROJECTS->{if(store==null)return false;mc.gui.setScreen(dev.stow.client.stow.StowScreen.open(parent,ItemStack.EMPTY,dev.stow.client.stow.StowSession.Segment.PROJECT));}
             case CYCLE_DRAG->Stow.config.cycleDragMode();
             case DOCK->{Stow.config.dockEnabled=!Stow.config.dockEnabled;Stow.config.equipmentWatch=Stow.config.dockEnabled;Stow.config.save();dev.stow.client.ui.UiNotifications.show(Stow.config.dockEnabled?"stow.feedback.dock-on":"stow.feedback.dock-off");}
             default->{return false;}

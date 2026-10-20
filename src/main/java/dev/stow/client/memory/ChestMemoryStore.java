@@ -45,6 +45,7 @@ public final class ChestMemoryStore {
     private List<MaterialGoal> cachedGoals,cachedVisible,cachedStarred,cachedHud;
     private int cachedHudLimit;
     private Map<String,String> cachedOwners;
+    private List<SavedChest> cachedChests;
     private final Object writeLock=new Object();
     private long revision;
     private boolean dirty;
@@ -162,6 +163,11 @@ public final class ChestMemoryStore {
     }
 
     public synchronized long revision() { return revision; }
+    /** Immutable view of every remembered container, rebuilt only after a change. Read-only. */
+    public synchronized List<SavedChest> chests(){if(cachedChests==null)cachedChests=List.copyOf(chests.values());return cachedChests;}
+    public synchronized int size(){return chests.size();}
+    public synchronized boolean hasGoal(String itemId){return goals.stream().anyMatch(g->g.itemId.equals(itemId));}
+    public synchronized MaterialGoal goal(String itemId){return goals.stream().filter(g->g.itemId.equals(itemId)).findFirst().orElse(null);}
     public synchronized SavedChest get(Location location) { return chests.get(location.key()); }
     public synchronized void remember(SavedChest chest) {
         remember(chest,true);
@@ -178,7 +184,7 @@ public final class ChestMemoryStore {
     public synchronized void owner(Location location,dev.stow.companion.protocol.StorageOwnerProtocol.Owner owner){
         var old=get(location);if(old==null||Objects.equals(old.owner,owner))return;
         chests.put(location.key(),new SavedChest(old.location,old.title,old.lastSeen,old.items,old.shulkerColor,owner));
-        revision++;dirty=true;cachedOwners=null;
+        revision++;dirty=true;cachedOwners=null;cachedChests=null;
     }
     /** Metadata-only catalogue: no storage search, contents traversal or distance sorting. */
     public synchronized Map<String,String> ownerChoices(){
@@ -210,7 +216,7 @@ public final class ChestMemoryStore {
 
     private void changed() {
         projects.get(activeProject).customSelection=customSelection;revision++;dirty=true;
-        countsReady=false;cachedCounts.clear();cachedOldest.clear();cachedOwners=null;
+        countsReady=false;cachedCounts.clear();cachedOldest.clear();cachedOwners=null;cachedChests=null;
         cachedGoals=cachedVisible=cachedStarred=cachedHud=null;
     }
     private static String cleanName(String name) {

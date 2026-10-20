@@ -24,6 +24,7 @@ public final class StowConfig {
     public enum HudAlignment { LEFT,CENTER,RIGHT }
     public enum ToolRefillMode { AFTER_BREAK,KEEP_ONE }
     public enum AttackMode { HOLD,INTERVAL }
+    public enum LayoutMode { AUTO,WIDE,COMPACT }
     public record Shortcut(boolean mouse,int code,int modifiers) {}
     public java.util.Map<String,Shortcut> shortcuts=new java.util.LinkedHashMap<>();
     public java.util.Map<String,Integer> keepAmounts=new java.util.LinkedHashMap<>();
@@ -75,6 +76,17 @@ public final class StowConfig {
     /** Show the bundled "What's new" screen once after an update; lastSeenVersion is the last version acknowledged. */
     public boolean whatsNew=true;
     public String lastSeenVersion="";
+    /** 1.1: the inventory key legend opens by itself for the first three container screens. */
+    public int keyLegendShown=0;
+    /** 1.1: the Automation status HUD element (auto tool, attack, mending, stripping). */
+    public boolean automationHud=true;
+    public DockCorner automationCorner=DockCorner.TOP_LEFT;
+    public int automationOffsetX=8,automationOffsetY=8,automationScale=100;
+    public HudAlignment automationAlignment=HudAlignment.LEFT;
+    /** 1.1: offer "Take missing" for the active project in remembered containers. */
+    public boolean takeMissing=true;
+    /** 1.1: Stow screen layout; AUTO picks wide at 600 GUI px of content width. */
+    public LayoutMode stowLayout=LayoutMode.AUTO;
     /** True when no earlier Stow data existed at startup, so there is nothing "new" to announce. */
     public static boolean freshInstall;
     private static final com.google.gson.Gson JSON=new GsonBuilder().setPrettyPrinting().create();
@@ -125,6 +137,11 @@ public final class StowConfig {
                     loaded.equipmentThreshold=Math.clamp(loaded.equipmentThreshold,1,50);
                     loaded.dockScale=Math.clamp(loaded.dockScale,60,150);loaded.dockRows=Math.clamp(loaded.dockRows,3,5);
                     loaded.buildingStockScale=Math.clamp(loaded.buildingStockScale,100,200);
+                    if(loaded.automationCorner==null)loaded.automationCorner=DockCorner.TOP_LEFT;
+                    if(loaded.automationAlignment==null)loaded.automationAlignment=HudAlignment.LEFT;
+                    if(loaded.stowLayout==null)loaded.stowLayout=LayoutMode.AUTO;
+                    loaded.automationScale=Math.clamp(loaded.automationScale,60,150);loaded.automationOffsetX=Math.clamp(loaded.automationOffsetX,0,1000);loaded.automationOffsetY=Math.clamp(loaded.automationOffsetY,0,1000);
+                    loaded.keyLegendShown=Math.clamp(loaded.keyLegendShown,0,1000);
                     loaded.dockOffsetX=Math.clamp(loaded.dockOffsetX,0,1000);loaded.dockOffsetY=Math.clamp(loaded.dockOffsetY,0,1000);
                     Stow.config=loaded;}
             }

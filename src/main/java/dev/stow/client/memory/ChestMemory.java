@@ -207,6 +207,15 @@ public final class ChestMemory {
     }
 
     public static Location selected() { return selected; }
+    /** The remembered container behind the open container screen, if any. */
+    public static Location activeLocation() { return activeMenu==null?null:activeLocation; }
+    public static boolean glowing(){return Stow.config.chestGlow&&selected!=null;}
+    /** Start (never toggle off) the glow on one remembered container; itemId may be null. */
+    public static void show(ChestMemoryStore source,SavedChest chest,String itemId){
+        if(source==null||chest==null)return;
+        setGlowEnabled(true);selected=chest.location();selectedMaterial=itemId;updateGlow(Minecraft.getInstance());
+        dev.stow.client.ui.UiNotifications.show(Component.translatable("stow.need.found-source",source.displayName(chest)));
+    }
     public static void setGlowEnabled(boolean enabled){
         boolean changed=Stow.config.chestGlow!=enabled;
         Stow.config.chestGlow=enabled;Stow.config.save();updateGlow(Minecraft.getInstance());
