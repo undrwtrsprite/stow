@@ -4,9 +4,13 @@
 
 Install the [Stow client](https://modrinth.com/mod/stow) for the inventory interface and controls. The companion adds server support for these features; it does not add its own client menus, HUDs, attack controls or Mending cycle.
 
+## Companion 1.0.6
+
+Companion 1.0.6 matches Stow 1.0.6 and has no functional changes. The 1.0.6 client updates (area-camera fix, two-step selection, controls panel, F1 and the What's new screen) are client-only and send the same Claim area requests, so companion 1.0.5 keeps working with them.
+
 ## New in companion 1.0.5
 
-The companion was updated for Stow 1.0.5. It adds **storage owner labels** and **Claim area**. **Update both the client and companion to 1.0.5** to use them. Instant trades, fast chest sorting and connected-log harvesting work as before.
+The companion was updated for Stow 1.0.5. It adds **storage owner labels** and **Claim area**. Both the client and companion need **1.0.5 or later** for them. Instant trades, fast chest sorting and connected-log harvesting work as before.
 
 ## Label who owns your storage
 
@@ -63,7 +67,7 @@ Press **Alt + S** again to cancel; work already completed is retained. Changing 
 - **Players using the features:** install the Stow client with Fabric API and Cloth Config **26.3.159+**. Mod Menu **21.0.0** is optional.
 - **Single-player:** install both the Stow client and companion locally.
 
-The companion does not require Cloth Config, Mod Menu or Mouse Wheelie. Replace older companion JARs instead of keeping several versions. Update both JARs to **1.0.5** for storage owner labels and Claim area (1.0.4 or later for instant trades and the payment refill fix). Existing server settings are preserved, and the instant-trading option defaults to enabled. Players without the updated client or companion keep the other features and see their last saved labels, with label editing unavailable.
+The companion does not require Cloth Config, Mod Menu or Mouse Wheelie. Replace older companion JARs instead of keeping several versions. Keep both JARs on matching versions (currently **1.0.6**); storage owner labels and Claim area need **1.0.5 or later** (1.0.4 or later for instant trades and the payment refill fix). Existing server settings are preserved, and the instant-trading option defaults to enabled. Players without the updated client or companion keep the other features and see their last saved labels, with label editing unavailable.
 
 Stow's other inventory, storage-memory, compact storage list, material-planning, refill, shulker-preview, attack and auto-mending helpers belong to the client, as do the 1.0.5 performance, shulker, HUD and Mouse Tweaks fixes. They do not require this companion. This project does not change which servers permit automated actions. Compatibility with dedicated multiplayer setups, full modpacks and protection mods still needs testing.
 

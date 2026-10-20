@@ -4,7 +4,9 @@
 
 Paste a materials list, find what you already own, gather the rest and keep track while you build. Sort chests, move stacks, refill blocks and rockets, preview shulkers, trade with villagers and repair your Mending tools without a collection of separate inventory utilities.
 
-**Stow 1.0.5** adds storage owner labels with an Owner filter, Claim area with a free camera for older storage, and a compact storage list with container icons. The floating material list no longer covers your status effects. The release also includes a performance pass, shulker memory fixes, a new equipment HUD order and a Mouse Tweaks Shift-drag fix. Storage owner labels and Claim area need the updated 1.0.5 companion; the rest works with the client alone. Features were checked in an isolated Minecraft client/server. Individual modpacks, dedicated servers and protection mods still need compatibility testing.
+**Stow 1.0.6** fixes the Claim area camera (it now flies where you look and your character stays put) and makes area selection two clear steps: footprint, then height, with a compact controls panel in Stow's usual style. F1 hides the HUD while selecting, and a What's new screen shows new features once after each update. These changes are client-only.
+
+**Stow 1.0.5** added storage owner labels with an Owner filter, Claim area with a free camera for older storage, and a compact storage list with container icons. The floating material list no longer covers your status effects. The release also includes a performance pass, shulker memory fixes, a new equipment HUD order and a Mouse Tweaks Shift-drag fix. Storage owner labels and Claim area need companion 1.0.5 or later; the rest works with the client alone. Features were checked in an isolated Minecraft client/server. Individual modpacks, dedicated servers and protection mods still need compatibility testing.
 
 ## Keep your inventory in order
 
@@ -27,7 +29,7 @@ Memory reflects the last time you opened a container or confirmed a shulker plac
 
 ## Label and claim your storage (companion)
 
-With the **updated 1.0.5 companion** on the server, or locally in single-player:
+With **companion 1.0.5 or later** on the server, or locally in single-player:
 
 - **Storage owner labels:** newly placed chests, trapped chests, barrels and shulker boxes are labeled with the player who placed them. Cards show a player, **Shared**, **Unclaimed** or **Mixed** owners for double chests with different owners.
 - **Owner filter:** cycle the storage and project storage-selection lists through Everyone, Mine, Shared, Unclaimed, Mixed and individual players. Project totals are not affected.
@@ -80,7 +82,7 @@ The **Stow client works without a server-side Stow installation**. Add the separ
 - **Instant trades:** whole-inventory villager trades complete in one server operation (see above).
 - **Fast chest sorting:** supported vanilla chests, trapped/double chests, barrels, ender chests and shulker boxes sort in one validated server operation. The server checks the current contents, permissions, stack limits and exact item/component totals; player inventory and cursor stay untouched. Custom menus, older companions and oversized requests keep the normal client queue. Requests are bounded to 54 storage slots and 24 KiB. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart.
 - **Connected-log harvesting:** hold an axe, aim at an unstripped log and press **Alt + S**. The companion strips and then harvests the connected group of the same type, including all vanilla logs and Nether stems. Tall columns, long rows and dense piles are supported; the configurable count limit defaults to **16,384 logs**. Reach, loaded chunks, permissions, durability and normal loot rules apply. Press again to cancel. Without the companion, Alt + S only strips nearby visible logs and does not harvest them.
-- **Storage owner labels and Claim area (new in 1.0.5):** placer labels, label editing and area claims for older storage, as described above. These need companion 1.0.5.
+- **Storage owner labels and Claim area (new in 1.0.5):** placer labels, label editing and area claims for older storage, as described above. These need companion 1.0.5 or later.
 
 For single-player, install both JARs locally to enable these companion features. Exact compatibility with individual Timber, storage or protection mods is not guaranteed.
 
@@ -90,7 +92,7 @@ Open the command palette with **Ctrl + K**. Change shortcuts, sorting defaults a
 
 Common controls: **P** pins a hovered slot, **N** tracks a material and **H** prioritizes a hovered floating material counter. New attack and mending toggles start off. All listed shortcuts can be edited or unbound.
 
-Stow 1.0.5 also does less repeated work in inventory menus and HUDs. Storage totals, searches and previews are calculated once per change instead of every frame, and owner labels add no per-frame checks.
+Since 1.0.5, Stow does less repeated work in inventory menus and HUDs. Storage totals, searches and previews are calculated once per change instead of every frame, and owner labels add no per-frame checks.
 
 ## Install
 
@@ -99,9 +101,9 @@ For **Minecraft 26.3**:
 1. Install **Java 25+**, **Fabric Loader 0.19.5+**, **Fabric API 0.161.0+26.3** and **Cloth Config 26.3.159+**.
 2. Put the Stow **client** JAR in your client's `mods` folder. Replace older Stow JARs and **remove Mouse Wheelie**; the two mods are incompatible.
 3. Optionally install **Mod Menu 21.0.0** for access to settings.
-4. For companion features, put the separate companion JAR and Fabric API on the server. Update it to 1.0.5 for storage owner labels and Claim area. In single-player, put both Stow JARs in the client. The companion does not need Cloth Config or Mod Menu.
+4. For companion features, put the separate companion JAR and Fabric API on the server. Use the matching 1.0.6 companion; storage owner labels and Claim area need 1.0.5 or later. In single-player, put both Stow JARs in the client. The companion does not need Cloth Config or Mod Menu.
 
-Existing Stow projects, chest memories, goals, selected chests and priorities are retained; 1.0.5 needs no migration. Removing Stow stops its features; keep `config/stow/` if you want your saved plans and memories for a later reinstall. Client-only inventory helpers do not require the companion. Servers can impose their own restrictions on automated actions.
+Existing Stow projects, chest memories, goals, selected chests and priorities are retained; 1.0.6 needs no migration. Removing Stow stops its features; keep `config/stow/` if you want your saved plans and memories for a later reinstall. Client-only inventory helpers do not require the companion. Servers can impose their own restrictions on automated actions.
 
 Stow checks public GitHub, Modrinth and CurseForge release listings for updates and shows a clickable notice. Those checks send no player, world, server or account data. Pending moderation can delay update notices.
 

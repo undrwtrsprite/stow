@@ -1,6 +1,7 @@
 {
   "_comment": "Newest first. Add <version>.json (base version, no +mc suffix) whose title/text/how values are lang keys in en_us.json and de_de.json.",
   "versions": [
+    "1.0.6",
     "1.0.5"
   ]
 }

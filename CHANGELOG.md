@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.6+mc26.3 — 20 October 2026
 
 ### Area-selection camera controls
 
@@ -14,7 +14,10 @@
 
 - After Stow is updated, a scrollable **What's new in Stow** screen opens once on the title screen (or on the first in-game frame when a launcher skips the title screen). It lists the highlights of each version newer than the last one you acknowledged, with short **How to use** steps per feature. **Got it** (or Escape) marks the installed version as seen; **Open full changelog** opens https://github.com/undrwtrsprite/stow/releases after the usual link confirmation. Brand-new installs record the version quietly instead of showing it. The screen uses the same chrome as the other Stow menus: title header, menu-list panel, storage-card style section rows, the thin list scrollbar and Stow buttons along the bottom. Players upgrading from 1.0.5 or earlier, who have no last-seen version yet, see only the current version's notes.
 - **Settings → Appearance** has a **Show what's new after updates** toggle (on by default; when off, updates are recorded as seen without opening the screen) and a **What's new in Stow** button that reopens all bundled notes at any time. The setting and the last-seen version are stored in `settings.json`; no migration is needed.
-- Notes are bundled in `assets/stow/whatsnew/`: `index.json` lists versions newest first and each `<version>.json` lists sections whose title, text and how-to steps are lang keys, so every text is translated in English and German. The 1.0.5 entry covers area claiming with the new two-step selection, the area camera, storage owners/Shared, shulker updates, the tidier storage list, equipment HUD order and the performance/Mouse Tweaks fixes. `dev-tools/check-project.py` now fails when a referenced key is missing in either language. Compiled and checked only; in-game validation is pending.
+- Notes are bundled in `assets/stow/whatsnew/`: `index.json` lists versions newest first and each `<version>.json` lists sections whose title, text and how-to steps are lang keys, so every text is translated in English and German. The 1.0.6 entry covers the area-camera fix, the two-step selection, the controls panel, F1 and this screen; the 1.0.5 entry covers only that release: area claiming, storage owners/Shared, shulker updates, the tidier storage list, equipment HUD order and the performance/Mouse Tweaks fixes. `dev-tools/check-project.py` now fails when a referenced key is missing in either language. Compiled and checked only; in-game validation is pending.
+### Companion
+
+- Stow Companion 1.0.6 is a version bump only, with no code changes since 1.0.5. The Claim area requests and protocol are unchanged, so the 1.0.6 client also works with companion 1.0.5.
 
 ## 1.0.5+mc26.3 — 20 October 2026
 

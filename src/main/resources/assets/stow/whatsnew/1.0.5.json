@@ -7,16 +7,7 @@
       "how": [
         "stow.whatsnew.1_0_5.claim.how.1",
         "stow.whatsnew.1_0_5.claim.how.2",
-        "stow.whatsnew.1_0_5.claim.how.3",
-        "stow.whatsnew.1_0_5.claim.how.4"
-      ]
-    },
-    {
-      "title": "stow.whatsnew.1_0_5.camera.title",
-      "text": "stow.whatsnew.1_0_5.camera.text",
-      "how": [
-        "stow.whatsnew.1_0_5.camera.how.1",
-        "stow.whatsnew.1_0_5.camera.how.2"
+        "stow.whatsnew.1_0_5.claim.how.3"
       ]
     },
     {
@@ -51,13 +42,6 @@
       "title": "stow.whatsnew.1_0_5.smoother.title",
       "text": "stow.whatsnew.1_0_5.smoother.text",
       "how": []
-    },
-    {
-      "title": "stow.whatsnew.1_0_5.whatsnew.title",
-      "text": "stow.whatsnew.1_0_5.whatsnew.text",
-      "how": [
-        "stow.whatsnew.1_0_5.whatsnew.how.1"
-      ]
     }
   ]
 }

@@ -1,0 +1,42 @@
+{
+  "version": "1.0.6",
+  "sections": [
+    {
+      "title": "stow.whatsnew.1_0_6.camera.title",
+      "text": "stow.whatsnew.1_0_6.camera.text",
+      "how": [
+        "stow.whatsnew.1_0_6.camera.how.1"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_6.select.title",
+      "text": "stow.whatsnew.1_0_6.select.text",
+      "how": [
+        "stow.whatsnew.1_0_6.select.how.1",
+        "stow.whatsnew.1_0_6.select.how.2",
+        "stow.whatsnew.1_0_6.select.how.3"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_6.panel.title",
+      "text": "stow.whatsnew.1_0_6.panel.text",
+      "how": [
+        "stow.whatsnew.1_0_6.panel.how.1"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_6.f1.title",
+      "text": "stow.whatsnew.1_0_6.f1.text",
+      "how": [
+        "stow.whatsnew.1_0_6.f1.how.1"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_6.whatsnew.title",
+      "text": "stow.whatsnew.1_0_6.whatsnew.text",
+      "how": [
+        "stow.whatsnew.1_0_6.whatsnew.how.1"
+      ]
+    }
+  ]
+}
