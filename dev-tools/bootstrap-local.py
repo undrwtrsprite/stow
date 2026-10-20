@@ -42,7 +42,7 @@ for lib in fabric['libraries']:
  jobs.append((lib['url']+path,BUILD/'runtime-libs'/filename,None,lib.get('sha256') or PINNED_FABRIC_SHA256[filename]))
 with futures.ThreadPoolExecutor(max_workers=12) as pool:
  tasks=[pool.submit(get,*job) for job in jobs]
- tasks += [pool.submit(mod,'fabric-api','0.161.0+26.3',BUILD/'probe/mods/fabric-api-0.161.0+26.3.jar'),pool.submit(mod,'cloth-config','26.3.159+fabric',BUILD/'stow-dependencies/cloth-config-fabric-26.3.159.jar'),pool.submit(mod,'modmenu','21.0.0',BUILD/'probe/mods/modmenu.jar')]
+ tasks += [pool.submit(mod,'fabric-api','0.161.0+26.3',BUILD/'probe/mods/fabric-api-0.161.0+26.3.jar'),pool.submit(mod,'modmenu','21.0.0',BUILD/'probe/mods/modmenu.jar')]
  for i,t in enumerate(tasks):t.result()
 print('Downloaded pinned dependencies',flush=True)
 if not (ROOT/'toolchain/jdk25').exists():

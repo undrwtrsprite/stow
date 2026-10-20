@@ -29,6 +29,8 @@ require((RESOURCES/meta['icon']).is_file(),'mod icon is missing')
 require('net.fabricmc.fabric-loom' in gradle,'unobfuscated Minecraft requires the non-remapping Loom plugin')
 require('JavaLanguageVersion.of(25)' in gradle,'Java 25 toolchain is missing')
 for dependency,coordinate in [('minecraft','com.mojang:minecraft:'),('fabricloader','net.fabricmc:fabric-loader:'),('fabric-api','net.fabricmc.fabric-api:fabric-api:'),('cloth-config','me.shedaniel.cloth:cloth-config-fabric:')]:
+    # 1.1 dropped the hard Cloth Config dependency; check it only while it is declared.
+    if dependency not in meta['depends'] and coordinate not in gradle: continue
     pinned=meta['depends'][dependency].removeprefix('>=')
     require(coordinate+pinned in gradle,dependency+' metadata does not match the pinned build dependency')
 lang=RESOURCES/'assets/stow/lang'
