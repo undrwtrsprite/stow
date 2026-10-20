@@ -63,28 +63,16 @@ public abstract class MemoryScreenBase extends Screen {
     protected int sidebarWidth(){return 0;}
     protected int contentWidth(){return Math.min(720,width-sidebarWidth()-24);}
     protected int contentLeft(){return sidebarWidth()+(width-sidebarWidth()-contentWidth())/2;}
-    private boolean hasTabs(){return navigationStore!=null&&(this instanceof MaterialsScreen||this instanceof ChestMemoryScreen||this instanceof ProjectsScreen||this instanceof MaterialImportScreen);}
+    /** 1.1: the Materials / Storage / Projects tabs moved into the Stow screen segments. */
+    private boolean hasTabs(){return false;}
     protected int workspaceTop(){return hasTabs()?70:44;}
     protected void layoutDialog(int ignoredMaximumHeight){
         dialogHeight=height;dialogTop=0;
-        if(hasTabs()){
-            int w=Math.min(132,(contentWidth()-24)/3),tabsLeft=contentLeft()+(contentWidth()-(w*3+8))/2;
-            for(int section=0;section<3;section++){
-                final int target=section;String key=switch(section){case 0->"stow.menu.materials";case 1->"stow.menu.storage";default->"stow.menu.projects";};
-                addRenderableWidget(new PlannerButton(Component.translatable(key),b->navigate(target),tabsLeft+section*(w+4),36,w,22,false).selected(()->currentSection()==target));
-            }
-        }
     }
     protected void rowBackdrop(GuiGraphicsExtractor g,int x,int y,int w,int h,int accent){
         g.fill(x,y,x+w,y+h,0x70000000);g.fill(x,y+3,x+2,y+h-3,accent);
     }
     protected void pageLabel(GuiGraphicsExtractor g,int page,int total){String label=(page+1)+" / "+Math.max(1,total);int x=contentLeft()+142,available=contentWidth()-216;g.text(font,label,x+Math.max(0,(available-font.width(label))/2),height-23,0xFFAAAAAA);}
-    private int currentSection(){return this instanceof ProjectsScreen?2:this instanceof ChestMemoryScreen||this instanceof ChestRenameScreen?1:0;}
-    private void navigate(int section){
-        if(section==currentSection()&&(this instanceof MaterialsScreen||this instanceof ChestMemoryScreen chest&&!chest.isSelectionMode()||this instanceof ProjectsScreen))return;
-        Screen root=rootScreen();
-        minecraft.gui.setScreen(switch(section){case 0->new MaterialsScreen(root,navigationStore);case 1->new ChestMemoryScreen(root,navigationStore,"",false,null);default->new ProjectsScreen(root,navigationStore);});
-    }
     public Screen rootScreen(){Screen root=parent;while(root instanceof MemoryScreenBase utility)root=utility.parent;return root;}
     protected void extractMenuBackdrop(GuiGraphicsExtractor g,float delta){
         if(minecraft.level==null)extractPanorama(g,delta);
@@ -96,7 +84,7 @@ public abstract class MemoryScreenBase extends Screen {
     }
     @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float delta){}
     @Override public boolean keyPressed(KeyEvent event){if(event.isEscape()){onClose();return true;}
-        if(!(this instanceof dev.stow.client.ui.CommandPaletteScreen)&&dev.stow.client.input.StowShortcuts.matches(dev.stow.client.input.StowShortcuts.Action.PALETTE,dev.stow.client.input.StowShortcuts.chord(event)))return dev.stow.client.input.StowShortcuts.dispatch(dev.stow.client.input.StowShortcuts.Action.PALETTE,this,null);
+        if(dev.stow.client.input.StowShortcuts.matches(dev.stow.client.input.StowShortcuts.Action.PALETTE,dev.stow.client.input.StowShortcuts.chord(event)))return dev.stow.client.input.StowShortcuts.dispatch(dev.stow.client.input.StowShortcuts.Action.PALETTE,this,null);
         return super.keyPressed(event);}
     @Override public void onClose(){
         setFocused(null);Screen back=parent;

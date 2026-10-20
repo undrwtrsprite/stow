@@ -33,6 +33,8 @@ public final class PlannerButton extends Button {
         if(navigation){graphics.text(font,font.plainSubstrByWidth(getMessage().getString(),width-8),getX()+4,getY()+(height-9)/2,chosen?0xFFFFFF55:hover?0xFFFFFFFF:0xFFCCCCCC);return;}
         setOverrideRenderHighlightedSprite(() -> selected.getAsBoolean() || isHoveredOrFocused());
         extractDefaultSprite(graphics);
+        // Redesign v2: the one primary action per view carries a restrained gold outline.
+        if(primary&&active)graphics.outline(getX(),getY(),width,height,0xFFC9A548);
         int textColor=!active?0xFFA0A0A0:chosen?0xFFFFFF55:0xFFFFFFFF;
         var glyph=icon;
         if(glyph==null)glyph=switch(getMessage().getString()){

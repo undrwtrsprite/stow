@@ -61,7 +61,7 @@ public final class MaterialPlanner {
             ClientCommands.literal("need").executes(context -> {
                 ChestMemoryStore store=ChestMemory.currentStore();
                 if(store==null){context.getSource().sendError(Component.translatable("stow.memory.no-world"));return 0;}
-                pendingScreen=new MaterialsScreen(null,store);return 1;
+                pendingScreen=dev.stow.client.stow.StowScreen.open(null,net.minecraft.world.item.ItemStack.EMPTY,dev.stow.client.stow.StowSession.Segment.PROJECT);return 1;
             }).then(ClientCommands.argument("amount",IntegerArgumentType.integer(1,1_000_000))
                 .then(ClientCommands.argument("item",StringArgumentType.greedyString())
                     .suggests((context,builder) -> {
@@ -75,13 +75,13 @@ public final class MaterialPlanner {
                         String query=StringArgumentType.getString(context,"item");
                         var entry=MemoryItems.resolve(MemoryItems.catalogue(),query);
                         if(entry==null) {
-                            pendingScreen=new MaterialPickerScreen(new MaterialsScreen(null,store),store,query,amount);
+                            pendingScreen=new MaterialPickerScreen(dev.stow.client.stow.StowScreen.open(null,net.minecraft.world.item.ItemStack.EMPTY,dev.stow.client.stow.StowSession.Segment.PROJECT),store,query,amount);
                             context.getSource().sendFeedback(Component.translatable("stow.need.choose-exact"));return 1;
                         }
                         try{store.setGoal(entry.id(),amount);}catch(IllegalArgumentException e){context.getSource().sendError(Component.translatable("stow.need.limit"));return 0;}
                         ChestMemory.saveLater(store);
                         context.getSource().sendFeedback(Component.translatable("stow.need.added",amount,entry.name()));
-                        pendingScreen=new MaterialsScreen(null,store);return 1;
+                        pendingScreen=dev.stow.client.stow.StowScreen.open(null,net.minecraft.world.item.ItemStack.EMPTY,dev.stow.client.stow.StowSession.Segment.PROJECT);return 1;
                     })))));
     }
     public static void tick(Minecraft mc) {

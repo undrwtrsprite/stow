@@ -71,7 +71,7 @@ public final class MaterialImportScreen extends MemoryScreenBase {
         validate();if(!confirm.active)return;
         var incoming=incoming();store.importGoals(incoming,add);ChestMemory.saveLater(store);
         dev.stow.client.ui.UiNotifications.show("stow.feedback.imported",incoming.stream().map(MaterialGoal::itemId).distinct().count());
-        minecraft.gui.setScreen(new MaterialsScreen(rootScreen(),store,incoming.getFirst().itemId(),(int)incoming.stream().map(MaterialGoal::itemId).distinct().count()));
+        minecraft.gui.setScreen(dev.stow.client.stow.StowScreen.openGoal(rootScreen(),incoming.getFirst().itemId()));
     }
     @Override public void tick(){if(reviewing)validate();else confirm.active=!text.isBlank();}
     @Override public boolean mouseScrolled(double x,double y,double horizontal,double vertical){
