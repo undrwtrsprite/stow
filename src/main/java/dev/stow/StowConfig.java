@@ -72,11 +72,17 @@ public final class StowConfig {
     public boolean optimizeCreativeSearchSort=true;
     public int sortSettingsVersion=2;
     public String lastNotifiedVersion="";
+    /** Show the bundled "What's new" screen once after an update; lastSeenVersion is the last version acknowledged. */
+    public boolean whatsNew=true;
+    public String lastSeenVersion="";
+    /** True when no earlier Stow data existed at startup, so there is nothing "new" to announce. */
+    public static boolean freshInstall;
     private static final com.google.gson.Gson JSON=new GsonBuilder().setPrettyPrinting().create();
     public static void initialize(){
         Path directory=Stow.dataDirectory(), old=directory.getParent();
         try {
             Files.createDirectories(directory);
+            freshInstall=!Files.exists(directory.resolve("imported-v1"))&&!Files.exists(directory.resolve("settings.json"));
             if(!Files.exists(directory.resolve("imported-v1"))){
                 Path chests=old.resolve("mousewheelie-chest-memory");
                 if(Files.isDirectory(chests))try(var files=Files.list(chests)){

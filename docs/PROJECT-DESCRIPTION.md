@@ -33,6 +33,7 @@ With the **updated 1.0.5 companion** on the server, or locally in single-player:
 - **Owner filter:** cycle the storage and project storage-selection lists through Everyone, Mine, Shared, Unclaimed, Mixed and individual players. Project totals are not affected.
 - **Change a label:** open the storage and use **Rename → Storage owner** to claim unclaimed storage, mark it Shared or restore its player label. Only the labeling player or an operator can change an existing label.
 - **Claim area:** use **Storage → Claim area → Fly and select corners** to fly a local free camera (W/A/S/D, Space, Shift, Ctrl; F1 hides the HUD). Pick the footprint with left-click (corner 1) and right-click (corner 2), press Enter, set the height with the scroll wheel (Alt for the bottom), then confirm, review the box and claim its unclaimed storage in one step. Existing owners and Shared labels are always kept. The companion visits only loaded chunks, up to 262,144 positions, with corners within 64 blocks of you on each axis. Cancelling keeps the claims already made.
+- **What's new:** after an update, Stow shows a short summary of new features with how-to tips once. Turn it off or reopen it in Stow settings → Appearance.
 
 Existing storage starts **Unclaimed**; opening it does not claim it. Labels organize your list. They do not lock containers, grant access, reveal unopened contents or identify who originally placed older storage. Without the updated companion, Stow keeps working and shows labels you have already seen, but you can't edit them.
 

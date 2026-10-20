@@ -37,6 +37,14 @@ german=json.loads((lang/'de_de.json').read_text(encoding='utf-8'))
 require(english.keys()==german.keys(),'English/German translation keys differ')
 for key in english:
     require(len(re.findall(r'%(?:\d+\$)?[sd]',english[key]))==len(re.findall(r'%(?:\d+\$)?[sd]',german[key])),key+' formatting placeholders differ')
+whatsnew=RESOURCES/'assets/stow/whatsnew'
+index=json.loads((whatsnew/'index.json').read_text(encoding='utf-8'))
+for release in index['versions']:
+    entry=json.loads((whatsnew/(release+'.json')).read_text(encoding='utf-8'))
+    require(entry['version']==release,'release-note version mismatch: '+release)
+    for section in entry['sections']:
+        for key in [section['title'],section['text'],*section.get('how',[])]:
+            require(key in english and key in german,'missing release-note translation: '+key)
 for config in meta['mixins']:
     require((RESOURCES/config).is_file(),'mixin configuration is missing: '+config)
 for relative in ['LICENSE','NOTICE','gradlew','gradlew.bat','gradle/wrapper/gradle-wrapper.properties','gradle/wrapper/gradle-wrapper.jar','design/icons/mdi/LICENSE','src/main/resources/assets/stow/textures/gui/icons/LICENSE']:

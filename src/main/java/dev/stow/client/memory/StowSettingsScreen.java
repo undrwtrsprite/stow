@@ -24,6 +24,10 @@ public final class StowSettingsScreen {
         var appearance=builder.getOrCreateCategory(text("appearance"));
         appearance.addEntry(new ResponsiveConfigEntries.Slider(text("stock.scale"),config.buildingStockScale,100,200,entry.getResetButtonKey(),135,v->config.buildingStockScale=v));
         appearance.addEntry(new ResponsiveConfigEntries.Toggle(text("notifications"),config.notifications,entry.getResetButtonKey(),true,v->config.notifications=v));
+        var whatsNew=new ResponsiveConfigEntries.Toggle(text("whats-new"),config.whatsNew,entry.getResetButtonKey(),true,v->config.whatsNew=v);
+        whatsNew.setTooltipSupplier(()->java.util.Optional.of(new Component[]{text("whats-new.tip")}));
+        appearance.addEntry(whatsNew);
+        appearance.addEntry(new ScreenLinkEntry(Component.translatable("stow.whatsnew.open"),dev.stow.client.ui.WhatsNew::screen));
         appearance.addEntry(new ScreenLinkEntry(Component.translatable("stow.stock.layout"),screen->new dev.stow.client.ui.DockLayoutScreen(screen,dev.stow.client.ui.DockLayoutScreen.Target.STOCK)));
         ConfigCategory sorting=builder.getOrCreateCategory(text("sorting"));
         sorting.addEntry(option(entry,"normal",SortOrder.class,config.sortOrder,SortOrder.CREATIVE,

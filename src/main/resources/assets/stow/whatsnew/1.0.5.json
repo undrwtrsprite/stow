@@ -1,0 +1,63 @@
+{
+  "version": "1.0.5",
+  "sections": [
+    {
+      "title": "stow.whatsnew.1_0_5.claim.title",
+      "text": "stow.whatsnew.1_0_5.claim.text",
+      "how": [
+        "stow.whatsnew.1_0_5.claim.how.1",
+        "stow.whatsnew.1_0_5.claim.how.2",
+        "stow.whatsnew.1_0_5.claim.how.3",
+        "stow.whatsnew.1_0_5.claim.how.4"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.camera.title",
+      "text": "stow.whatsnew.1_0_5.camera.text",
+      "how": [
+        "stow.whatsnew.1_0_5.camera.how.1",
+        "stow.whatsnew.1_0_5.camera.how.2"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.owners.title",
+      "text": "stow.whatsnew.1_0_5.owners.text",
+      "how": [
+        "stow.whatsnew.1_0_5.owners.how.1",
+        "stow.whatsnew.1_0_5.owners.how.2",
+        "stow.whatsnew.1_0_5.owners.how.3"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.shulkers.title",
+      "text": "stow.whatsnew.1_0_5.shulkers.text",
+      "how": [
+        "stow.whatsnew.1_0_5.shulkers.how.1"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.lists.title",
+      "text": "stow.whatsnew.1_0_5.lists.text",
+      "how": [
+        "stow.whatsnew.1_0_5.lists.how.1"
+      ]
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.hud.title",
+      "text": "stow.whatsnew.1_0_5.hud.text",
+      "how": []
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.smoother.title",
+      "text": "stow.whatsnew.1_0_5.smoother.text",
+      "how": []
+    },
+    {
+      "title": "stow.whatsnew.1_0_5.whatsnew.title",
+      "text": "stow.whatsnew.1_0_5.whatsnew.text",
+      "how": [
+        "stow.whatsnew.1_0_5.whatsnew.how.1"
+      ]
+    }
+  ]
+}
