@@ -1,0 +1,2927 @@
+{
+ "fetched_utc": "2026-10-20T17:42:14.361792+00:00",
+ "projects": [
+  {
+   "slug": "mouse-tweaks",
+   "title": "Mouse Tweaks",
+   "id": "aC3cM3Vq",
+   "url": "https://modrinth.com/mod/mouse-tweaks",
+   "downloads_alltime": 63931786,
+   "followers": 9221,
+   "published": "2021-03-20",
+   "updated": "2026-09-20",
+   "license": "BSD-3-Clause",
+   "source": "https://github.com/YaLTeR/MouseTweaks",
+   "issues": "https://github.com/YaLTeR/MouseTweaks/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "modloader",
+    "neoforge"
+   ],
+   "n_versions": 55,
+   "latest_any": {
+    "version_number": "26.3-2.31-forge",
+    "date": "2026-09-20",
+    "loaders": [
+     "forge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 14980,
+    "type": "release",
+    "id": "nDrx0Wkc"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3-2.31-fabric",
+     "date": "2026-09-15",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 880703,
+     "type": "release",
+     "id": "LeMuMhLv"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3-2.31-fabric",
+    "date": "2026-09-15",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 880703,
+    "type": "release",
+    "id": "LeMuMhLv"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Enhances inventory management by adding various functions to the mouse buttons. "
+  },
+  {
+   "slug": "inventory-profiles-next",
+   "title": "Inventory Profiles Next",
+   "id": "O7RBXm3n",
+   "url": "https://modrinth.com/mod/inventory-profiles-next",
+   "downloads_alltime": 42280795,
+   "followers": 8195,
+   "published": "2021-06-18",
+   "updated": "2026-09-27",
+   "license": "AGPL-3.0-or-later",
+   "source": "https://codeberg.org/Inventory-Profiles-Next-Mod/IPN",
+   "issues": "https://discord.gg/23YCxmveUM",
+   "wiki": "https://inventory-profiles-next.github.io",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 974,
+   "latest_any": {
+    "version_number": "neoforge-26.3-2.3.8",
+    "date": "2026-09-27",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 38553,
+    "type": "release",
+    "id": "5gXp3J2W"
+   },
+   "fabric_263": [
+    {
+     "version_number": "fabric-26.3-2.3.8",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 272736,
+     "type": "release",
+     "id": "y8vT21Sb"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "fabric-26.3-2.3.8",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 272736,
+    "type": "release",
+    "id": "y8vT21Sb"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Take control over your inventory. Sort. Move matching Items. Throw all. Locked slots. Gear sets! And much more."
+  },
+  {
+   "slug": "item-scroller",
+   "title": "Item Scroller",
+   "id": "JygyCSA4",
+   "url": "https://modrinth.com/mod/item-scroller",
+   "downloads_alltime": 3136251,
+   "followers": 1212,
+   "published": "2023-04-17",
+   "updated": "2026-09-27",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/maruohon/itemscroller/",
+   "issues": "https://github.com/sakura-ryoko/itemscroller/issues/",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "liteloader",
+    "ornithe",
+    "rift"
+   ],
+   "n_versions": 266,
+   "latest_any": {
+    "version_number": "0.33.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 66220,
+    "type": "release",
+    "id": "MvoqaGhE"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.33.1",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 66220,
+     "type": "release",
+     "id": "MvoqaGhE"
+    },
+    {
+     "version_number": "0.33.0",
+     "date": "2026-09-21",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 13978,
+     "type": "release",
+     "id": "LOgkhghC"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.33.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 66220,
+    "type": "release",
+    "id": "MvoqaGhE"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 0,
+   "description": "A client mod that adds many shortcuts to move items easier and craft faster in inventory screens"
+  },
+  {
+   "slug": "clientsort",
+   "title": "Client Sort",
+   "id": "K0AkAin6",
+   "url": "https://modrinth.com/mod/clientsort",
+   "downloads_alltime": 6418686,
+   "followers": 1382,
+   "published": "2024-06-19",
+   "updated": "2026-09-26",
+   "license": "Apache-2.0",
+   "source": "https://github.com/TerminalMC/ClientSort",
+   "issues": "https://github.com/TerminalMC/ClientSort/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 509,
+   "latest_any": {
+    "version_number": "3.104.1+26.3",
+    "date": "2026-09-26",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 2746,
+    "type": "release",
+    "id": "OOw4C9c1"
+   },
+   "fabric_263": [
+    {
+     "version_number": "3.104.1+26.3",
+     "date": "2026-09-26",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 150432,
+     "type": "release",
+     "id": "UWMryUad"
+    },
+    {
+     "version_number": "3.104.0+26.3",
+     "date": "2026-09-15",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 21294,
+     "type": "release",
+     "id": "O1azWLtc"
+    },
+    {
+     "version_number": "3.104.0-beta.1+26.3-rc-2",
+     "date": "2026-09-12",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3-rc-2",
+      "26.3-rc-3",
+      "26.3"
+     ],
+     "downloads": 933,
+     "type": "beta",
+     "id": "ZBIfOq2Y"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "3.104.1+26.3",
+    "date": "2026-09-26",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 150432,
+    "type": "release",
+    "id": "UWMryUad"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 1,
+   "description": "Versatile and easy inventory sorting."
+  },
+  {
+   "slug": "inventory-management",
+   "title": "Inventory Management",
+   "id": "F7wXag4i",
+   "url": "https://modrinth.com/mod/inventory-management",
+   "downloads_alltime": 3769261,
+   "followers": 1505,
+   "published": "2022-06-10",
+   "updated": "2026-09-20",
+   "license": "MIT",
+   "source": "https://github.com/Roundaround/mc-fabric-inventory-management",
+   "issues": "https://github.com/Roundaround/mc-fabric-inventory-management/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 46,
+   "latest_any": {
+    "version_number": "2.0.3+26.3-forge",
+    "date": "2026-09-20",
+    "loaders": [
+     "forge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 3264,
+    "type": "release",
+    "id": "K3c65DM8"
+   },
+   "fabric_263": [
+    {
+     "version_number": "2.0.3+26.3-fabric",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 54316,
+     "type": "release",
+     "id": "OAkbMO3w"
+    },
+    {
+     "version_number": "2.0.2+26.3-fabric",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 242,
+     "type": "release",
+     "id": "5ltmMuRF"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "2.0.3+26.3-fabric",
+    "date": "2026-09-17",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 54316,
+    "type": "release",
+    "id": "OAkbMO3w"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "gallery": 8,
+   "description": "Sort and transfer items with the click of a button."
+  },
+  {
+   "slug": "inventory-essentials",
+   "title": "Inventory Essentials",
+   "id": "Boon8xwi",
+   "url": "https://modrinth.com/mod/inventory-essentials",
+   "downloads_alltime": 2283717,
+   "followers": 877,
+   "published": "2022-06-14",
+   "updated": "2026-10-12",
+   "license": "LicenseRef-All-Rights-Reserved",
+   "source": "https://github.com/TwelveIterations/InventoryEssentials",
+   "issues": "https://github.com/TwelveIterations/InventoryEssentials/issues",
+   "wiki": "https://mods.twelveiterations.com/minecraft/inventory-essentials",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 271,
+   "latest_any": {
+    "version_number": "26.3.0.5+neoforge-26.3",
+    "date": "2026-10-12",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 882,
+    "type": "release",
+    "id": "cg4gtBXU"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.0.5+fabric-26.3",
+     "date": "2026-10-12",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 17109,
+     "type": "release",
+     "id": "yTozEhFD"
+    },
+    {
+     "version_number": "26.3.0.4+fabric-26.3",
+     "date": "2026-10-02",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 11365,
+     "type": "release",
+     "id": "Bb729y7w"
+    },
+    {
+     "version_number": "26.3.0.3+fabric-26.3",
+     "date": "2026-09-25",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 5153,
+     "type": "release",
+     "id": "tc43r9Ra"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.0.5+fabric-26.3",
+    "date": "2026-10-12",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 17109,
+    "type": "release",
+    "id": "yTozEhFD"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "The most essential inventory tweaks. Now with sorting!"
+  },
+  {
+   "slug": "mouse-wheelie",
+   "title": "Mouse Wheelie",
+   "id": "u5Ic2U1u",
+   "url": "https://modrinth.com/mod/mouse-wheelie",
+   "downloads_alltime": 2436871,
+   "followers": 1529,
+   "published": "2020-12-22",
+   "updated": "2026-06-18",
+   "license": "Apache-2.0",
+   "source": "https://github.com/Siphalor/mouse-wheelie",
+   "issues": "https://github.com/Siphalor/mouse-wheelie/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric"
+   ],
+   "n_versions": 346,
+   "latest_any": {
+    "version_number": "1.16.3+mc26.2",
+    "date": "2026-06-18",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.2"
+    ],
+    "downloads": 85538,
+    "type": "release",
+    "id": "Vt8Qojph"
+   },
+   "fabric_263": [],
+   "latest_fabric": {
+    "version_number": "1.16.3+mc26.2",
+    "date": "2026-06-18",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.2"
+    ],
+    "downloads": 85538,
+    "type": "release",
+    "id": "Vt8Qojph"
+   },
+   "other_263_loaders": [],
+   "gallery": 0,
+   "description": "A \"small\" clientside mod featuring item scrolling, inventory sorting, item refilling and more!"
+  },
+  {
+   "slug": "sorted",
+   "title": "Sorted - Inventory & Chest Sorting, Quick Stack",
+   "id": "vtsGVHan",
+   "url": "https://modrinth.com/mod/sorted",
+   "downloads_alltime": 20134,
+   "followers": 35,
+   "published": "2026-05-31",
+   "updated": "2026-10-20",
+   "license": "LicenseRef-All-Rights-Reserved",
+   "source": null,
+   "issues": null,
+   "wiki": "https://voxelsprout.com/sorted/wiki",
+   "loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "n_versions": 137,
+   "latest_any": {
+    "version_number": "0.1.29+26.3",
+    "date": "2026-10-20",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 10,
+    "type": "release",
+    "id": "ZCHrWVO2"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.1.29+26.3",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 154,
+     "type": "release",
+     "id": "FNwhwzza"
+    },
+    {
+     "version_number": "0.1.28+26.3",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 10,
+     "type": "release",
+     "id": "QfEAn6FX"
+    },
+    {
+     "version_number": "0.1.27+26.3",
+     "date": "2026-10-15",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1922,
+     "type": "release",
+     "id": "uiJa1pMM"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.1.29+26.3",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 154,
+    "type": "release",
+    "id": "FNwhwzza"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 9,
+   "description": "Sort your inventory and chests in one click, Quick Stack items into the chest they belong in, and search every chest you have opened. Inventory sorting and chest sorting, client-side, works on vanilla servers and Realms."
+  },
+  {
+   "slug": "chest-tracker",
+   "title": "Chest Tracker",
+   "id": "ni4SrKmq",
+   "url": "https://modrinth.com/mod/chest-tracker",
+   "downloads_alltime": 997753,
+   "followers": 1418,
+   "published": "2021-02-22",
+   "updated": "2025-02-04",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/JackFred2/ChestTracker",
+   "issues": "https://github.com/JackFred2/ChestTracker/issues",
+   "wiki": "https://github.com/JackFred2/ChestTracker/wiki",
+   "loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "n_versions": 151,
+   "latest_any": {
+    "version_number": "2.6.7+1.20.1",
+    "date": "2025-02-04",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "1.20",
+     "1.20.1"
+    ],
+    "downloads": 60432,
+    "type": "release",
+    "id": "NezoxDmT"
+   },
+   "fabric_263": [],
+   "latest_fabric": {
+    "version_number": "2.6.7+1.20.1",
+    "date": "2025-02-04",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "1.20",
+     "1.20.1"
+    ],
+    "downloads": 60432,
+    "type": "release",
+    "id": "NezoxDmT"
+   },
+   "other_263_loaders": [],
+   "gallery": 10,
+   "description": "Client side item storage - remember where you've put things."
+  },
+  {
+   "slug": "chest-tracker-port",
+   "title": "Chest Tracker (Unofficial port)",
+   "id": "VC2NohMN",
+   "url": "https://modrinth.com/mod/chest-tracker-port",
+   "downloads_alltime": 617458,
+   "followers": 286,
+   "published": "2025-10-19",
+   "updated": "2026-10-01",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/ponuing/ChestTracker",
+   "issues": "https://github.com/ponuing/ChestTracker/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "n_versions": 118,
+   "latest_any": {
+    "version_number": "2.8.4+26.3",
+    "date": "2026-10-01",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 39097,
+    "type": "release",
+    "id": "4VAHpekk"
+   },
+   "fabric_263": [
+    {
+     "version_number": "2.8.4+26.3",
+     "date": "2026-10-01",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 39097,
+     "type": "release",
+     "id": "4VAHpekk"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "2.8.4+26.3",
+    "date": "2026-10-01",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 39097,
+    "type": "release",
+    "id": "4VAHpekk"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "gallery": 9,
+   "description": "Client side item storage - remember where you've put things. Unofficial port Chest Tracker."
+  },
+  {
+   "slug": "where-is-it",
+   "title": "Where Is It",
+   "id": "FCTyEqkn",
+   "url": "https://modrinth.com/mod/where-is-it",
+   "downloads_alltime": 180861,
+   "followers": 354,
+   "published": "2020-12-27",
+   "updated": "2024-10-22",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/JackFred2/WhereIsIt/",
+   "issues": "https://github.com/JackFred2/WhereIsIt/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "n_versions": 96,
+   "latest_any": {
+    "version_number": "2.6.4+1.21.2",
+    "date": "2024-10-22",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "1.21.2",
+     "1.21.3",
+     "1.21.4"
+    ],
+    "downloads": 15792,
+    "type": "release",
+    "id": "K6qcgGyq"
+   },
+   "fabric_263": [],
+   "latest_fabric": {
+    "version_number": "2.6.4+1.21.2",
+    "date": "2024-10-22",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "1.21.2",
+     "1.21.3",
+     "1.21.4"
+    ],
+    "downloads": 15792,
+    "type": "release",
+    "id": "K6qcgGyq"
+   },
+   "other_263_loaders": [],
+   "gallery": 5,
+   "description": "Search for items in nearby inventories - now functions server-side only!"
+  },
+  {
+   "slug": "where-is-it-port",
+   "title": "Where Is It (Unofficial Port)",
+   "id": "Kaux9SLz",
+   "url": "https://modrinth.com/mod/where-is-it-port",
+   "downloads_alltime": 21063,
+   "followers": 26,
+   "published": "2025-10-19",
+   "updated": "2026-09-29",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/ponuing/WhereIsIt",
+   "issues": "https://github.com/ponuing/WhereIsIt/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "n_versions": 48,
+   "latest_any": {
+    "version_number": "2.7.5.2+26.3",
+    "date": "2026-09-29",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1141,
+    "type": "release",
+    "id": "E5GUHmIi"
+   },
+   "fabric_263": [
+    {
+     "version_number": "2.7.5.2+26.3",
+     "date": "2026-09-29",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1141,
+     "type": "release",
+     "id": "E5GUHmIi"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "2.7.5.2+26.3",
+    "date": "2026-09-29",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1141,
+    "type": "release",
+    "id": "E5GUHmIi"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "gallery": 5,
+   "description": "Search for items in nearby inventories - now functions server-side only! Unofficial port Where Is It."
+  },
+  {
+   "slug": "storage-tracker",
+   "title": "Storage Tracker",
+   "id": "csg2BIgk",
+   "url": "https://modrinth.com/mod/storage-tracker",
+   "downloads_alltime": 3438,
+   "followers": 4,
+   "published": "2026-06-20",
+   "updated": "2026-10-02",
+   "license": "MIT",
+   "source": null,
+   "issues": null,
+   "wiki": null,
+   "loaders": [
+    "fabric"
+   ],
+   "n_versions": 5,
+   "latest_any": {
+    "version_number": "1.2.1+26.3",
+    "date": "2026-10-02",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1028,
+    "type": "release",
+    "id": "zGNH2riz"
+   },
+   "fabric_263": [
+    {
+     "version_number": "1.2.1+26.3",
+     "date": "2026-10-02",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1028,
+     "type": "release",
+     "id": "zGNH2riz"
+    },
+    {
+     "version_number": "1.2.0+26.3",
+     "date": "2026-09-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1158,
+     "type": "release",
+     "id": "YuVnutXE"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "1.2.1+26.3",
+    "date": "2026-10-02",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1028,
+    "type": "release",
+    "id": "zGNH2riz"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 4,
+   "description": "Client-side chest and container search for Minecraft. Track storage and find exact item locations"
+  },
+  {
+   "slug": "toms-storage",
+   "title": "Tom's Simple Storage Mod",
+   "id": "XZNI4Cpy",
+   "url": "https://modrinth.com/mod/toms-storage",
+   "downloads_alltime": 21084014,
+   "followers": 1347,
+   "published": "2022-03-19",
+   "updated": "2026-10-15",
+   "license": "MIT",
+   "source": "https://github.com/tom5454/Toms-Storage",
+   "issues": "https://github.com/tom5454/Toms-Storage/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 393,
+   "latest_any": {
+    "version_number": "26.3-2.12.2-fabric",
+    "date": "2026-10-15",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 8138,
+    "type": "release",
+    "id": "e7S7Hc7o"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3-2.12.2-fabric",
+     "date": "2026-10-15",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 8138,
+     "type": "release",
+     "id": "e7S7Hc7o"
+    },
+    {
+     "version_number": "26.3-2.12.1-fabric",
+     "date": "2026-09-25",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 20873,
+     "type": "release",
+     "id": "znUwcb7Z"
+    },
+    {
+     "version_number": "26.3-2.12.0-fabric",
+     "date": "2026-09-16",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 4938,
+     "type": "release",
+     "id": "7rBEfM19"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3-2.12.2-fabric",
+    "date": "2026-10-15",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 8138,
+    "type": "release",
+    "id": "e7S7Hc7o"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Simple vanilla style storage mod"
+  },
+  {
+   "slug": "ae2",
+   "title": "Applied Energistics 2",
+   "id": "XxWD5pD3",
+   "url": "https://modrinth.com/mod/ae2",
+   "downloads_alltime": 6352324,
+   "followers": 1259,
+   "published": "2021-12-14",
+   "updated": "2026-10-03",
+   "license": "LicenseRef-Multiple",
+   "source": "https://github.com/AppliedEnergistics/Applied-Energistics-2",
+   "issues": "https://github.com/AppliedEnergistics/Applied-Energistics-2/issues",
+   "wiki": "https://appliedenergistics.github.io/",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 358,
+   "latest_any": {
+    "version_number": "26.3.1-alpha",
+    "date": "2026-10-03",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 2251,
+    "type": "alpha",
+    "id": "PDPQ4WfW"
+   },
+   "fabric_263": [],
+   "latest_fabric": {
+    "version_number": "15.4.11",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "1.20.1"
+    ],
+    "downloads": 59982,
+    "type": "release",
+    "id": "xIOhOI9C"
+   },
+   "other_263_loaders": [
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "AE2: A popular automation and storage mod"
+  },
+  {
+   "slug": "storagedrawers",
+   "title": "Storage Drawers",
+   "id": "guitPqEi",
+   "url": "https://modrinth.com/mod/storagedrawers",
+   "downloads_alltime": 4166419,
+   "followers": 734,
+   "published": "2024-03-02",
+   "updated": "2026-10-11",
+   "license": "MIT",
+   "source": "https://github.com/jaquadro/StorageDrawers",
+   "issues": "https://github.com/jaquadro/StorageDrawers/issues",
+   "wiki": "https://github.com/jaquadro/StorageDrawers/wiki",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 326,
+   "latest_any": {
+    "version_number": "26.3.0.2+neoforge",
+    "date": "2026-10-11",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 870,
+    "type": "release",
+    "id": "AOJN7xlI"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.0.1+fabric",
+     "date": "2026-09-29",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 7870,
+     "type": "release",
+     "id": "wE2d96Vp"
+    },
+    {
+     "version_number": "26.3.0.0+fabric",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1815,
+     "type": "beta",
+     "id": "KEPMtgL1"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.0.1+fabric",
+    "date": "2026-09-29",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 7870,
+    "type": "release",
+    "id": "wE2d96Vp"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "gallery": 5,
+   "description": "Interactive bulk storage solution"
+  },
+  {
+   "slug": "sophisticated-backpacks",
+   "title": "Sophisticated Backpacks",
+   "id": "TyCTlI4b",
+   "url": "https://modrinth.com/mod/sophisticated-backpacks",
+   "downloads_alltime": 20711338,
+   "followers": 2292,
+   "published": "2024-09-22",
+   "updated": "2026-10-19",
+   "license": "LicenseRef-All-Rights-Reserved",
+   "source": "https://github.com/P3pp3rF1y/SophisticatedBackpacks",
+   "issues": "https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues",
+   "wiki": null,
+   "loaders": [
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 928,
+   "latest_any": {
+    "version_number": "1.21.1-3.26.13.2214",
+    "date": "2026-10-19",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "1.21.1"
+    ],
+    "downloads": 11612,
+    "type": "release",
+    "id": "AW1Jh0G5"
+   },
+   "fabric_263": [],
+   "latest_fabric": null,
+   "other_263_loaders": [
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Yet another backpack mod this time with backpack you can place in world, color in different color combinations, upgrade with more inventory and enhance with many functional upgrades"
+  },
+  {
+   "slug": "litematica",
+   "title": "Litematica",
+   "id": "bEpr0Arc",
+   "url": "https://modrinth.com/mod/litematica",
+   "downloads_alltime": 27903433,
+   "followers": 8910,
+   "published": "2023-04-17",
+   "updated": "2026-09-27",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/sakura-ryoko/litematica",
+   "issues": "https://github.com/sakura-ryoko/litematica/issues/",
+   "wiki": "https://github.com/maruohon/litematica/wiki",
+   "loaders": [
+    "fabric",
+    "forge",
+    "liteloader",
+    "ornithe",
+    "rift"
+   ],
+   "n_versions": 493,
+   "latest_any": {
+    "version_number": "0.29.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 886352,
+    "type": "release",
+    "id": "ZqV316KY"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.29.1",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 886352,
+     "type": "release",
+     "id": "ZqV316KY"
+    },
+    {
+     "version_number": "0.29.0",
+     "date": "2026-09-22",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 140724,
+     "type": "release",
+     "id": "fEqsesPK"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.29.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 886352,
+    "type": "release",
+    "id": "ZqV316KY"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 4,
+   "description": "A client-side schematic mod with extra features for creative mode work"
+  },
+  {
+   "slug": "material-hud",
+   "title": "Litematica Material HUD & Chest Finder",
+   "id": "JmqA4Alf",
+   "url": "https://modrinth.com/mod/material-hud",
+   "downloads_alltime": 15471,
+   "followers": 23,
+   "published": "2026-07-27",
+   "updated": "2026-10-20",
+   "license": "GPL-3.0-or-later",
+   "source": null,
+   "issues": null,
+   "wiki": null,
+   "loaders": [
+    "fabric"
+   ],
+   "n_versions": 80,
+   "latest_any": {
+    "version_number": "1.0.17+1.21.11",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "1.21.11"
+    ],
+    "downloads": 26,
+    "type": "release",
+    "id": "m3MxnM2f"
+   },
+   "fabric_263": [
+    {
+     "version_number": "1.0.17+26.3",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 115,
+     "type": "release",
+     "id": "iAMOZ2Q8"
+    },
+    {
+     "version_number": "1.0.16+26.3",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 28,
+     "type": "release",
+     "id": "wBUPC0Or"
+    },
+    {
+     "version_number": "1.0.15+26.3",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 170,
+     "type": "release",
+     "id": "Vuvd59SJ"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "1.0.17+1.21.11",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "1.21.11"
+    ],
+    "downloads": 26,
+    "type": "release",
+    "id": "m3MxnM2f"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 12,
+   "description": "Displays a list of materials and the chests in which they are located"
+  },
+  {
+   "slug": "worldedit",
+   "title": "WorldEdit",
+   "id": "1u6JkXh5",
+   "url": "https://modrinth.com/mod/worldedit",
+   "downloads_alltime": 11797935,
+   "followers": 4933,
+   "published": "2023-10-17",
+   "updated": "2026-10-15",
+   "license": "GPL-3.0-only",
+   "source": "https://github.com/EngineHub/WorldEdit/",
+   "issues": "https://github.com/EngineHub/WorldEdit/issues",
+   "wiki": "https://worldedit.enginehub.org/en/latest/",
+   "loaders": [
+    "bukkit",
+    "fabric",
+    "folia",
+    "forge",
+    "neoforge",
+    "paper",
+    "quilt",
+    "spigot"
+   ],
+   "n_versions": 191,
+   "latest_any": {
+    "version_number": "7.4.6",
+    "date": "2026-10-15",
+    "loaders": [
+     "bukkit",
+     "folia",
+     "paper",
+     "spigot"
+    ],
+    "game_versions": [
+     "26.1.1",
+     "26.1.2",
+     "26.2",
+     "26.3"
+    ],
+    "downloads": 43546,
+    "type": "release",
+    "id": "YFnqiUlL"
+   },
+   "fabric_263": [
+    {
+     "version_number": "7.4.6",
+     "date": "2026-10-15",
+     "loaders": [
+      "fabric",
+      "neoforge"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 62519,
+     "type": "release",
+     "id": "ByRNkO83"
+    },
+    {
+     "version_number": "7.4.6-beta-02",
+     "date": "2026-09-24",
+     "loaders": [
+      "fabric",
+      "neoforge"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 136529,
+     "type": "beta",
+     "id": "E7sbeRFx"
+    },
+    {
+     "version_number": "7.4.6-beta-01",
+     "date": "2026-09-21",
+     "loaders": [
+      "fabric",
+      "neoforge"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 13741,
+     "type": "beta",
+     "id": "J63KECL1"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "7.4.6",
+    "date": "2026-10-15",
+    "loaders": [
+     "fabric",
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 62519,
+    "type": "release",
+    "id": "ByRNkO83"
+   },
+   "other_263_loaders": [
+    "bukkit",
+    "fabric",
+    "folia",
+    "neoforge",
+    "paper",
+    "spigot"
+   ],
+   "gallery": 0,
+   "description": "A Minecraft Map Editor... that runs in-game!\nWith selections, schematics, copy and paste, brushes, and scripting.\nUse it in creative, or use it temporarily in survival."
+  },
+  {
+   "slug": "shulkerboxtooltip",
+   "title": "Shulker Box Tooltip",
+   "id": "2M01OLQq",
+   "url": "https://modrinth.com/mod/shulkerboxtooltip",
+   "downloads_alltime": 40853103,
+   "followers": 10529,
+   "published": "2022-07-16",
+   "updated": "2026-09-16",
+   "license": "MIT",
+   "source": "https://github.com/MisterPeModder/ShulkerBoxTooltip",
+   "issues": "https://github.com/MisterPeModder/ShulkerBoxTooltip/issues",
+   "wiki": "https://github.com/MisterPeModder/ShulkerBoxTooltip/wiki",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 230,
+   "latest_any": {
+    "version_number": "5.4.2+26.3-neoforge",
+    "date": "2026-09-16",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 15456,
+    "type": "release",
+    "id": "2baXmnLh"
+   },
+   "fabric_263": [
+    {
+     "version_number": "5.4.2+26.3-fabric",
+     "date": "2026-09-16",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 773933,
+     "type": "release",
+     "id": "Cj9VEeGt"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "5.4.2+26.3-fabric",
+    "date": "2026-09-16",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 773933,
+    "type": "release",
+    "id": "Cj9VEeGt"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 8,
+   "description": "View the contents of shulker boxes from your inventory"
+  },
+  {
+   "slug": "jade",
+   "title": "Jade \ud83d\udd0d",
+   "id": "nvQzSEkH",
+   "url": "https://modrinth.com/mod/jade",
+   "downloads_alltime": 73354414,
+   "followers": 9268,
+   "published": "2021-09-18",
+   "updated": "2026-10-13",
+   "license": "CC-BY-NC-SA-4.0",
+   "source": "https://github.com/Snownee/Jade",
+   "issues": "https://github.com/Snownee/Jade/issues?q=is%3Aissue",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 340,
+   "latest_any": {
+    "version_number": "26.1.12+neoforge",
+    "date": "2026-10-13",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.1",
+     "26.1.1",
+     "26.1.2"
+    ],
+    "downloads": 6396,
+    "type": "release",
+    "id": "Pr1h4azo"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.5+fabric",
+     "date": "2026-10-02",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 399449,
+     "type": "release",
+     "id": "71CTWqdE"
+    },
+    {
+     "version_number": "26.3.3+fabric",
+     "date": "2026-09-29",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 47023,
+     "type": "beta",
+     "id": "SpZLbrxW"
+    },
+    {
+     "version_number": "26.3.2+fabric",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 24817,
+     "type": "beta",
+     "id": "CLp83j6n"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.5+fabric",
+    "date": "2026-10-02",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 399449,
+    "type": "release",
+    "id": "71CTWqdE"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge",
+    "quilt"
+   ],
+   "gallery": 6,
+   "description": "Shows information about what you are looking at. (Hwyla/Waila fork for Minecraft 1.16+)"
+  },
+  {
+   "slug": "appleskin",
+   "title": "AppleSkin",
+   "id": "EsAfCjCV",
+   "url": "https://modrinth.com/mod/appleskin",
+   "downloads_alltime": 97850560,
+   "followers": 18348,
+   "published": "2021-11-20",
+   "updated": "2026-09-17",
+   "license": "Unlicense",
+   "source": "https://github.com/squeek502/AppleSkin",
+   "issues": "https://github.com/squeek502/AppleSkin/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 99,
+   "latest_any": {
+    "version_number": "3.0.10+mc26.3",
+    "date": "2026-09-17",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1401611,
+    "type": "release",
+    "id": "PHjDtQay"
+   },
+   "fabric_263": [
+    {
+     "version_number": "3.0.10+mc26.3",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 1401611,
+     "type": "release",
+     "id": "PHjDtQay"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "3.0.10+mc26.3",
+    "date": "2026-09-17",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 1401611,
+    "type": "release",
+    "id": "PHjDtQay"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Food/hunger-related HUD improvements"
+  },
+  {
+   "slug": "modmenu",
+   "title": "Mod Menu",
+   "id": "mOgUt4GM",
+   "url": "https://modrinth.com/mod/modmenu",
+   "downloads_alltime": 159196740,
+   "followers": 27759,
+   "published": "2020-11-06",
+   "updated": "2026-10-12",
+   "license": "MIT",
+   "source": "https://github.com/TerraformersMC/ModMenu",
+   "issues": "https://github.com/TerraformersMC/ModMenu/issues",
+   "wiki": "https://github.com/TerraformersMC/ModMenu/wiki",
+   "loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "n_versions": 203,
+   "latest_any": {
+    "version_number": "22.0.0-alpha.2",
+    "date": "2026-10-12",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.4-snapshot-3"
+    ],
+    "downloads": 12026,
+    "type": "alpha",
+    "id": "78N35pJi"
+   },
+   "fabric_263": [
+    {
+     "version_number": "21.0.0",
+     "date": "2026-09-23",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 3327142,
+     "type": "release",
+     "id": "kyy7dbrZ"
+    },
+    {
+     "version_number": "21.0.0-beta.1",
+     "date": "2026-09-11",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3-rc-1",
+      "26.3"
+     ],
+     "downloads": 805928,
+     "type": "beta",
+     "id": "lcxkZSq6"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "22.0.0-alpha.2",
+    "date": "2026-10-12",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.4-snapshot-3"
+    ],
+    "downloads": 12026,
+    "type": "alpha",
+    "id": "78N35pJi"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "quilt"
+   ],
+   "gallery": 4,
+   "description": "Adds a mod menu to view the list of mods you have installed."
+  },
+  {
+   "slug": "yacl",
+   "title": "YetAnotherConfigLib (YACL)",
+   "id": "1eAoo2KR",
+   "url": "https://modrinth.com/mod/yacl",
+   "downloads_alltime": 134131084,
+   "followers": 9790,
+   "published": "2022-09-02",
+   "updated": "2026-10-06",
+   "license": "LGPL-3.0-or-later",
+   "source": "https://github.com/isXander/YetAnotherConfigLib",
+   "issues": "https://github.com/isXander/YetAnotherConfigLib/issues",
+   "wiki": "https://docs.isxander.dev/yet-another-config-lib",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 303,
+   "latest_any": {
+    "version_number": "3.9.9+26.4-fabric",
+    "date": "2026-10-06",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.4-snapshot-3"
+    ],
+    "downloads": 17674,
+    "type": "release",
+    "id": "zuXTTTfP"
+   },
+   "fabric_263": [
+    {
+     "version_number": "3.9.7+26.3-fabric",
+     "date": "2026-09-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 2208008,
+     "type": "release",
+     "id": "s9SjoFu1"
+    },
+    {
+     "version_number": "3.9.6+26.3-fabric",
+     "date": "2026-07-19",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 144300,
+     "type": "release",
+     "id": "rSnhz5tr"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "3.9.9+26.4-fabric",
+    "date": "2026-10-06",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.4-snapshot-3"
+    ],
+    "downloads": 17674,
+    "type": "release",
+    "id": "zuXTTTfP"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 1,
+   "description": "A builder-based configuration library for Minecraft!"
+  },
+  {
+   "slug": "cloth-config",
+   "title": "Cloth Config API",
+   "id": "9s6osm5g",
+   "url": "https://modrinth.com/mod/cloth-config",
+   "downloads_alltime": 183323039,
+   "followers": 16947,
+   "published": "2022-04-21",
+   "updated": "2026-09-23",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/shedaniel/ClothConfig/",
+   "issues": "https://github.com/shedaniel/ClothConfig/issues",
+   "wiki": "https://shedaniel.gitbook.io/cloth-config/",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 161,
+   "latest_any": {
+    "version_number": "26.3.159+neoforge",
+    "date": "2026-09-23",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 94361,
+    "type": "release",
+    "id": "GchRXPnb"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.159+fabric",
+     "date": "2026-09-23",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 2497877,
+     "type": "release",
+     "id": "fg2uyxOW"
+    },
+    {
+     "version_number": "26.3.158+fabric",
+     "date": "2026-09-15",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 554732,
+     "type": "release",
+     "id": "eZ3xIIuk"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.159+fabric",
+    "date": "2026-09-23",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 2497877,
+    "type": "release",
+    "id": "fg2uyxOW"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 1,
+   "description": "Configuration Library for Minecraft Mods"
+  },
+  {
+   "slug": "controlling",
+   "title": "Controlling",
+   "id": "xv94TkTM",
+   "url": "https://modrinth.com/mod/controlling",
+   "downloads_alltime": 42154344,
+   "followers": 2528,
+   "published": "2023-06-09",
+   "updated": "2026-10-09",
+   "license": "MIT",
+   "source": "https://github.com/jaredlll08/Controlling",
+   "issues": "https://github.com/jaredlll08/Controlling/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 353,
+   "latest_any": {
+    "version_number": "26.3.4",
+    "date": "2026-10-09",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 5105,
+    "type": "release",
+    "id": "k8C4cEvR"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.4",
+     "date": "2026-10-09",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 137973,
+     "type": "release",
+     "id": "V6AbRm67"
+    },
+    {
+     "version_number": "26.3.3",
+     "date": "2026-09-19",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 257625,
+     "type": "release",
+     "id": "4QeVlQxd"
+    },
+    {
+     "version_number": "26.3.2",
+     "date": "2026-09-19",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 216,
+     "type": "release",
+     "id": "tWC3XQYz"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.4",
+    "date": "2026-10-09",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 137973,
+    "type": "release",
+    "id": "V6AbRm67"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Adds a search bar to the Key-Bindings menu"
+  },
+  {
+   "slug": "searchables",
+   "title": "Searchables",
+   "id": "fuuu3xnx",
+   "url": "https://modrinth.com/mod/searchables",
+   "downloads_alltime": 42329683,
+   "followers": 1281,
+   "published": "2023-06-08",
+   "updated": "2026-10-09",
+   "license": "MIT",
+   "source": "https://github.com/jaredlll08/searchables",
+   "issues": "https://github.com/jaredlll08/searchables/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 192,
+   "latest_any": {
+    "version_number": "1.0.3",
+    "date": "2026-10-09",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 5411,
+    "type": "release",
+    "id": "V62qRRhH"
+   },
+   "fabric_263": [
+    {
+     "version_number": "1.0.3",
+     "date": "2026-10-09",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 168653,
+     "type": "release",
+     "id": "wV79bLRS"
+    },
+    {
+     "version_number": "1.0.2",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 257527,
+     "type": "release",
+     "id": "RlPMfNdS"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "1.0.3",
+    "date": "2026-10-09",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 168653,
+    "type": "release",
+    "id": "wV79bLRS"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Searchables is a library mod that adds helper methods that allow for searching and filtering elements based on components, as well as offering built in auto-complete functionality."
+  },
+  {
+   "slug": "inventoryhudplus",
+   "title": "InventoryHUD+",
+   "id": "Kp2uclYl",
+   "url": "https://modrinth.com/mod/inventoryhudplus",
+   "downloads_alltime": 11005186,
+   "followers": 995,
+   "published": "2025-09-01",
+   "updated": "2026-09-20",
+   "license": "LicenseRef-All-Rights-Reserved",
+   "source": null,
+   "issues": null,
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 60,
+   "latest_any": {
+    "version_number": "3.4.36",
+    "date": "2026-09-20",
+    "loaders": [
+     "forge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 3752,
+    "type": "release",
+    "id": "U5fluwfU"
+   },
+   "fabric_263": [
+    {
+     "version_number": "3.4.36",
+     "date": "2026-09-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 87828,
+     "type": "release",
+     "id": "EKRtUCSM"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "3.4.36",
+    "date": "2026-09-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 87828,
+    "type": "release",
+    "id": "EKRtUCSM"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "gallery": 0,
+   "description": "Adds your main inventory, potion effects and your equipments to your HUD. And few other features."
+  },
+  {
+   "slug": "minihud",
+   "title": "MiniHUD",
+   "id": "UMxybHE8",
+   "url": "https://modrinth.com/mod/minihud",
+   "downloads_alltime": 6840745,
+   "followers": 3631,
+   "published": "2023-04-17",
+   "updated": "2026-09-27",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/maruohon/minihud/",
+   "issues": "https://github.com/sakura-ryoko/minihud/issues/",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "liteloader",
+    "ornithe",
+    "rift"
+   ],
+   "n_versions": 433,
+   "latest_any": {
+    "version_number": "0.41.2",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 191894,
+    "type": "release",
+    "id": "WfIgkxnf"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.41.2",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 191894,
+     "type": "release",
+     "id": "WfIgkxnf"
+    },
+    {
+     "version_number": "0.41.1",
+     "date": "2026-09-22",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 31910,
+     "type": "release",
+     "id": "XJPHdWmz"
+    },
+    {
+     "version_number": "0.41.0",
+     "date": "2026-09-21",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 5811,
+     "type": "release",
+     "id": "tU5dpGKw"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.41.2",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 191894,
+    "type": "release",
+    "id": "WfIgkxnf"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 0,
+   "description": "A \"mini F3\" HUD mod, also with various overlays like light level, spawn chunks, slime chunks etc."
+  },
+  {
+   "slug": "betterf3",
+   "title": "BetterF3",
+   "id": "8shC1gFX",
+   "url": "https://modrinth.com/mod/betterf3",
+   "downloads_alltime": 36230051,
+   "followers": 11570,
+   "published": "2021-09-20",
+   "updated": "2026-10-04",
+   "license": "MIT",
+   "source": "https://github.com/TreyRuffy/BetterF3",
+   "issues": "https://github.com/TreyRuffy/BetterF3/issues/",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 107,
+   "latest_any": {
+    "version_number": "20.0.0",
+    "date": "2026-10-04",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 9988,
+    "type": "release",
+    "id": "1rOnEBD0"
+   },
+   "fabric_263": [
+    {
+     "version_number": "20.0.0",
+     "date": "2026-10-04",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 286199,
+     "type": "release",
+     "id": "XB7u4eSf"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "20.0.0",
+    "date": "2026-10-04",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 286199,
+    "type": "release",
+    "id": "XB7u4eSf"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge",
+    "quilt"
+   ],
+   "gallery": 1,
+   "description": "BetterF3 is a mod that replaces Minecraft's original debug HUD with a highly customizable, more human-readable HUD."
+  },
+  {
+   "slug": "ukus-armor-hud",
+   "title": "uku's Armor HUD",
+   "id": "wF189hn9",
+   "url": "https://modrinth.com/mod/ukus-armor-hud",
+   "downloads_alltime": 10027845,
+   "followers": 2243,
+   "published": "2023-07-20",
+   "updated": "2026-10-03",
+   "license": "MIT",
+   "source": "https://github.com/uku3lig/armor-hud.git",
+   "issues": "https://github.com/uku3lig/armor-hud/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 30,
+   "latest_any": {
+    "version_number": "0.14.0+mc26.3-neoforge",
+    "date": "2026-10-03",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 5662,
+    "type": "release",
+    "id": "EuqKXgAI"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.14.0+mc26.3-fabric",
+     "date": "2026-10-03",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 291009,
+     "type": "release",
+     "id": "URl1E7bP"
+    },
+    {
+     "version_number": "0.13.0+mc26.3-fabric",
+     "date": "2026-09-15",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 140083,
+     "type": "release",
+     "id": "E3a2vnRb"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.14.0+mc26.3-fabric",
+    "date": "2026-10-03",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 291009,
+    "type": "release",
+    "id": "URl1E7bP"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge",
+    "quilt"
+   ],
+   "gallery": 1,
+   "description": "Minimalist vanilla-like widget to display your armor items and their durability. Forked by uku."
+  },
+  {
+   "slug": "xaeros-minimap",
+   "title": "Xaero's Minimap",
+   "id": "1bokaNcj",
+   "url": "https://modrinth.com/mod/xaeros-minimap",
+   "downloads_alltime": 119905797,
+   "followers": 18942,
+   "published": "2023-04-21",
+   "updated": "2026-10-20",
+   "license": "LicenseRef-All-Rights-Reserved",
+   "source": null,
+   "issues": "https://curseforge.com/minecraft/mc-mods/xaeros-minimap/issues",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 1277,
+   "latest_any": {
+    "version_number": "fabric-26.3-26.6.1",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 34875,
+    "type": "release",
+    "id": "eUEhnw8G"
+   },
+   "fabric_263": [
+    {
+     "version_number": "fabric-26.3-26.6.1",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 34875,
+     "type": "release",
+     "id": "eUEhnw8G"
+    },
+    {
+     "version_number": "fabric-26.3-26.6.0",
+     "date": "2026-10-05",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 913770,
+     "type": "release",
+     "id": "B2aG1aya"
+    },
+    {
+     "version_number": "fabric-26.3-26.5.3",
+     "date": "2026-09-17",
+     "loaders": [
+      "fabric",
+      "quilt"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 539016,
+     "type": "release",
+     "id": "YPkAliDt"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "fabric-26.3-26.6.1",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 34875,
+    "type": "release",
+    "id": "eUEhnw8G"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "gallery": 0,
+   "description": "Displays a map of the nearby world terrain, players, mobs, entities in the corner of your screen. Lets you create waypoints which help you find the locations you've marked."
+  },
+  {
+   "slug": "jei",
+   "title": "Just Enough Items (JEI)",
+   "id": "u6dRKJwZ",
+   "url": "https://modrinth.com/mod/jei",
+   "downloads_alltime": 85047365,
+   "followers": 11542,
+   "published": "2023-01-27",
+   "updated": "2026-10-20",
+   "license": "MIT",
+   "source": "https://github.com/mezz/JustEnoughItems",
+   "issues": "https://github.com/mezz/JustEnoughItems/issues?q=is%3Aissue",
+   "wiki": "https://github.com/mezz/JustEnoughItems/wiki",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 3881,
+   "latest_any": {
+    "version_number": "15.74.0.227",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "1.20.1"
+    ],
+    "downloads": 135,
+    "type": "beta",
+    "id": "F2JRIgT7"
+   },
+   "fabric_263": [
+    {
+     "version_number": "31.16.0.87",
+     "date": "2026-10-20",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 5881,
+     "type": "beta",
+     "id": "YO1qWjF9"
+    },
+    {
+     "version_number": "31.16.0.86",
+     "date": "2026-10-19",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 28451,
+     "type": "beta",
+     "id": "FZo1k4Vx"
+    },
+    {
+     "version_number": "31.16.0.85",
+     "date": "2026-10-19",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 5801,
+     "type": "beta",
+     "id": "wQJNj1C5"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "15.74.0.227",
+    "date": "2026-10-20",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "1.20.1"
+    ],
+    "downloads": 135,
+    "type": "beta",
+    "id": "F2JRIgT7"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 6,
+   "description": "View Items and Recipes"
+  },
+  {
+   "slug": "emi",
+   "title": "EMI",
+   "id": "fRiHVvU7",
+   "url": "https://modrinth.com/mod/emi",
+   "downloads_alltime": 30817963,
+   "followers": 2999,
+   "published": "2022-06-08",
+   "updated": "2026-05-13",
+   "license": "MIT",
+   "source": "https://github.com/emilyploszaj/emi/",
+   "issues": "https://github.com/emilyploszaj/emi/issues/",
+   "wiki": "https://github.com/emilyploszaj/emi/wiki/",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "quilt"
+   ],
+   "n_versions": 714,
+   "latest_any": {
+    "version_number": "1.1.24+1.21.1+neoforge",
+    "date": "2026-05-13",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "1.21.1"
+    ],
+    "downloads": 1530567,
+    "type": "release",
+    "id": "5sIPA1To"
+   },
+   "fabric_263": [],
+   "latest_fabric": {
+    "version_number": "1.1.24+1.21.1+fabric",
+    "date": "2026-05-13",
+    "loaders": [
+     "fabric",
+     "quilt"
+    ],
+    "game_versions": [
+     "1.21.1"
+    ],
+    "downloads": 909923,
+    "type": "release",
+    "id": "on5GT1qh"
+   },
+   "other_263_loaders": [],
+   "gallery": 2,
+   "description": "A featureful and accessible item and recipe viewer"
+  },
+  {
+   "slug": "rei",
+   "title": "Roughly Enough Items (REI)",
+   "id": "nfn13YXA",
+   "url": "https://modrinth.com/mod/rei",
+   "downloads_alltime": 27380886,
+   "followers": 4487,
+   "published": "2022-06-11",
+   "updated": "2026-10-07",
+   "license": "MIT",
+   "source": "https://github.com/shedaniel/RoughlyEnoughItems",
+   "issues": "https://github.com/shedaniel/RoughlyEnoughItems/discussions",
+   "wiki": "https://www.craft.do/s/qj8mHyTVd7qkOZ",
+   "loaders": [
+    "fabric",
+    "forge",
+    "neoforge",
+    "rift"
+   ],
+   "n_versions": 616,
+   "latest_any": {
+    "version_number": "26.3.824+neoforge",
+    "date": "2026-10-07",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 3216,
+    "type": "beta",
+    "id": "uwE0PJmc"
+   },
+   "fabric_263": [
+    {
+     "version_number": "26.3.824+fabric",
+     "date": "2026-10-07",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 42755,
+     "type": "release",
+     "id": "rKsAE6bX"
+    },
+    {
+     "version_number": "26.3.823+fabric",
+     "date": "2026-09-29",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 19942,
+     "type": "release",
+     "id": "ePn2dRJ1"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "26.3.824+fabric",
+    "date": "2026-10-07",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 42755,
+    "type": "release",
+    "id": "rKsAE6bX"
+   },
+   "other_263_loaders": [
+    "fabric",
+    "neoforge"
+   ],
+   "gallery": 7,
+   "description": "Clean and Customizable. Alternative to Just Enough Items/JEI."
+  },
+  {
+   "slug": "tweakeroo",
+   "title": "Tweakeroo",
+   "id": "t5wuYk45",
+   "url": "https://modrinth.com/mod/tweakeroo",
+   "downloads_alltime": 7974172,
+   "followers": 2740,
+   "published": "2023-04-17",
+   "updated": "2026-09-27",
+   "license": "LGPL-3.0-only",
+   "source": "https://github.com/maruohon/tweakeroo/",
+   "issues": "https://github.com/sakura-ryoko/tweakeroo/issues/",
+   "wiki": null,
+   "loaders": [
+    "fabric",
+    "forge",
+    "liteloader",
+    "ornithe",
+    "rift"
+   ],
+   "n_versions": 450,
+   "latest_any": {
+    "version_number": "0.30.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 190604,
+    "type": "release",
+    "id": "fWxKATn6"
+   },
+   "fabric_263": [
+    {
+     "version_number": "0.30.1",
+     "date": "2026-09-27",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 190604,
+     "type": "release",
+     "id": "fWxKATn6"
+    },
+    {
+     "version_number": "0.30.0",
+     "date": "2026-09-21",
+     "loaders": [
+      "fabric"
+     ],
+     "game_versions": [
+      "26.3"
+     ],
+     "downloads": 42229,
+     "type": "release",
+     "id": "MtPXEGTi"
+    }
+   ],
+   "latest_fabric": {
+    "version_number": "0.30.1",
+    "date": "2026-09-27",
+    "loaders": [
+     "fabric"
+    ],
+    "game_versions": [
+     "26.3"
+    ],
+    "downloads": 190604,
+    "type": "release",
+    "id": "fWxKATn6"
+   },
+   "other_263_loaders": [
+    "fabric"
+   ],
+   "gallery": 0,
+   "description": "Various client-side tweaks, such as hand restock, hotbar swap/cycle, flexible/fast block placement etc."
+  },
+  {
+   "slug": "quark",
+   "title": "Quark",
+   "id": "qnQsVE2z",
+   "url": "https://modrinth.com/mod/quark",
+   "downloads_alltime": 26383088,
+   "followers": 1748,
+   "published": "2022-11-13",
+   "updated": "2026-10-05",
+   "license": "CC-BY-NC-SA-3.0",
+   "source": "https://github.com/VazkiiMods/Quark",
+   "issues": "https://github.com/VazkiiMods/Quark/issues",
+   "wiki": "https://quarkmod.net/",
+   "loaders": [
+    "forge",
+    "neoforge"
+   ],
+   "n_versions": 87,
+   "latest_any": {
+    "version_number": "4.1-487",
+    "date": "2026-10-05",
+    "loaders": [
+     "neoforge"
+    ],
+    "game_versions": [
+     "1.21.1"
+    ],
+    "downloads": 62160,
+    "type": "release",
+    "id": "18h0L19k"
+   },
+   "fabric_263": [],
+   "latest_fabric": null,
+   "other_263_loaders": [],
+   "gallery": 0,
+   "description": "A Quark is a very small thing. This mod is a collection of small things..."
+  }
+ ]
+}

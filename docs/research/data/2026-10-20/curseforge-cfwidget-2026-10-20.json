@@ -1,0 +1,763 @@
+{
+ "fetched_utc": "2026-10-20T17:42:35.403350+00:00",
+ "source": "https://api.cfwidget.com/minecraft/mc-mods/<slug> (third-party mirror of CurseForge public data)",
+ "projects": {
+  "mouse-tweaks": {
+   "slug": "mouse-tweaks",
+   "cf_id": 60089,
+   "title": "Mouse Tweaks",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/mouse-tweaks",
+   "downloads_total": 483116369,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2013-06-25T13:13:55.087Z",
+   "fabric_263": [
+    {
+     "name": "MouseTweaks-fabric-mc26.3-2.31.jar",
+     "display": "[26.3 Fabric] Mouse Tweaks 2.31",
+     "uploaded": "2026-09-15T17:44:47.537Z",
+     "type": "release",
+     "downloads": 1129
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Forge",
+    "NeoForge"
+   ]
+  },
+  "inventory-profiles-next": {
+   "slug": "inventory-profiles-next",
+   "error": "HTTP Error 404: Not Found"
+  },
+  "item-scroller": {
+   "slug": "item-scroller",
+   "cf_id": 242064,
+   "title": "Item Scroller",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/item-scroller",
+   "downloads_total": 6210278,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2016-02-20T19:58:12.127Z",
+   "fabric_263": [
+    {
+     "name": "itemscroller-fabric-26.3-0.33.1.jar",
+     "display": "itemscroller-fabric-26.3-0.33.1.jar",
+     "uploaded": "2026-10-08T16:59:40.303Z",
+     "type": "release",
+     "downloads": 107
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric"
+   ]
+  },
+  "clientsort": {
+   "slug": "clientsort",
+   "cf_id": 1049891,
+   "title": "Client Sort",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/clientsort",
+   "downloads_total": 14075727,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2024-06-25T13:41:21.397Z",
+   "fabric_263": [
+    {
+     "name": "clientsort-fabric-3.104.1+26.3.jar",
+     "display": "v3.104.1+26.3-Fabric",
+     "uploaded": "2026-09-26T07:48:09.05Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "clientsort-fabric-3.104.0+26.3.jar",
+     "display": "v3.104.0+26.3-Fabric",
+     "uploaded": "2026-09-15T22:09:56.743Z",
+     "type": "release",
+     "downloads": 1024
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "inventory-management": {
+   "slug": "inventory-management",
+   "cf_id": 1293402,
+   "title": "Inventory Management",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/inventory-management",
+   "downloads_total": 210203,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2025-06-24T13:10:55.4Z",
+   "fabric_263": [
+    {
+     "name": "inventorymanagement-fabric-2.0.3+26.3.jar",
+     "display": "2.0.3 for 26.3 Fabric",
+     "uploaded": "2026-09-17T16:31:17.343Z",
+     "type": "release",
+     "downloads": 950
+    },
+    {
+     "name": "inventorymanagement-fabric-2.0.2+26.3.jar",
+     "display": "2.0.2 for 26.3 Fabric",
+     "uploaded": "2026-09-17T15:26:14.163Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Forge",
+    "NeoForge",
+    "Quilt"
+   ]
+  },
+  "inventory-essentials": {
+   "slug": "inventory-essentials",
+   "cf_id": 368825,
+   "title": "Inventory Essentials",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/inventory-essentials",
+   "downloads_total": 51843581,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-03-23T17:46:59.41Z",
+   "fabric_263": [
+    {
+     "name": "inventoryessentials-fabric-26.3-26.3.0.5.jar",
+     "display": "inventoryessentials-fabric-26.3-26.3.0.5.jar",
+     "uploaded": "2026-10-12T06:30:55.307Z",
+     "type": "release",
+     "downloads": 1
+    },
+    {
+     "name": "inventoryessentials-fabric-26.3-26.3.0.4.jar",
+     "display": "inventoryessentials-fabric-26.3-26.3.0.4.jar",
+     "uploaded": "2026-10-02T06:29:17.033Z",
+     "type": "release",
+     "downloads": 9999
+    },
+    {
+     "name": "inventoryessentials-fabric-26.3-26.3.0.3.jar",
+     "display": "inventoryessentials-fabric-26.3-26.3.0.3.jar",
+     "uploaded": "2026-09-25T06:00:19Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "mouse-wheelie": {
+   "slug": "mouse-wheelie",
+   "cf_id": 317514,
+   "title": "Mouse Wheelie (Fabric)",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/mouse-wheelie",
+   "downloads_total": 9877326,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2019-03-16T21:04:56.85Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "sorted": {
+   "slug": "sorted",
+   "error": "HTTP Error 404: Not Found"
+  },
+  "chest-tracker": {
+   "slug": "chest-tracker",
+   "cf_id": 397217,
+   "title": "Chest Tracker",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/chest-tracker",
+   "downloads_total": 1152554,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-07-22T20:43:45.003Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "where-is-it": {
+   "slug": "where-is-it",
+   "cf_id": 378036,
+   "title": "Where Is It",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/where-is-it",
+   "downloads_total": 380198,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-04-23T17:55:46.973Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "toms-storage": {
+   "slug": "toms-storage",
+   "cf_id": 378609,
+   "title": "Tom's Simple Storage Mod",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/toms-storage",
+   "downloads_total": 55352776,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-04-27T19:00:57.443Z",
+   "fabric_263": [],
+   "any_263_loaders": [
+    "NeoForge"
+   ]
+  },
+  "ae2": {
+   "slug": "applied-energistics-2",
+   "cf_id": 223794,
+   "title": "Applied Energistics 2",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2",
+   "downloads_total": 229283000,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2014-08-27T20:04:28.857Z",
+   "fabric_263": [],
+   "any_263_loaders": [
+    "NeoForge"
+   ]
+  },
+  "storagedrawers": {
+   "slug": "storage-drawers",
+   "cf_id": 223852,
+   "title": "Storage Drawers",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/storage-drawers",
+   "downloads_total": 241452508,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2014-08-30T04:14:01.727Z",
+   "fabric_263": [
+    {
+     "name": "StorageDrawers-fabric-26.3.0.1.jar",
+     "display": "Storage Drawers-fabric-26.3.0.1",
+     "uploaded": "2026-09-29T08:40:19.783Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "StorageDrawers-fabric-26.3.0.0.jar",
+     "display": "Storage Drawers-fabric-26.3.0.0",
+     "uploaded": "2026-09-17T05:40:37.59Z",
+     "type": "beta",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Forge",
+    "NeoForge"
+   ]
+  },
+  "sophisticated-backpacks": {
+   "slug": "sophisticated-backpacks",
+   "cf_id": 422301,
+   "title": "Sophisticated Backpacks",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks",
+   "downloads_total": 250367754,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-11-24T20:37:12.55Z",
+   "fabric_263": [],
+   "any_263_loaders": [
+    "NeoForge"
+   ]
+  },
+  "litematica": {
+   "slug": "litematica",
+   "cf_id": 308892,
+   "title": "Litematica",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/litematica",
+   "downloads_total": 14546261,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2018-12-13T00:00:26.587Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "material-hud": {
+   "slug": "litematica-material-hud",
+   "error": "HTTP Error 404: Not Found"
+  },
+  "worldedit": {
+   "slug": "worldedit",
+   "cf_id": 225608,
+   "title": "WorldEdit",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/worldedit",
+   "downloads_total": 66381150,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2014-11-15T03:49:30.093Z",
+   "fabric_263": [
+    {
+     "name": "worldedit-mod-7.4.6.jar",
+     "display": "WorldEdit 7.4.6 (NeoForge/Fabric for MC 26.3)",
+     "uploaded": "2026-10-15T03:59:59.39Z",
+     "type": "release",
+     "downloads": 3540
+    },
+    {
+     "name": "worldedit-mod-7.4.6-beta-02.jar",
+     "display": "WorldEdit 7.4.6 Beta 2 (NeoForge/Fabric for MC 26.3)",
+     "uploaded": "2026-09-24T10:24:15.157Z",
+     "type": "beta",
+     "downloads": 1
+    },
+    {
+     "name": "worldedit-mod-7.4.6-beta-01.jar",
+     "display": "WorldEdit 7.4.6 Beta 1 (NeoForge/Fabric for MC 26.3)",
+     "uploaded": "2026-09-21T10:00:35.853Z",
+     "type": "beta",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "shulkerboxtooltip": {
+   "slug": "shulkerboxtooltip",
+   "cf_id": 315811,
+   "title": "Shulker Box Tooltip [Fabric/Forge/NeoForge]",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/shulkerboxtooltip",
+   "downloads_total": 20553090,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2019-02-25T16:09:54.473Z",
+   "fabric_263": [
+    {
+     "name": "shulkerboxtooltip-fabric-5.4.2+26.3.jar",
+     "display": "[Fabric 26.3] v5.4.2+26.3",
+     "uploaded": "2026-09-16T18:43:56.087Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "jade": {
+   "slug": "jade",
+   "cf_id": 324717,
+   "title": "Jade \ud83d\udd0d",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/jade",
+   "downloads_total": 279063087,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2019-06-19T06:14:57.25Z",
+   "fabric_263": [
+    {
+     "name": "Jade-mc26.3-Fabric-26.3.5.jar",
+     "display": "[Fabric 26.3.X] 26.3.5",
+     "uploaded": "2026-10-02T23:48:22.64Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "Jade-mc26.3-Fabric-26.3.3.jar",
+     "display": "[Fabric 26.3.X] 26.3.3",
+     "uploaded": "2026-09-29T01:11:55.947Z",
+     "type": "beta",
+     "downloads": 0
+    },
+    {
+     "name": "Jade-mc26.3-Fabric-26.3.2.jar",
+     "display": "[Fabric 26.3.X] 26.3.2",
+     "uploaded": "2026-09-27T07:19:15.413Z",
+     "type": "beta",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge",
+    "Quilt"
+   ]
+  },
+  "appleskin": {
+   "slug": "appleskin",
+   "cf_id": 248787,
+   "title": "AppleSkin",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/appleskin",
+   "downloads_total": 419812503,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2016-08-13T20:28:19.243Z",
+   "fabric_263": [
+    {
+     "name": "appleskin-fabric-mc26.3-3.0.10.jar",
+     "display": "appleskin-fabric-mc26.3-3.0.10.jar",
+     "uploaded": "2026-09-17T23:56:19.79Z",
+     "type": "release",
+     "downloads": 12035
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "modmenu": {
+   "slug": "modmenu",
+   "cf_id": 308702,
+   "title": "Mod Menu",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/modmenu",
+   "downloads_total": 83442347,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2018-12-10T16:47:08.667Z",
+   "fabric_263": [
+    {
+     "name": "modmenu-21.0.0.jar",
+     "display": "v21.0.0 for 26.3",
+     "uploaded": "2026-09-23T21:31:05.287Z",
+     "type": "release",
+     "downloads": 6663
+    },
+    {
+     "name": "modmenu-21.0.0-beta.1.jar",
+     "display": "v21.0.0-beta.1 for 26.3-rc-1",
+     "uploaded": "2026-09-11T00:58:08.72Z",
+     "type": "beta",
+     "downloads": 51658
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Quilt"
+   ]
+  },
+  "yacl": {
+   "slug": "yacl",
+   "cf_id": 667299,
+   "title": "YetAnotherConfigLib",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/yacl",
+   "downloads_total": 130788544,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2022-09-05T09:54:20.827Z",
+   "fabric_263": [
+    {
+     "name": "yet_another_config_lib_v3-3.9.7+26.3-fabric.jar",
+     "display": "3.9.7 for fabric 26.3",
+     "uploaded": "2026-09-20T23:11:33.24Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "cloth-config": {
+   "slug": "cloth-config",
+   "cf_id": 319057,
+   "title": "Cloth Config API (UNUSED)",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/cloth-config-legacy",
+   "downloads_total": 13469586,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2019-04-08T16:42:09.823Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "controlling": {
+   "slug": "controlling",
+   "cf_id": 250398,
+   "title": "Controlling",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/controlling",
+   "downloads_total": 398543190,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2016-08-28T22:31:23.857Z",
+   "fabric_263": [
+    {
+     "name": "Controlling-fabric-26.3-26.3.4.jar",
+     "display": "Controlling-fabric-26.3-26.3.4.jar",
+     "uploaded": "2026-10-09T18:52:51.297Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "Controlling-fabric-26.3-26.3.3.jar",
+     "display": "Controlling-fabric-26.3-26.3.3.jar",
+     "uploaded": "2026-09-19T22:09:54.447Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "Controlling-fabric-26.3-26.3.2.jar",
+     "display": "Controlling-fabric-26.3-26.3.2.jar",
+     "uploaded": "2026-09-19T22:03:54.217Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "searchables": {
+   "slug": "searchables",
+   "cf_id": 858542,
+   "title": "Searchables",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/searchables",
+   "downloads_total": 178513675,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2023-05-09T08:32:36.86Z",
+   "fabric_263": [
+    {
+     "name": "Searchables-fabric-26.3-1.0.3.jar",
+     "display": "Searchables-fabric-26.3-1.0.3.jar",
+     "uploaded": "2026-10-09T18:51:46.5Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "Searchables-fabric-26.3-1.0.2.jar",
+     "display": "Searchables-fabric-26.3-1.0.2.jar",
+     "uploaded": "2026-09-17T02:31:58.663Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "inventoryhudplus": {
+   "slug": "inventory-hud-forge",
+   "cf_id": 357540,
+   "title": "Inventory HUD+",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/inventory-hud-forge",
+   "downloads_total": 88859088,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-01-06T19:01:12.91Z",
+   "fabric_263": [
+    {
+     "name": "inventoryhud.fabric.26.3-3.4.36.jar",
+     "display": "[Fabric][26.3]InventoryHud(v3.4.36)",
+     "uploaded": "2026-09-20T21:24:51.863Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Forge",
+    "NeoForge"
+   ]
+  },
+  "minihud": {
+   "slug": "minihud",
+   "cf_id": 244260,
+   "title": "MiniHUD",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/minihud",
+   "downloads_total": 3980819,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2016-04-22T19:03:08.9Z",
+   "fabric_263": [
+    {
+     "name": "minihud-fabric-26.3-0.41.2.jar",
+     "display": "minihud-fabric-26.3-0.41.2.jar",
+     "uploaded": "2026-10-08T17:04:02.87Z",
+     "type": "release",
+     "downloads": 459
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric"
+   ]
+  },
+  "betterf3": {
+   "slug": "betterf3",
+   "cf_id": 401648,
+   "title": "BetterF3",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/betterf3",
+   "downloads_total": 79315036,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2020-08-11T23:14:01.59Z",
+   "fabric_263": [
+    {
+     "name": "BetterF3-20.0.0-Fabric-26.3.jar",
+     "display": "BetterF3 Fabric v20.0.0 (26.3)",
+     "uploaded": "2026-10-04T20:11:14.067Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge",
+    "Quilt"
+   ]
+  },
+  "ukus-armor-hud": {
+   "slug": "ukus-armor-hud-fabric",
+   "error": "HTTP Error 404: Not Found"
+  },
+  "xaeros-minimap": {
+   "slug": "xaeros-minimap",
+   "cf_id": 263420,
+   "title": "Xaero's Minimap",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap",
+   "downloads_total": 255745484,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2017-03-22T16:16:57.37Z",
+   "fabric_263": [
+    {
+     "name": "xaerominimap-fabric-26.3-26.6.1.jar",
+     "display": "xaerominimap-fabric-26.3-26.6.1.jar",
+     "uploaded": "2026-10-20T10:59:36.457Z",
+     "type": "release",
+     "downloads": 4621
+    },
+    {
+     "name": "xaerominimap-fabric-26.3-26.6.0.jar",
+     "display": "xaerominimap-fabric-26.3-26.6.0.jar",
+     "uploaded": "2026-10-05T06:59:06.083Z",
+     "type": "release",
+     "downloads": 0
+    },
+    {
+     "name": "xaerominimap-fabric-26.3-26.5.3.jar",
+     "display": "xaerominimap-fabric-26.3-26.5.3.jar",
+     "uploaded": "2026-09-17T07:00:57.473Z",
+     "type": "release",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "Forge",
+    "NeoForge",
+    "Quilt"
+   ]
+  },
+  "jei": {
+   "slug": "jei",
+   "cf_id": 238222,
+   "title": "Just Enough Items (JEI)",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/jei",
+   "downloads_total": 637918312,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2015-11-23T23:00:41.923Z",
+   "fabric_263": [
+    {
+     "name": "jei-26.3-fabric-31.16.0.85.jar",
+     "display": "31.16.0.85 for Fabric 26.3",
+     "uploaded": "2026-10-19T12:23:19.73Z",
+     "type": "beta",
+     "downloads": 0
+    },
+    {
+     "name": "jei-26.3-fabric-31.16.0.84.jar",
+     "display": "31.16.0.84 for Fabric 26.3",
+     "uploaded": "2026-10-18T16:19:22.203Z",
+     "type": "beta",
+     "downloads": 0
+    },
+    {
+     "name": "jei-26.3-fabric-31.16.0.83.jar",
+     "display": "31.16.0.83 for Fabric 26.3",
+     "uploaded": "2026-10-18T13:10:46.273Z",
+     "type": "beta",
+     "downloads": 0
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "emi": {
+   "slug": "emi",
+   "cf_id": 580555,
+   "title": "EMI",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/emi",
+   "downloads_total": 49959333,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2022-05-29T10:47:43.217Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  },
+  "rei": {
+   "slug": "roughly-enough-items",
+   "cf_id": 310111,
+   "title": "Roughly Enough Items Fabric/Forge/NeoForge (REI)",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items",
+   "downloads_total": 57996634,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2018-12-30T18:01:35.283Z",
+   "fabric_263": [
+    {
+     "name": "RoughlyEnoughItems-26.3.824.jar",
+     "display": "[Fabric 26.3] v26.3.824",
+     "uploaded": "2026-10-07T16:38:50.043Z",
+     "type": "release",
+     "downloads": 297
+    },
+    {
+     "name": "RoughlyEnoughItems-26.3.823.jar",
+     "display": "[Fabric 26.3] v26.3.823",
+     "uploaded": "2026-09-29T09:40:01.54Z",
+     "type": "release",
+     "downloads": 249
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric",
+    "NeoForge"
+   ]
+  },
+  "tweakeroo": {
+   "slug": "tweakeroo",
+   "cf_id": 297344,
+   "title": "Tweakeroo",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/tweakeroo",
+   "downloads_total": 3013060,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2018-07-03T16:31:06.927Z",
+   "fabric_263": [
+    {
+     "name": "tweakeroo-fabric-26.3-0.30.1.jar",
+     "display": "tweakeroo-fabric-26.3-0.30.1.jar",
+     "uploaded": "2026-10-08T17:07:32.043Z",
+     "type": "release",
+     "downloads": 461
+    }
+   ],
+   "any_263_loaders": [
+    "Fabric"
+   ]
+  },
+  "quark": {
+   "slug": "quark",
+   "cf_id": 243121,
+   "title": "Quark",
+   "url": "https://www.curseforge.com/minecraft/mc-mods/quark",
+   "downloads_total": 258546687,
+   "downloads_monthly_field": 0,
+   "last_fetch": null,
+   "created": "2016-03-21T02:30:58.873Z",
+   "fabric_263": [],
+   "any_263_loaders": []
+  }
+ }
+}
