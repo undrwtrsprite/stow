@@ -21,7 +21,10 @@ import net.minecraft.client.gui.screens.TitleScreen;
  * which only reference lang keys, so every text is translated. A new release just adds an entry.
  */
 public final class WhatsNew {
-    public record Section(String title,String text,List<String> how){}
+    /** show: optional "Show me" target (stow:find, stow:project, stow:containers, settings:CATEGORY, controls, arrange). */
+    public record Section(String title,String text,List<String> how,String show){
+        public Section(String title,String text,List<String> how){this(title,text,how,null);}
+    }
     public record Entry(String version,List<Section> sections){}
     private static final String ROOT="/assets/stow/whatsnew/";
     private static boolean checked;
@@ -53,6 +56,18 @@ public final class WhatsNew {
         String current=currentVersion();
         return new WhatsNewScreen(parent,load().stream().filter(e->current.isEmpty()||compare(e.version(),current)<=0).toList(),false);
     }
+    /** Opens a "Show me" target; What's new stays the parent so Back returns to it. */
+    public static Screen show(Screen parent,String target){
+        var empty=net.minecraft.world.item.ItemStack.EMPTY;
+        return switch(target){
+            case "stow:find"->dev.stow.client.stow.StowScreen.open(parent,empty,dev.stow.client.stow.StowSession.Segment.FIND);
+            case "stow:project"->dev.stow.client.stow.StowScreen.open(parent,empty,dev.stow.client.stow.StowSession.Segment.PROJECT);
+            case "stow:containers"->dev.stow.client.stow.StowScreen.open(parent,empty,dev.stow.client.stow.StowSession.Segment.CONTAINERS);
+            case "controls"->dev.stow.client.stow.SettingsScreen.controls(parent);
+            case "arrange"->new dev.stow.client.stow.ArrangeHudScreen(parent,null);
+            default->target.startsWith("settings:")?dev.stow.client.stow.SettingsScreen.category(parent,target.substring(9)):dev.stow.client.stow.SettingsScreen.open(parent);
+        };
+    }
     static List<Entry> unseen(String current,String last){
         return load().stream().filter(e->compare(e.version(),current)<=0&&(last.isEmpty()?e.version().equals(current):compare(e.version(),last)>0)).toList();
     }
@@ -65,7 +80,7 @@ public final class WhatsNew {
             for(var element:entry.getAsJsonArray("sections")){
                 var section=element.getAsJsonObject();List<String> how=new ArrayList<>();
                 if(section.has("how"))for(var step:section.getAsJsonArray("how"))how.add(step.getAsString());
-                sections.add(new Section(section.get("title").getAsString(),section.get("text").getAsString(),List.copyOf(how)));
+                sections.add(new Section(section.get("title").getAsString(),section.get("text").getAsString(),List.copyOf(how),section.has("show")?section.get("show").getAsString():null));
             }
             entries.add(new Entry(version.getAsString(),List.copyOf(sections)));
         }

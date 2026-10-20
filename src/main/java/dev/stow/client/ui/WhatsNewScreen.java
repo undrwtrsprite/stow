@@ -22,6 +22,8 @@ public final class WhatsNewScreen extends MemoryScreenBase {
     private static final int TOP=44,ACCENT=0xFFFFD486,BODY=0xFFB8C6CC,HINT=0xFFAAAAAA,STEP=0xFFFFFFFF;
     private record Line(FormattedCharSequence text,int x,int y,int color){}
     private record Card(int y,int height){}
+    private record Link(int x,int y,int width,String target){}
+    private final List<Link> links=new ArrayList<>();
     private final List<WhatsNew.Entry> entries;
     private final boolean automatic;
     private final List<Line> lines=new ArrayList<>();
@@ -40,7 +42,7 @@ public final class WhatsNewScreen extends MemoryScreenBase {
         layoutText();
     }
     private void layoutText(){
-        lines.clear();cards.clear();int y=0,textX=12,textWidth=bodyWidth-30;
+        lines.clear();cards.clear();links.clear();int y=0,textX=12,textWidth=bodyWidth-30;
         if(entries.isEmpty()){for(var part:font.split(Component.translatable("stow.whatsnew.empty"),textWidth)){lines.add(new Line(part,8,y,HINT));y+=10;}}
         for(var entry:entries){
             lines.add(new Line(Component.translatable("stow.whatsnew.version",entry.version()).getVisualOrderText(),8,y,ACCENT));y+=14;
@@ -58,6 +60,9 @@ public final class WhatsNewScreen extends MemoryScreenBase {
                         }
                     }
                 }
+                if(section.show()!=null&&!(section.show().startsWith("stow:")&&minecraft.level==null)){
+                    y+=3;var label=Component.translatable("stow.whatsnew.show-me");links.add(new Link(textX,y,font.width(label),section.show()));lines.add(new Line(label.getVisualOrderText(),textX,y,ACCENT));y+=10;
+                }
                 y+=5;cards.add(new Card(cardTop,y-cardTop));y+=4;
             }
             y+=8;
@@ -71,6 +76,14 @@ public final class WhatsNewScreen extends MemoryScreenBase {
         if(vertical!=0){scroll+=listMotion.wheelSteps(-vertical)*20;clampScroll();return true;}
         return super.mouseScrolled(x,y,horizontal,vertical);
     }
+    @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event,boolean twice){
+        int offset=(int)Math.round(scroll);
+        if(event.y()>=TOP&&event.y()<bottom)for(var link:links){int y=TOP+link.y()-offset;
+            if(event.x()>=left+link.x()&&event.x()<left+link.x()+link.width()&&event.y()>=y-1&&event.y()<y+10){
+                if(automatic)WhatsNew.markSeen();
+                minecraft.gui.setScreen(WhatsNew.show(this,link.target()));return true;}}
+        return super.mouseClicked(event,twice);
+    }
     @Override public boolean keyPressed(KeyEvent event){
         if(event.isUp()||event.isDown()){scroll+=event.isDown()?20:-20;clampScroll();return true;}
         return super.keyPressed(event);
@@ -81,6 +94,7 @@ public final class WhatsNewScreen extends MemoryScreenBase {
         g.enableScissor(left,TOP,left+bodyWidth,bottom);
         for(var card:cards){int y=TOP+card.y()-offset;if(y+card.height()<TOP||y>bottom)continue;rowBackdrop(g,left+4,y,bodyWidth-14,card.height(),ACCENT);}
         for(var line:lines){int y=TOP+line.y()-offset;if(y<TOP-12||y>bottom)continue;g.text(font,line.text(),left+line.x(),y,line.color());}
+        for(var link:links){int y=TOP+link.y()-offset;if(y<TOP||y>bottom-10)continue;if(mx>=left+link.x()&&mx<left+link.x()+link.width()&&my>=y-1&&my<y+10)g.horizontalLine(left+link.x(),left+link.x()+link.width()-1,y+9,ACCENT);}
         g.disableScissor();
         if(maxScroll()>0)listScrollbar(g,offset,viewHeight(),contentHeight,TOP,bottom);
         super.extractRenderState(g,mx,my,delta);

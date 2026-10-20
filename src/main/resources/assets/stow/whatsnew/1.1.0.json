@@ -1,0 +1,79 @@
+{
+  "version": "1.1.0",
+  "sections": [
+    {
+      "title": "stow.whatsnew.1_1_0.stow.title",
+      "text": "stow.whatsnew.1_1_0.stow.text",
+      "how": [
+        "stow.whatsnew.1_1_0.stow.how.1",
+        "stow.whatsnew.1_1_0.stow.how.2"
+      ],
+      "show": "stow:find"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.find.title",
+      "text": "stow.whatsnew.1_1_0.find.text",
+      "how": [
+        "stow.whatsnew.1_1_0.find.how.1",
+        "stow.whatsnew.1_1_0.find.how.2"
+      ],
+      "show": "stow:find"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.project.title",
+      "text": "stow.whatsnew.1_1_0.project.text",
+      "how": [
+        "stow.whatsnew.1_1_0.project.how.1",
+        "stow.whatsnew.1_1_0.project.how.2",
+        "stow.whatsnew.1_1_0.project.how.3"
+      ],
+      "show": "stow:project"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.containers.title",
+      "text": "stow.whatsnew.1_1_0.containers.text",
+      "how": [
+        "stow.whatsnew.1_1_0.containers.how.1",
+        "stow.whatsnew.1_1_0.containers.how.2"
+      ],
+      "show": "stow:containers"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.strip.title",
+      "text": "stow.whatsnew.1_1_0.strip.text",
+      "how": [
+        "stow.whatsnew.1_1_0.strip.how.1",
+        "stow.whatsnew.1_1_0.strip.how.2",
+        "stow.whatsnew.1_1_0.strip.how.3"
+      ],
+      "show": "settings:DEPOSIT"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.hover.title",
+      "text": "stow.whatsnew.1_1_0.hover.text",
+      "how": [
+        "stow.whatsnew.1_1_0.hover.how.1",
+        "stow.whatsnew.1_1_0.hover.how.2"
+      ],
+      "show": "controls"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.settings.title",
+      "text": "stow.whatsnew.1_1_0.settings.text",
+      "how": [
+        "stow.whatsnew.1_1_0.settings.how.1",
+        "stow.whatsnew.1_1_0.settings.how.2"
+      ],
+      "show": "settings:INVENTORY"
+    },
+    {
+      "title": "stow.whatsnew.1_1_0.arrange.title",
+      "text": "stow.whatsnew.1_1_0.arrange.text",
+      "how": [
+        "stow.whatsnew.1_1_0.arrange.how.1",
+        "stow.whatsnew.1_1_0.arrange.how.2"
+      ],
+      "show": "arrange"
+    }
+  ]
+}
