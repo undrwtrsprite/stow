@@ -54,9 +54,11 @@ public final class AreaSelection {
    cells.add(new Cell(Component.translatable("stow.area.act.bottom"),WHITE,UIIcons.Kind.MOUSE_WHEEL,Component.translatable("stow.area.key.with",Component.translatable("stow.area.key.alt"))));
    cells.add(new Cell(Component.translatable("stow.area.act.fine"),WHITE,UIIcons.Kind.MOUSE_WHEEL,Component.translatable("stow.area.key.with",keyName(o.keySprint,InputConstants.KEY_LCONTROL))));
    cells.add(new Cell(Component.translatable("stow.area.act.confirm"),problem==null?GOLD:DISABLED,UIIcons.Kind.MOUSE_LEFT,Component.translatable("stow.area.key.or",Component.translatable("stow.area.key.left-click"),Component.translatable("stow.area.key.enter"))));
+   cells.add(new Cell(Component.translatable("stow.area.act.full-height"),WHITE,null,Component.translatable("stow.area.key.v")));
    cells.add(new Cell(Component.translatable("stow.area.act.back"),WHITE,null,Component.translatable("stow.area.key.backspace")));
    status.add(new Status(Component.translatable("stow.area.height-range",top-bottom+1,bottom,top),WHITE));
    status.add(new Status(Component.translatable("stow.area.box-size",size(box,0),size(box,1),size(box,2),AreaClaimProtocol.volume(box[0],box[1])),problem==null?OK:RED));
+   status.add(new Status(Component.translatable("stow.area.containers",remembered(box)),MUTED));
    if(problem!=null)status.add(new Status(problem,RED));
   }else{BlockPos hover=hover();Component problem=both?problem(footprint(first,second)):null;
    cells.add(new Cell(Component.translatable("stow.area.act.corner1"),FIRST,UIIcons.Kind.MOUSE_LEFT,Component.translatable("stow.area.key.left-click")));
@@ -137,7 +139,23 @@ public final class AreaSelection {
   if(key==InputConstants.KEY_RETURN||key==InputConstants.KEY_NUMPADENTER){if(heightStep)confirm();else nextStep();}
   else if(key==InputConstants.KEY_BACKSPACE){if(heightStep)backStep();else undo();}
   else if(heightStep&&(upKey||downKey))adjust(upKey?1:-1);
+  else if(heightStep&&key==InputConstants.KEY_V)fullHeight();
   return true;}
+ /** V (adapted from WorldEdit's //expand vert): the tallest box the Companion allows over this footprint, centred on the player's height. */
+ private static void fullHeight(){var mc=Minecraft.getInstance();if(mc.level==null||first==null||second==null)return;
+  int low=Math.max(mc.level.getMinY(),(int)Math.floor(origin.y)-AreaClaimProtocol.MAX_DISTANCE),high=Math.min(mc.level.getMaxY(),(int)Math.floor(origin.y)+AreaClaimProtocol.MAX_DISTANCE);
+  BlockPos[] flat=footprint(first,second);long area=(long)size(flat,0)*size(flat,2);
+  int span=(int)Math.max(1,Math.min(high-low+1,AreaClaimProtocol.MAX_VOLUME/Math.max(1,area)));
+  int start=Math.clamp((int)Math.floor(origin.y)-span/2,low,Math.max(low,high-span+1));
+  bottom=start;top=Math.min(high,start+span-1);
+  // the server checks reach per block; shrink until the local check agrees, as a guard
+  while(top>bottom&&problem(heightBox())!=null){top--;if(top>bottom&&problem(heightBox())!=null)bottom++;}
+  sound(problem(heightBox())==null);}
+ /** Remembered containers inside the box (this dimension), for the live readout. */
+ private static int remembered(BlockPos[] box){var store=parent==null?null:parent.store();var mc=Minecraft.getInstance();if(store==null||mc.level==null)return 0;
+  String dim=mc.level.dimension().identifier().toString();int n=0;
+  for(var chest:store.chests()){var l=chest.location();if(l.dimension().equals(dim)&&l.x()>=box[0].getX()&&l.x()<=box[1].getX()&&l.y()>=box[0].getY()&&l.y()<=box[1].getY()&&l.z()>=box[0].getZ()&&l.z()<=box[1].getZ())n++;}
+  return n;}
  public static boolean mouse(int action,int button){if(!active())return false;if(action!=1)return true;
   // Height step: right-click is deliberately ignored, so a quick second right-click after advancing cannot go back or confirm by accident.
   if(heightStep){if(button==InputConstants.MOUSE_BUTTON_LEFT)confirm();return true;}
