@@ -296,7 +296,7 @@ public final class StowScreen extends Screen {
         dynamic.forEach(this::removeWidget);dynamic.clear();inline=null;
         popupWidgets.forEach(this::removeWidget);popupWidgets.clear();projectName=null;createButton=null;
         segmentButtons();footer();
-        switch(segment()){case PROJECT->projectHeader();case CONTAINERS->containerHeader();default->{}}
+        if(showingList())switch(segment()){case PROJECT->projectHeader();case CONTAINERS->containerHeader();default->{}} // compact detail hides the list's chips
         if(segment()==Segment.FIND&&query.getValue().isBlank()&&store!=null)nowWidgets();
         else if(showingDetail()&&store!=null)detailWidgets();
         if(inline!=null&&inlineFocused&&oldInlineFor.equals(inlineFor))inline.setValue(inlineValue);
@@ -473,9 +473,9 @@ public final class StowScreen extends Screen {
         claim.active=AreaClaims.available();claim.setTooltip(Tooltip.create(Component.translatable(AreaClaims.available()?"stow.ui.containers.claim-tip":"stow.owner.requires-companion")));
         // rename inline at the top of the detail
         int ty=panelTop+6;
-        inline=dyn(new StowEditBox(font,x,ty,right-x-44,18,Component.translatable("stow.ui.containers.rename")));inlineFor="rename:"+loc.key();
+        inline=dyn(new StowEditBox(font,x,ty,right-x-fitWidth(Component.translatable("stow.ui.save"),40)-4,18,Component.translatable("stow.ui.containers.rename")));inlineFor="rename:"+loc.key();
         inline.setMaxLength(48);inline.setValue(store.customName(loc));inline.setHint(Component.literal(chest.title()));
-        button(Component.translatable("stow.ui.save"),b->renameInline(chest),right-40,ty-1,40,false);
+        int sw=fitWidth(Component.translatable("stow.ui.save"),40);button(Component.translatable("stow.ui.save"),b->renameInline(chest),right-sw,ty-1,sw,false);
         if(StorageOwners.editable(loc)){
             int oy=y-24;int ow=(right-x-8)/3;
             button(Component.translatable("stow.owner.claim"),b->StorageOwners.request(store,loc,dev.stow.companion.protocol.StorageOwnerProtocol.CLAIM),x,oy,ow,false);
@@ -493,9 +493,10 @@ public final class StowScreen extends Screen {
         int ty=panelTop+30;
         inline=dyn(new StowEditBox(font,x+60,ty,70,18,Component.translatable("stow.ui.project.need")));inlineFor="need:"+id;
         inline.setMaxLength(7);inline.setValue(Integer.toString(goal.target()));var box=inline;inline.setResponder(s->{String digits=s.replaceAll("[^0-9]","");if(!digits.equals(s))box.setValue(digits);});
-        button(Component.translatable("stow.ui.save"),b->saveNeed(id),x+134,ty-1,40,false);
+        int sw=fitWidth(Component.translatable("stow.ui.save"),40),sx=x+134+sw+4;
+        button(Component.translatable("stow.ui.save"),b->saveNeed(id),x+134,ty-1,sw,false);
         for(int i=0;i<3;i++){int step=new int[]{1,64,1728}[i];String sym="+"+(i==0?"1":i==1?"64":"1 sh");
-            button(Component.literal(sym),b->{store.updateTarget(id,(int)Math.min(1_000_000,(long)store.goal(id).target()+step));ChestMemory.saveLater(store);refresh();},x+178+i*(Math.max(30,(right-x-178)/3)),ty-1,Math.max(28,(right-x-178)/3-2),false);}
+            button(Component.literal(sym),b->{store.updateTarget(id,(int)Math.min(1_000_000,(long)store.goal(id).target()+step));ChestMemory.saveLater(store);refresh();},sx+i*(Math.max(30,(right-sx)/3)),ty-1,Math.max(28,(right-sx)/3-2),false);}
         var index=StowIndex.of(store);var nearest=index.nearest(id);
         var show=button(Component.translatable("stow.ui.project.show-sources"),b->{ChestMemory.show(store,nearest,id);StowFind.closeAll();},x,y,bw,true);show.active=nearest!=null;
         boolean hud=store.isHudGoal(id,Integer.MAX_VALUE);

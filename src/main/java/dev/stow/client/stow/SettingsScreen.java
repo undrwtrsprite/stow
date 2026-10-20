@@ -177,9 +177,9 @@ public final class SettingsScreen extends Screen {
             addRenderableWidget(new PlannerButton(c.title(),b->{category=c;search.setValue("");scroll=0;waiting=null;rebuild();},left+4,y,navW-8,18,false).navigation().selected(()->search.getValue().isBlank()&&category==c));y+=20;}}
         else{
             Component label=Component.translatable("stow.settings.category",category.title());
-            addRenderableWidget(new PlannerButton(label,b->{category=Category.values()[(category.ordinal()+1)%Category.values().length];scroll=0;waiting=null;rebuildWidgets();},left,top-2-20+0,w,18,false))
+            addRenderableWidget(new PlannerButton(label,b->{category=Category.values()[(category.ordinal()+1)%Category.values().length];scroll=0;waiting=null;rebuildWidgets();},left,48,w,18,false))
                 .setTooltip(Tooltip.create(Component.translatable("stow.settings.category.tip")));
-            top+=20;
+            top=70; // below the search (24-44) and the category button (48-66)
         }
         rebuild();
     }
@@ -219,7 +219,7 @@ public final class SettingsScreen extends Screen {
         body.forEach(this::removeWidget);body.clear();keepAdd=null;
         lines=buildLines();scroll=Math.clamp(scroll,0,Math.max(0,total()-(bottom-top-4)));
         int y=top+2-scroll;
-        for(var line:lines){if(y+line.height()>top&&y<bottom-2)place(line,y);y+=line.height();}
+        for(var line:lines){if(y>=top&&y+line.height()<=bottom)place(line,y);y+=line.height();} // only whole rows, so no control pokes out of the panel
         if(keepAdd!=null&&keepAddFocused){setFocused(keepAdd);}
         else if(focusedKey!=null)for(var wd:body)if(focusedKey.equals(focusKey(wd))){setFocused(wd);break;}
     }
@@ -299,7 +299,7 @@ public final class SettingsScreen extends Screen {
         int y=top+2-scroll,labelW=controlX()-bodyX-16;
         for(var line:lines){
             int h=line.height();
-            if(y+h>top&&y<bottom)drawLine(g,line,y,labelW,mx,my);
+            if(y>=top&&y+h<=bottom)drawLine(g,line,y,labelW,mx,my);
             y+=h;
         }
         g.disableScissor();
