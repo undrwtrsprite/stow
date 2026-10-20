@@ -568,7 +568,7 @@ public final class StowScreen extends Screen {
     // ---------------------------------------------------------------- rendering
     @Override public void extractBackground(GuiGraphicsExtractor g,int mx,int my,float delta){}
     @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float delta){
-        lastMouseX=mx;lastMouseY=my;
+        lastMouseX=mx;lastMouseY=my;sourceHits.clear();
         if(minecraft.level==null)extractPanorama(g,delta);
         extractBlurredBackground(g);extractMenuBackground(g);g.fill(0,0,width,height,0x50000000);
         boolean popupOpen=popup!=Popup.NONE;int bx=popupOpen&&inside(mx,my,popupX,popupY,popupW,popupH)?Integer.MIN_VALUE:mx,by=popupOpen&&inside(mx,my,popupX,popupY,popupW,popupH)?Integer.MIN_VALUE:my;
@@ -583,6 +583,7 @@ public final class StowScreen extends Screen {
             if(showingDetail())drawDetail(g);
         }
         for(var child:children())if(child instanceof AbstractWidget widget&&!popupWidgets.contains(widget))widget.extractRenderState(g,bx,by,delta);
+        if(store!=null)drawFooterHints(g);
         if(popupOpen){
             g.nextStratum();
             g.fill(popupX,popupY,popupX+popupW,popupY+popupH,0xF02E3033);g.outline(popupX,popupY,popupW,popupH,GOLD);
@@ -590,6 +591,27 @@ public final class StowScreen extends Screen {
             if(!error.isEmpty())text(g,error,popupX+6,popupY+popupH-11,popupW-12,CLAY);
             for(var widget:popupWidgets)widget.extractRenderState(g,mx,my,delta);
         }
+    }
+    /** Key hints and the visible range beside the footer buttons; compact keeps only the primary hint, below 360 px none. */
+    private void drawFooterHints(GuiGraphicsExtractor g){
+        if(w<360)return;
+        int fy=height-25,from=left,to=left+w;
+        for(var child:dynamic)if(child instanceof AbstractWidget widget&&widget.getY()==fy){
+            if(widget.getX()>left+w/2)to=Math.min(to,widget.getX()-6);else from=Math.max(from,widget.getRight()+8);}
+        if(to-from<40)return;
+        String range="";
+        boolean nowView=segment()==Segment.FIND&&query.getValue().isBlank();
+        if(!nowView&&showingList()){
+            int total=0,first=0,last=0,y=0;
+            for(var row:rows){boolean item=row.kind()!=Kind.HEADER&&row.kind()!=Kind.MORE;
+                if(item){total++;if(y+row.height()>scroll&&y<scroll+listHeight()){if(first==0)first=total;last=total;}}
+                y+=row.height();}
+            if(total>0)range=Component.translatable("stow.ui.footer.range",first,last,total).getString();
+        }
+        int rw=range.isEmpty()?0:font.width(range)+8;
+        if(!range.isEmpty())right(g,range,to,fy+5,DIM);
+        String key="stow.ui.footer."+(nowView?"now":segment().name().toLowerCase(Locale.ROOT))+(wide?"":"-short");
+        text(g,Component.translatable(key).getString(),from,fy+5,to-from-rw,DIM);
     }
     private void drawHelp(GuiGraphicsExtractor g){
         int x=popupX+6,y=popupY+6;
@@ -705,16 +727,22 @@ public final class StowScreen extends Screen {
             default->{}
         }
     }
+    private record SourceHit(int x,int y,int w,int h,SavedChest chest,String itemId){}
+    private final List<SourceHit> sourceHits=new ArrayList<>();
     private void drawItemDetail(GuiGraphicsExtractor g,String id,int x,int y,int iw,int limit){
+        sourceHits.clear();
         g.item(MemoryItems.icon(id),x,y);text(g,MemoryItems.name(id),x+22,y+1,iw-22,CREAM);text(g,id,x+22,y+11,iw-22,DIM);y+=26;
         var index=StowIndex.of(store);var stat=index.item(id);long carried=StowIndex.carried(id),stored=stat==null?0:stat.stored();
         stat(g,x,y,iw,Component.translatable("stow.ui.find.detail.stored").getString(),number(stored));y+=11;
         stat(g,x,y,iw,Component.translatable("stow.ui.find.detail.carried").getString(),number(carried));y+=11;
+        stat(g,x,y,iw,Component.translatable("stow.ui.find.detail.known").getString(),number(stored+carried));y+=11;
         var goal=store.goal(id);
         if(goal!=null){var p=MaterialPlanner.progress(store,goal);stat(g,x,y,iw,Component.translatable("stow.ui.find.detail.project",store.projectName()).getString(),number(p.counted())+" / "+number(goal.target()));y+=11;}
         y+=6;section(g,Component.translatable("stow.ui.find.detail.sources").getString(),x,y);y+=10;
         if(stat==null){text(g,Component.translatable("stow.ui.find.detail.none").getString(),x,y,iw,DIM);return;}
         var sources=index.sourcesNearestFirst(id);int shown=0;
+        long staleCount=sources.stream().filter(src->StowIndex.stale(src.chest())).count();
+        if(staleCount>0){text(g,Component.translatable("stow.ui.find.detail.stale",staleCount).getString(),x,y,iw,OCHRE);y+=11;}
         for(var s:sources){
             if(y+20>limit){text(g,Component.translatable("stow.ui.find.detail.more",sources.size()-shown).getString(),x,y,iw,DIM);break;}
             double d=StowIndex.distance(s.chest());boolean stale=StowIndex.stale(s.chest());
@@ -722,7 +750,10 @@ public final class StowScreen extends Screen {
             String right="×"+number(s.count());int rw=font.width(right)+4;
             text(g,store.displayName(s.chest()),x+20,y,iw-20-rw,CREAM);
             text(g,distance(d)+" · "+ChestMemoryStore.age(s.chest().lastSeen()),x+20,y+9,iw-20-rw,stale?OCHRE:DIM);
-            right(g,right,x+iw,y+4,MUTED);y+=20;shown++;
+            boolean hover=lastMouseX>=x&&lastMouseX<x+iw&&lastMouseY>=y-1&&lastMouseY<y+19;
+            if(hover){g.fill(x-2,y-1,x+iw+2,y+19,0x22EFE6CF);right(g,Component.translatable("stow.ui.find.detail.show").getString(),x+iw,y+4,GOLD);}
+            else right(g,right,x+iw,y+4,MUTED);
+            sourceHits.add(new SourceHit(x,y-1,iw,20,s.chest(),id));y+=20;shown++;
         }
     }
     private void stat(GuiGraphicsExtractor g,int x,int y,int iw,String label,String value){int vw=font.width(value);text(g,label,x,y,iw-vw-6,MUTED);right(g,value,x+iw,y,CREAM);}
@@ -732,6 +763,7 @@ public final class StowScreen extends Screen {
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.distance").getString(),d>=0?distance(d):shortDimension(loc.dimension()));y+=11;
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.seen").getString(),ChestMemoryStore.age(chest.lastSeen()));y+=11;
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.owner").getString(),StorageOwners.label(chest));y+=11;
+        if(!AreaClaims.available()){text(g,Component.translatable("stow.owner.requires-companion").getString(),x,y,iw,DIM);y+=11;}
         stat(g,x,y,iw,Component.translatable("stow.ui.containers.detail.project",store.projectName()).getString(),Component.translatable(store.isIncluded(loc)?"stow.ui.containers.in":"stow.ui.containers.out").getString());y+=11;
         if(StowIndex.stale(chest)){text(g,Component.translatable("stow.ui.containers.detail.stale").getString(),x,y,iw,OCHRE);y+=11;}
         y+=4;section(g,Component.translatable("stow.ui.containers.detail.contents",chest.items().size()).getString(),x,y);y+=10;
@@ -771,6 +803,8 @@ public final class StowScreen extends Screen {
             if(inPopup(mx,my)){for(var widget:popupWidgets)if(widget.isMouseOver(mx,my)){setFocused(widget);widget.mouseClicked(event,twice);return true;}return true;}
             popup=Popup.NONE;error="";rebuildDynamic();return true;
         }
+        for(var hit:List.copyOf(sourceHits))if(mx>=hit.x()&&mx<hit.x()+hit.w()&&my>=hit.y()&&my<hit.y()+hit.h()){
+            ChestMemory.show(store,hit.chest(),hit.itemId());session.recentItem(hit.itemId());return true;}
         boolean showingNow=segment()==Segment.FIND&&query.getValue().isBlank();
         int index=showingNow?-1:rowAt(mx,my);
         if(index>=0){
@@ -845,6 +879,8 @@ public final class StowScreen extends Screen {
         if(inlineFocused||nameFocused)return super.keyPressed(event);
         if(popup!=Popup.NONE)return super.keyPressed(event);
         boolean queryEmpty=query.getValue().isEmpty();
+        // A Tab-focused button keeps Enter/Space for itself instead of activating the selected row.
+        if(getFocused() instanceof net.minecraft.client.gui.components.AbstractButton&&(key==InputConstants.KEY_RETURN||key==InputConstants.KEY_NUMPADENTER||key==InputConstants.KEY_SPACE))return super.keyPressed(event);
         switch(key){
             case InputConstants.KEY_DOWN->{if(segment()==Segment.FIND&&queryEmpty&&historyIndex>=0){recallHistory(-1);return true;}move(1);return true;}
             case InputConstants.KEY_UP->{if(segment()==Segment.FIND&&(queryEmpty||historyIndex>=0)&&(selected<=firstSelectable(0,1))){recallHistory(1);return true;}move(-1);return true;}
