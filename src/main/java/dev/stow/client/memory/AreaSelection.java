@@ -15,117 +15,87 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.*;
 import dev.stow.companion.protocol.AreaClaimProtocol;
+import dev.stow.client.ui.UIIcons;
 /**
  * Detached local camera only. Movement follows the player's bound movement/jump/sneak/sprint keys (keyboard bindings; defaults otherwise).
  * The player keeps normal server physics and sends neutral input.
- * Step 1 picks the footprint (left-click corner 1, right-click corner 2, flat at the lower clicked Y);
- * step 2 sets the bottom/top with the wheel or arrow keys, then left-click/Enter confirms.
+ * Step 1 picks the footprint (left-click corner 1, right-click corner 2, flat at the lower clicked Y); right-click with corner 1 set,
+ * or Enter, advances when the footprint is valid. Step 2 sets the bottom/top with the wheel or arrow keys; left-click/Enter confirms,
+ * Backspace goes back and right-click does nothing.
  */
 public final class AreaSelection {
  private static final double REACH=32;
- private static final int GOLD=0xFFFFD486,RED=0xFFFF6B6B,WHITE=0xFFFFFFFF,FIRST=0xFF7CFF8A,SECOND=0xFF6FC3FF,MUTED=0xFFB8C6CC;
+ private static final int GOLD=0xFFFFD486,RED=0xFFFFAA91,WHITE=0xFFFFFFFF,FIRST=0xFF9EE6C4,SECOND=0xFF8FC8FF,MUTED=0xFFB8C6CC,OK=0xFF9EE6C4;
  private static ArmorStand camera;private static Entity previous;private static LocalPlayer player;private static ClientInput input;private static CameraType perspective;private static AreaClaimScreen parent;private static Vec3 origin;private static final Set<Integer> keys=new HashSet<>();private static BlockPos first,second;
  private static boolean heightStep;private static int bottom,top;private static BlockPos heightFirst,heightSecond;private static double scrollRemainder;
  public static boolean active(){return camera!=null;}
  public static void register(){HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,Identifier.fromNamespaceAndPath("stow","area_selection"),(g,delta)->{
   if(!active())return;var mc=Minecraft.getInstance();if(mc.gui.hud.isHidden())return;hints(mc,g);
  });}
- /** Controls panel; part of the HUD, so F1 hides it. Key caps and mouse icons are GUI-pixel fills, so they stay crisp at every GUI scale. */
- private record Cap(Component label,boolean down){}
- private enum Mouse{LEFT,RIGHT,WHEEL}
- private record Sep(String text){}
- private record Chip(List<Object> parts,Component action,int color){}
+ /**
+  * Controls panel; part of the HUD, so F1 hides it. Styled like Stow's command palette and notifications:
+  * tinted menu-list background with a grey outline, white action names, grey key names right-aligned
+  * (as the palette shows shortcuts) and UIIcons pixel symbols for the mouse.
+  */
+ private record Cell(Component action,int color,UIIcons.Kind icon,Component key){}
  private record Status(Component text,int color){}
- private static final int PAD=5,ROW=14,CAP_H=12,CHIP_GAP=10,TEXT=0xFFE6EAEE,OK=0xFF7CFF8A,PANEL=0xB0101418,PANEL_EDGE=0x50FFFFFF,CAP_EDGE=0xFFC8D0D8,CAP_BODY=0xD0181C20,CAP_DOWN=0xE0485058;
+ private static final int PAD=8,ROW=11,COLUMN_GAP=14,KEY=0xFFAAAAAA,DISABLED=0xFF999999,ICON=0xFFE7ECEF;
  private static void hints(Minecraft mc,GuiGraphicsExtractor g){
   var font=mc.font;var o=mc.options;
-  List<List<Chip>> groups=new ArrayList<>();
-  groups.add(List.of(
-   new Chip(List.of(cap(o.keyUp,InputConstants.KEY_W),cap(o.keyLeft,InputConstants.KEY_A),cap(o.keyDown,InputConstants.KEY_S),cap(o.keyRight,InputConstants.KEY_D)),Component.translatable("stow.area.act.move"),TEXT),
-   new Chip(List.of(cap(o.keyJump,InputConstants.KEY_SPACE)),Component.translatable("stow.area.act.up"),TEXT),
-   new Chip(List.of(cap(o.keyShift,InputConstants.KEY_LSHIFT)),Component.translatable("stow.area.act.down"),TEXT),
-   new Chip(List.of(cap(o.keySprint,InputConstants.KEY_LCONTROL)),Component.translatable("stow.area.act.faster"),TEXT)));
+  List<Cell> cells=new ArrayList<>();List<Status> status=new ArrayList<>();
+  Component wasd=Component.empty().append(keyName(o.keyUp,InputConstants.KEY_W)).append(" ").append(keyName(o.keyLeft,InputConstants.KEY_A)).append(" ").append(keyName(o.keyDown,InputConstants.KEY_S)).append(" ").append(keyName(o.keyRight,InputConstants.KEY_D));
+  cells.add(new Cell(Component.translatable("stow.area.act.move"),WHITE,null,wasd));
+  cells.add(new Cell(Component.translatable("stow.area.act.faster"),WHITE,null,keyName(o.keySprint,InputConstants.KEY_LCONTROL)));
+  cells.add(new Cell(Component.translatable("stow.area.act.up"),WHITE,null,keyName(o.keyJump,InputConstants.KEY_SPACE)));
+  cells.add(new Cell(Component.translatable("stow.area.act.down"),WHITE,null,keyName(o.keyShift,InputConstants.KEY_LSHIFT)));
   boolean both=first!=null&&second!=null;
-  List<Status> status=new ArrayList<>();
   if(heightStep){BlockPos[] box=heightBox();Component problem=problem(box);
-   groups.add(List.of(
-    new Chip(List.of(Mouse.WHEEL,new Sep("/"),fixed("stow.area.key.up",InputConstants.KEY_UP),fixed("stow.area.key.down",InputConstants.KEY_DOWN)),Component.translatable("stow.area.act.top"),TEXT),
-    new Chip(List.of(fixed("stow.area.key.alt",InputConstants.KEY_LALT),new Sep("+"),Mouse.WHEEL),Component.translatable("stow.area.act.bottom"),TEXT),
-    new Chip(List.of(cap(o.keySprint,InputConstants.KEY_LCONTROL),new Sep("+"),Mouse.WHEEL),Component.translatable("stow.area.act.fine"),TEXT)));
-   groups.add(List.of(
-    new Chip(List.of(Mouse.LEFT,new Sep("/"),fixed("stow.area.key.enter",InputConstants.KEY_RETURN)),Component.translatable("stow.area.act.confirm"),problem==null?OK:MUTED),
-    new Chip(List.of(Mouse.RIGHT,new Sep("/"),fixed("stow.area.key.backspace",InputConstants.KEY_BACKSPACE)),Component.translatable("stow.area.act.back"),TEXT)));
-   status.add(new Status(Component.translatable("stow.area.height-range",top-bottom+1,bottom,top),TEXT));
+   cells.add(new Cell(Component.translatable("stow.area.act.top"),WHITE,UIIcons.Kind.MOUSE_WHEEL,Component.translatable("stow.area.key.wheel-arrows")));
+   cells.add(new Cell(Component.translatable("stow.area.act.bottom"),WHITE,UIIcons.Kind.MOUSE_WHEEL,Component.translatable("stow.area.key.with",Component.translatable("stow.area.key.alt"))));
+   cells.add(new Cell(Component.translatable("stow.area.act.fine"),WHITE,UIIcons.Kind.MOUSE_WHEEL,Component.translatable("stow.area.key.with",keyName(o.keySprint,InputConstants.KEY_LCONTROL))));
+   cells.add(new Cell(Component.translatable("stow.area.act.confirm"),problem==null?GOLD:DISABLED,UIIcons.Kind.MOUSE_LEFT,Component.translatable("stow.area.key.or",Component.translatable("stow.area.key.left-click"),Component.translatable("stow.area.key.enter"))));
+   cells.add(new Cell(Component.translatable("stow.area.act.back"),WHITE,null,Component.translatable("stow.area.key.backspace")));
+   status.add(new Status(Component.translatable("stow.area.height-range",top-bottom+1,bottom,top),WHITE));
    status.add(new Status(Component.translatable("stow.area.box-size",size(box,0),size(box,1),size(box,2),AreaClaimProtocol.volume(box[0],box[1])),problem==null?OK:RED));
    if(problem!=null)status.add(new Status(problem,RED));
-  }else{BlockPos hover=hover();
-   groups.add(List.of(
-    new Chip(List.of(Mouse.LEFT),Component.translatable("stow.area.act.corner1"),FIRST),
-    new Chip(List.of(Mouse.RIGHT),Component.translatable("stow.area.act.corner2"),SECOND)));
-   groups.add(List.of(
-    new Chip(List.of(fixed("stow.area.key.backspace",InputConstants.KEY_BACKSPACE)),Component.translatable("stow.area.act.undo"),TEXT),
-    new Chip(List.of(fixed("stow.area.key.enter",InputConstants.KEY_RETURN)),Component.translatable("stow.area.act.next"),both?GOLD:MUTED)));
-   status.add(new Status(Component.translatable("stow.area.corner1",corner(first)),first==null?MUTED:FIRST));
-   status.add(new Status(Component.translatable("stow.area.corner2",corner(second)),second==null?MUTED:SECOND));
+  }else{BlockPos hover=hover();Component problem=both?problem(footprint(first,second)):null;
+   cells.add(new Cell(Component.translatable("stow.area.act.corner1"),FIRST,UIIcons.Kind.MOUSE_LEFT,Component.translatable("stow.area.key.left-click")));
+   cells.add(new Cell(Component.translatable("stow.area.act.corner2"),SECOND,UIIcons.Kind.MOUSE_RIGHT,Component.translatable("stow.area.key.right-click")));
+   cells.add(new Cell(Component.translatable("stow.area.act.next"),both&&problem==null?GOLD:DISABLED,null,Component.translatable("stow.area.key.enter")));
+   cells.add(new Cell(Component.translatable("stow.area.act.undo"),WHITE,null,Component.translatable("stow.area.key.backspace")));
+   status.add(new Status(Component.translatable("stow.area.corner1",corner(first)),first==null?KEY:FIRST));
+   status.add(new Status(Component.translatable("stow.area.corner2",corner(second)),second==null?KEY:SECOND));
    BlockPos a=first!=null?first:hover,b=second!=null?second:hover;
-   if((first!=null||second!=null)&&a!=null&&b!=null)status.add(new Status(Component.translatable("stow.area.footprint-size",Math.abs(a.getX()-b.getX())+1,Math.abs(a.getZ()-b.getZ())+1),TEXT));
-   Component problem=both?problem(footprint(first,second)):null;
+   if((first!=null||second!=null)&&a!=null&&b!=null)status.add(new Status(Component.translatable("stow.area.footprint-size",Math.abs(a.getX()-b.getX())+1,Math.abs(a.getZ()-b.getZ())+1),WHITE));
    if(problem!=null)status.add(new Status(problem,RED));
    else if(both)status.add(new Status(Component.translatable("stow.area.next-hint"),GOLD));
-   else if(hover==null)status.add(new Status(Component.translatable("stow.area.aim"),MUTED));
+   else if(hover==null)status.add(new Status(Component.translatable("stow.area.aim"),KEY));
   }
-  groups.add(List.of(
-   new Chip(List.of(fixed("stow.area.key.esc",InputConstants.KEY_ESCAPE)),Component.translatable("stow.area.act.cancel"),TEXT),
-   new Chip(List.of(cap(o.keyToggleGui,InputConstants.KEY_F1)),Component.translatable("stow.area.act.hide"),TEXT)));
-  // Lay out: each logical group wraps on its own; the panel shrinks to its widest row.
-  int maxInner=Math.max(120,Math.min(g.guiWidth()-12,330)-2*PAD);
-  List<List<Chip>> rows=new ArrayList<>();int inner=0;
-  for(var group:groups){List<Chip> row=new ArrayList<>();int w=0;
-   for(var chip:group){int cw=chipWidth(font,chip);if(!row.isEmpty()&&w+CHIP_GAP+cw>maxInner){rows.add(row);inner=Math.max(inner,w);row=new ArrayList<>();w=0;}w+=(row.isEmpty()?0:CHIP_GAP)+cw;row.add(chip);}
-   rows.add(row);inner=Math.max(inner,w);}
+  cells.add(new Cell(Component.translatable("stow.area.act.cancel"),WHITE,null,Component.translatable("stow.area.key.esc")));
+  cells.add(new Cell(Component.translatable("stow.area.act.hide"),WHITE,null,keyName(o.keyToggleGui,InputConstants.KEY_F1)));
+  int cell=0;for(var c:cells)cell=Math.max(cell,font.width(c.action())+10+(c.icon()==null?0:10)+font.width(c.key()));
+  int maxInner=Math.max(140,Math.min(g.guiWidth()-12,380)-2*PAD);
+  int columns=2*cell+COLUMN_GAP<=maxInner?2:1;int inner=columns==2?2*cell+COLUMN_GAP:Math.min(maxInner,cell);
   Component header=Component.translatable("stow.area.step",heightStep?2:1,2,Component.translatable(heightStep?"stow.area.step-name.height":"stow.area.step-name.footprint"));
-  inner=Math.max(inner,font.width(header)+20);
-  for(var line:status)inner=Math.max(inner,Math.min(maxInner,font.width(line.text())));
+  String progress=(heightStep?2:1)+" / 2";
+  inner=Math.max(inner,font.width(header)+12+font.width(progress));
   List<List<net.minecraft.util.FormattedCharSequence>> wrapped=new ArrayList<>();int statusH=0;
   for(var line:status){var split=font.split(line.text(),inner);wrapped.add(split);statusH+=10*split.size();}
-  int w=inner+2*PAD,h=PAD+12+3+rows.size()*ROW+4+statusH+PAD-2;
+  int rows=(cells.size()+columns-1)/columns;
+  int w=inner+2*PAD,h=PAD+10+6+rows*ROW+5+statusH+PAD-2;
   // Bottom-left beside the hotbar when it fits, otherwise top-left; both stay clear of the centred crosshair.
   int x=6,y=6+w<=g.guiWidth()/2-91-4?g.guiHeight()-6-h:6;
-  g.fill(x+1,y,x+w-1,y+h,PANEL);g.fill(x,y+1,x+1,y+h-1,PANEL);g.fill(x+w-1,y+1,x+w,y+h-1,PANEL);
-  g.fill(x+1,y,x+w-1,y+1,PANEL_EDGE);g.fill(x+1,y+h-1,x+w-1,y+h,PANEL_EDGE);g.fill(x,y+1,x+1,y+h-1,PANEL_EDGE);g.fill(x+w-1,y+1,x+w,y+h-1,PANEL_EDGE);
+  g.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED,Identifier.withDefaultNamespace("textures/gui/menu_list_background.png"),x,y,0,0,w,h,w,h,32,32,0xFF444444);
+  g.outline(x,y,w,h,0xFF666666);
   int cx=x+PAD,cy=y+PAD;
-  g.text(font,header,cx,cy+1,GOLD,false);
-  for(int i=0;i<2;i++){int dx=x+w-PAD-16+i*9,color=i<=(heightStep?1:0)?GOLD:0x60FFFFFF;g.fill(dx+1,cy+2,dx+5,cy+7,color);g.fill(dx,cy+3,dx+6,cy+6,color);}
-  cy+=12;g.fill(cx,cy+1,x+w-PAD,cy+2,0x30FFFFFF);cy+=3;
-  for(var row:rows){int rx=cx;for(var chip:row){rx=drawChip(g,font,rx,cy+1,chip)+CHIP_GAP;}cy+=ROW;}
-  cy+=4;
-  for(int i=0;i<wrapped.size();i++)for(var part:wrapped.get(i)){g.text(font,part,cx,cy,status.get(i).color(),false);cy+=10;}
- }
- private static Cap cap(KeyMapping binding,int fallback){return new Cap(keyName(binding,fallback),held(binding,fallback));}
- private static Cap fixed(String label,int code){return new Cap(Component.translatable(label),keys.contains(code));}
- private static int partWidth(net.minecraft.client.gui.Font font,Object part){return part instanceof Cap c?Math.max(CAP_H,font.width(c.label())+6):part instanceof Sep s?font.width(s.text()):9;}
- private static int chipWidth(net.minecraft.client.gui.Font font,Chip chip){int w=0;for(var part:chip.parts())w+=partWidth(font,part)+2;return w+2+font.width(chip.action());}
- private static int drawChip(GuiGraphicsExtractor g,net.minecraft.client.gui.Font font,int x,int y,Chip chip){
-  for(var part:chip.parts()){int pw=partWidth(font,part);
-   if(part instanceof Cap c){
-    g.fill(x+1,y,x+pw-1,y+1,CAP_EDGE);g.fill(x+1,y+CAP_H-1,x+pw-1,y+CAP_H,CAP_EDGE);g.fill(x,y+1,x+1,y+CAP_H-1,CAP_EDGE);g.fill(x+pw-1,y+1,x+pw,y+CAP_H-1,CAP_EDGE);
-    g.fill(x+1,y+1,x+pw-1,y+CAP_H-1,c.down()?CAP_DOWN:CAP_BODY);g.fill(x+1,y+CAP_H-2,x+pw-1,y+CAP_H-1,0x50000000);
-    g.text(font,c.label(),x+(pw-font.width(c.label())+1)/2,y+2,WHITE,false);
-   }else if(part instanceof Sep s)g.text(font,s.text(),x,y+2,MUTED,false);
-   else if(part instanceof Mouse m)mouseIcon(g,x+0,y,m,chip.color()==TEXT||chip.color()==MUTED?GOLD:chip.color());
-   x+=pw+2;}
-  g.text(font,chip.action(),x+2,y+2,chip.color(),false);return x+2+font.width(chip.action());
- }
- /** 9x12 GUI-pixel mouse: rounded body, split buttons and wheel; the used part is filled with the accent colour. */
- private static void mouseIcon(GuiGraphicsExtractor g,int x,int y,Mouse m,int accent){
-  int edge=CAP_EDGE,body=CAP_BODY;
-  g.fill(x+2,y,x+7,y+1,edge);g.fill(x+2,y+11,x+7,y+12,edge);g.fill(x,y+2,x+1,y+10,edge);g.fill(x+8,y+2,x+9,y+10,edge);
-  g.fill(x+1,y+1,x+2,y+2,edge);g.fill(x+7,y+1,x+8,y+2,edge);g.fill(x+1,y+10,x+2,y+11,edge);g.fill(x+7,y+10,x+8,y+11,edge);
-  g.fill(x+2,y+1,x+7,y+11,body);g.fill(x+1,y+2,x+8,y+10,body);
-  if(m==Mouse.LEFT){g.fill(x+1,y+2,x+4,y+5,accent);g.fill(x+2,y+1,x+4,y+2,accent);}
-  if(m==Mouse.RIGHT){g.fill(x+5,y+2,x+8,y+5,accent);g.fill(x+5,y+1,x+7,y+2,accent);}
-  g.fill(x+1,y+5,x+8,y+6,edge);
-  if(m==Mouse.WHEEL)g.fill(x+4,y+1,x+5,y+5,accent);else g.fill(x+4,y+1,x+5,y+5,edge);
+  g.text(font,header,cx,cy,WHITE);g.text(font,progress,x+w-PAD-font.width(progress),cy,KEY);
+  cy+=10;g.fill(cx,cy+2,x+w-PAD,cy+3,0xFF666666);cy+=6;
+  for(int i=0;i<cells.size();i++){var c=cells.get(i);int col=i%columns,row=i/columns;int left=cx+col*(cell+COLUMN_GAP),top=cy+row*ROW,right=columns==2?left+cell:x+w-PAD;
+   g.text(font,c.action(),left,top,c.color());
+   int keyX=right-font.width(c.key());g.text(font,c.key(),keyX,top,KEY);
+   if(c.icon()!=null)UIIcons.symbol(g,c.icon(),keyX-10,top,c.color()==WHITE||c.color()==DISABLED?ICON:c.color());}
+  cy+=rows*ROW+5;
+  for(int i=0;i<wrapped.size();i++)for(var part:wrapped.get(i)){g.text(font,part,cx,cy,status.get(i).color());cy+=10;}
  }
  private static boolean held(KeyMapping binding,int... defaults){var key=((dev.stow.client.mixin.KeyMappingAccessor)binding).stow_key();
   if(!binding.isUnbound()&&key.getType()==InputConstants.Type.KEYBOARD)return keys.contains(key.getValue());
@@ -169,16 +139,18 @@ public final class AreaSelection {
   else if(heightStep&&(upKey||downKey))adjust(upKey?1:-1);
   return true;}
  public static boolean mouse(int action,int button){if(!active())return false;if(action!=1)return true;
-  if(heightStep){if(button==InputConstants.MOUSE_BUTTON_LEFT)confirm();else if(button==InputConstants.MOUSE_BUTTON_RIGHT)backStep();return true;}
+  // Height step: right-click is deliberately ignored, so a quick second right-click after advancing cannot go back or confirm by accident.
+  if(heightStep){if(button==InputConstants.MOUSE_BUTTON_LEFT)confirm();return true;}
   if(button==InputConstants.MOUSE_BUTTON_LEFT||button==InputConstants.MOUSE_BUTTON_RIGHT){BlockPos hit=hover();
    if(hit==null){sound(false);return true;}
-   if(button==InputConstants.MOUSE_BUTTON_LEFT)first=hit.immutable();else second=hit.immutable();sound(true);}
+   if(button==InputConstants.MOUSE_BUTTON_LEFT){first=hit.immutable();sound(true);}
+   else{second=hit.immutable();if(first==null)sound(true);else nextStep();}}
   return true;}
  /** Wheel adjusts the top (Alt: bottom) in the height step; otherwise swallowed so hotbar selection does not change. */
  public static boolean scroll(double amount){if(!active())return false;if(!heightStep)return true;var options=Minecraft.getInstance().options;
   double scaled=(options.discreteMouseScroll().get()?Math.signum(amount):amount)*options.mouseWheelSensitivity().get();scrollRemainder+=scaled;int notches=(int)scrollRemainder;scrollRemainder-=notches;if(notches!=0)adjust(notches);return true;}
  public static boolean turn(double dx,double dy){if(!active())return false;camera.turn(dx,dy);camera.setYHeadRot(camera.getYRot());return true;}
- private static void nextStep(){if(first==null||second==null){sound(false);return;}
+ private static void nextStep(){if(first==null||second==null||problem(footprint(first,second))!=null){sound(false);return;}
   if(!first.equals(heightFirst)||!second.equals(heightSecond)){bottom=Math.min(first.getY(),second.getY());top=Math.max(first.getY(),second.getY());heightFirst=first;heightSecond=second;}
   heightStep=true;scrollRemainder=0;sound(true);}
  private static void backStep(){heightStep=false;scrollRemainder=0;sound(true);}
