@@ -8,4 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface KeyMappingAccessor {
     @Accessor("clickCount") int stow_clicks();
     @Accessor("clickCount") void stow_setClicks(int value);
+    @Accessor("key") com.mojang.blaze3d.platform.InputConstants.Key stow_key();
 }

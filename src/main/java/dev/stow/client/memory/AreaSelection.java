@@ -16,7 +16,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.*;
 import dev.stow.companion.protocol.AreaClaimProtocol;
 /**
- * Detached local camera only. The player keeps normal server physics and sends neutral input.
+ * Detached local camera only. Movement follows the player's bound movement/jump/sneak/sprint keys (keyboard bindings; defaults otherwise).
+ * The player keeps normal server physics and sends neutral input.
  * Step 1 picks the footprint (left-click corner 1, right-click corner 2, flat at the lower clicked Y);
  * step 2 sets the bottom/top with the wheel or arrow keys, then left-click/Enter confirms.
  */
@@ -29,28 +30,108 @@ public final class AreaSelection {
  public static void register(){HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,Identifier.fromNamespaceAndPath("stow","area_selection"),(g,delta)->{
   if(!active())return;var mc=Minecraft.getInstance();if(mc.gui.hud.isHidden())return;hints(mc,g);
  });}
- /** Hint overlay; part of the HUD, so F1 hides it. */
+ /** Controls panel; part of the HUD, so F1 hides it. Key caps and mouse icons are GUI-pixel fills, so they stay crisp at every GUI scale. */
+ private record Cap(Component label,boolean down){}
+ private enum Mouse{LEFT,RIGHT,WHEEL}
+ private record Sep(String text){}
+ private record Chip(List<Object> parts,Component action,int color){}
+ private record Status(Component text,int color){}
+ private static final int PAD=5,ROW=14,CAP_H=12,CHIP_GAP=10,TEXT=0xFFE6EAEE,OK=0xFF7CFF8A,PANEL=0xB0101418,PANEL_EDGE=0x50FFFFFF,CAP_EDGE=0xFFC8D0D8,CAP_BODY=0xD0181C20,CAP_DOWN=0xE0485058;
  private static void hints(Minecraft mc,GuiGraphicsExtractor g){
-  int x=8,y=8,w=g.guiWidth()-16;var font=mc.font;
-  g.text(font,Component.translatable(heightStep?"stow.area.step.height":"stow.area.step.footprint"),x,y,GOLD);y+=12;
-  var help=Component.translatable(heightStep?"stow.area.height-help":"stow.area.footprint-help");g.textWithWordWrap(font,help,x,y,w,WHITE);y+=font.wordWrapHeight(help,w)+3;
-  var controls=Component.translatable("stow.area.fly-controls");g.textWithWordWrap(font,controls,x,y,w,MUTED);y+=font.wordWrapHeight(controls,w)+6;
-  List<Component> lines=new ArrayList<>();List<Integer> colors=new ArrayList<>();
-  if(heightStep){BlockPos[] box=heightBox();
-   lines.add(Component.translatable("stow.area.height-size",top-bottom+1,bottom,top,size(box,0),size(box,1),size(box,2),AreaClaimProtocol.volume(box[0],box[1])));colors.add(WHITE);
-   Component problem=problem(box);lines.add(problem==null?Component.translatable("stow.area.confirm-hint"):problem);colors.add(problem==null?GOLD:RED);
-  }else{
-   lines.add(Component.translatable("stow.area.corners",corner(first),corner(second)));colors.add(WHITE);
-   BlockPos hover=hover();BlockPos a=first!=null?first:hover,b=second!=null?second:hover;
-   if((first!=null||second!=null)&&a!=null&&b!=null){lines.add(Component.translatable("stow.area.footprint-size",Math.abs(a.getX()-b.getX())+1,Math.abs(a.getZ()-b.getZ())+1));colors.add(WHITE);}
-   Component problem=first!=null&&second!=null?problem(footprint(first,second)):null;
-   if(problem!=null){lines.add(problem);colors.add(RED);}
-   else if(first!=null&&second!=null){lines.add(Component.translatable("stow.area.next-hint"));colors.add(GOLD);}
-   else if(hover==null){lines.add(Component.translatable("stow.area.aim"));colors.add(MUTED);}
+  var font=mc.font;var o=mc.options;
+  List<List<Chip>> groups=new ArrayList<>();
+  groups.add(List.of(
+   new Chip(List.of(cap(o.keyUp,InputConstants.KEY_W),cap(o.keyLeft,InputConstants.KEY_A),cap(o.keyDown,InputConstants.KEY_S),cap(o.keyRight,InputConstants.KEY_D)),Component.translatable("stow.area.act.move"),TEXT),
+   new Chip(List.of(cap(o.keyJump,InputConstants.KEY_SPACE)),Component.translatable("stow.area.act.up"),TEXT),
+   new Chip(List.of(cap(o.keyShift,InputConstants.KEY_LSHIFT)),Component.translatable("stow.area.act.down"),TEXT),
+   new Chip(List.of(cap(o.keySprint,InputConstants.KEY_LCONTROL)),Component.translatable("stow.area.act.faster"),TEXT)));
+  boolean both=first!=null&&second!=null;
+  List<Status> status=new ArrayList<>();
+  if(heightStep){BlockPos[] box=heightBox();Component problem=problem(box);
+   groups.add(List.of(
+    new Chip(List.of(Mouse.WHEEL,new Sep("/"),fixed("stow.area.key.up",InputConstants.KEY_UP),fixed("stow.area.key.down",InputConstants.KEY_DOWN)),Component.translatable("stow.area.act.top"),TEXT),
+    new Chip(List.of(fixed("stow.area.key.alt",InputConstants.KEY_LALT),new Sep("+"),Mouse.WHEEL),Component.translatable("stow.area.act.bottom"),TEXT),
+    new Chip(List.of(cap(o.keySprint,InputConstants.KEY_LCONTROL),new Sep("+"),Mouse.WHEEL),Component.translatable("stow.area.act.fine"),TEXT)));
+   groups.add(List.of(
+    new Chip(List.of(Mouse.LEFT,new Sep("/"),fixed("stow.area.key.enter",InputConstants.KEY_RETURN)),Component.translatable("stow.area.act.confirm"),problem==null?OK:MUTED),
+    new Chip(List.of(Mouse.RIGHT,new Sep("/"),fixed("stow.area.key.backspace",InputConstants.KEY_BACKSPACE)),Component.translatable("stow.area.act.back"),TEXT)));
+   status.add(new Status(Component.translatable("stow.area.height-range",top-bottom+1,bottom,top),TEXT));
+   status.add(new Status(Component.translatable("stow.area.box-size",size(box,0),size(box,1),size(box,2),AreaClaimProtocol.volume(box[0],box[1])),problem==null?OK:RED));
+   if(problem!=null)status.add(new Status(problem,RED));
+  }else{BlockPos hover=hover();
+   groups.add(List.of(
+    new Chip(List.of(Mouse.LEFT),Component.translatable("stow.area.act.corner1"),FIRST),
+    new Chip(List.of(Mouse.RIGHT),Component.translatable("stow.area.act.corner2"),SECOND)));
+   groups.add(List.of(
+    new Chip(List.of(fixed("stow.area.key.backspace",InputConstants.KEY_BACKSPACE)),Component.translatable("stow.area.act.undo"),TEXT),
+    new Chip(List.of(fixed("stow.area.key.enter",InputConstants.KEY_RETURN)),Component.translatable("stow.area.act.next"),both?GOLD:MUTED)));
+   status.add(new Status(Component.translatable("stow.area.corner1",corner(first)),first==null?MUTED:FIRST));
+   status.add(new Status(Component.translatable("stow.area.corner2",corner(second)),second==null?MUTED:SECOND));
+   BlockPos a=first!=null?first:hover,b=second!=null?second:hover;
+   if((first!=null||second!=null)&&a!=null&&b!=null)status.add(new Status(Component.translatable("stow.area.footprint-size",Math.abs(a.getX()-b.getX())+1,Math.abs(a.getZ()-b.getZ())+1),TEXT));
+   Component problem=both?problem(footprint(first,second)):null;
+   if(problem!=null)status.add(new Status(problem,RED));
+   else if(both)status.add(new Status(Component.translatable("stow.area.next-hint"),GOLD));
+   else if(hover==null)status.add(new Status(Component.translatable("stow.area.aim"),MUTED));
   }
-  // Status sits under the instructions, clear of the hotbar, hearts and chat.
-  for(int i=0;i<lines.size();i++){g.textWithWordWrap(font,lines.get(i),x,y,w,colors.get(i));y+=font.wordWrapHeight(lines.get(i),w)+2;}
+  groups.add(List.of(
+   new Chip(List.of(fixed("stow.area.key.esc",InputConstants.KEY_ESCAPE)),Component.translatable("stow.area.act.cancel"),TEXT),
+   new Chip(List.of(cap(o.keyToggleGui,InputConstants.KEY_F1)),Component.translatable("stow.area.act.hide"),TEXT)));
+  // Lay out: each logical group wraps on its own; the panel shrinks to its widest row.
+  int maxInner=Math.max(120,Math.min(g.guiWidth()-12,330)-2*PAD);
+  List<List<Chip>> rows=new ArrayList<>();int inner=0;
+  for(var group:groups){List<Chip> row=new ArrayList<>();int w=0;
+   for(var chip:group){int cw=chipWidth(font,chip);if(!row.isEmpty()&&w+CHIP_GAP+cw>maxInner){rows.add(row);inner=Math.max(inner,w);row=new ArrayList<>();w=0;}w+=(row.isEmpty()?0:CHIP_GAP)+cw;row.add(chip);}
+   rows.add(row);inner=Math.max(inner,w);}
+  Component header=Component.translatable("stow.area.step",heightStep?2:1,2,Component.translatable(heightStep?"stow.area.step-name.height":"stow.area.step-name.footprint"));
+  inner=Math.max(inner,font.width(header)+20);
+  for(var line:status)inner=Math.max(inner,Math.min(maxInner,font.width(line.text())));
+  List<List<net.minecraft.util.FormattedCharSequence>> wrapped=new ArrayList<>();int statusH=0;
+  for(var line:status){var split=font.split(line.text(),inner);wrapped.add(split);statusH+=10*split.size();}
+  int w=inner+2*PAD,h=PAD+12+3+rows.size()*ROW+4+statusH+PAD-2;
+  // Bottom-left beside the hotbar when it fits, otherwise top-left; both stay clear of the centred crosshair.
+  int x=6,y=6+w<=g.guiWidth()/2-91-4?g.guiHeight()-6-h:6;
+  g.fill(x+1,y,x+w-1,y+h,PANEL);g.fill(x,y+1,x+1,y+h-1,PANEL);g.fill(x+w-1,y+1,x+w,y+h-1,PANEL);
+  g.fill(x+1,y,x+w-1,y+1,PANEL_EDGE);g.fill(x+1,y+h-1,x+w-1,y+h,PANEL_EDGE);g.fill(x,y+1,x+1,y+h-1,PANEL_EDGE);g.fill(x+w-1,y+1,x+w,y+h-1,PANEL_EDGE);
+  int cx=x+PAD,cy=y+PAD;
+  g.text(font,header,cx,cy+1,GOLD,false);
+  for(int i=0;i<2;i++){int dx=x+w-PAD-16+i*9,color=i<=(heightStep?1:0)?GOLD:0x60FFFFFF;g.fill(dx+1,cy+2,dx+5,cy+7,color);g.fill(dx,cy+3,dx+6,cy+6,color);}
+  cy+=12;g.fill(cx,cy+1,x+w-PAD,cy+2,0x30FFFFFF);cy+=3;
+  for(var row:rows){int rx=cx;for(var chip:row){rx=drawChip(g,font,rx,cy+1,chip)+CHIP_GAP;}cy+=ROW;}
+  cy+=4;
+  for(int i=0;i<wrapped.size();i++)for(var part:wrapped.get(i)){g.text(font,part,cx,cy,status.get(i).color(),false);cy+=10;}
  }
+ private static Cap cap(KeyMapping binding,int fallback){return new Cap(keyName(binding,fallback),held(binding,fallback));}
+ private static Cap fixed(String label,int code){return new Cap(Component.translatable(label),keys.contains(code));}
+ private static int partWidth(net.minecraft.client.gui.Font font,Object part){return part instanceof Cap c?Math.max(CAP_H,font.width(c.label())+6):part instanceof Sep s?font.width(s.text()):9;}
+ private static int chipWidth(net.minecraft.client.gui.Font font,Chip chip){int w=0;for(var part:chip.parts())w+=partWidth(font,part)+2;return w+2+font.width(chip.action());}
+ private static int drawChip(GuiGraphicsExtractor g,net.minecraft.client.gui.Font font,int x,int y,Chip chip){
+  for(var part:chip.parts()){int pw=partWidth(font,part);
+   if(part instanceof Cap c){
+    g.fill(x+1,y,x+pw-1,y+1,CAP_EDGE);g.fill(x+1,y+CAP_H-1,x+pw-1,y+CAP_H,CAP_EDGE);g.fill(x,y+1,x+1,y+CAP_H-1,CAP_EDGE);g.fill(x+pw-1,y+1,x+pw,y+CAP_H-1,CAP_EDGE);
+    g.fill(x+1,y+1,x+pw-1,y+CAP_H-1,c.down()?CAP_DOWN:CAP_BODY);g.fill(x+1,y+CAP_H-2,x+pw-1,y+CAP_H-1,0x50000000);
+    g.text(font,c.label(),x+(pw-font.width(c.label())+1)/2,y+2,WHITE,false);
+   }else if(part instanceof Sep s)g.text(font,s.text(),x,y+2,MUTED,false);
+   else if(part instanceof Mouse m)mouseIcon(g,x+0,y,m,chip.color()==TEXT||chip.color()==MUTED?GOLD:chip.color());
+   x+=pw+2;}
+  g.text(font,chip.action(),x+2,y+2,chip.color(),false);return x+2+font.width(chip.action());
+ }
+ /** 9x12 GUI-pixel mouse: rounded body, split buttons and wheel; the used part is filled with the accent colour. */
+ private static void mouseIcon(GuiGraphicsExtractor g,int x,int y,Mouse m,int accent){
+  int edge=CAP_EDGE,body=CAP_BODY;
+  g.fill(x+2,y,x+7,y+1,edge);g.fill(x+2,y+11,x+7,y+12,edge);g.fill(x,y+2,x+1,y+10,edge);g.fill(x+8,y+2,x+9,y+10,edge);
+  g.fill(x+1,y+1,x+2,y+2,edge);g.fill(x+7,y+1,x+8,y+2,edge);g.fill(x+1,y+10,x+2,y+11,edge);g.fill(x+7,y+10,x+8,y+11,edge);
+  g.fill(x+2,y+1,x+7,y+11,body);g.fill(x+1,y+2,x+8,y+10,body);
+  if(m==Mouse.LEFT){g.fill(x+1,y+2,x+4,y+5,accent);g.fill(x+2,y+1,x+4,y+2,accent);}
+  if(m==Mouse.RIGHT){g.fill(x+5,y+2,x+8,y+5,accent);g.fill(x+5,y+1,x+7,y+2,accent);}
+  g.fill(x+1,y+5,x+8,y+6,edge);
+  if(m==Mouse.WHEEL)g.fill(x+4,y+1,x+5,y+5,accent);else g.fill(x+4,y+1,x+5,y+5,edge);
+ }
+ private static boolean held(KeyMapping binding,int... defaults){var key=((dev.stow.client.mixin.KeyMappingAccessor)binding).stow_key();
+  if(!binding.isUnbound()&&key.getType()==InputConstants.Type.KEYBOARD)return keys.contains(key.getValue());
+  for(int d:defaults)if(keys.contains(d))return true;return false;}
+ private static Component keyName(KeyMapping binding,int fallback){var key=((dev.stow.client.mixin.KeyMappingAccessor)binding).stow_key();
+  return !binding.isUnbound()&&key.getType()==InputConstants.Type.KEYBOARD?key.getDisplayName():InputConstants.Type.KEYBOARD.getOrCreate(fallback).getDisplayName();}
  /** World-space outlines, drawn from the HUD pass even while F1 hides the HUD. */
  public static void extractOutline(GuiGraphicsExtractor g){
   if(!active())return;var mc=Minecraft.getInstance();if(mc.level==null||!mc.gameRenderer.mainCamera().isInitialized())return;
@@ -72,11 +153,11 @@ public final class AreaSelection {
  }
  public static void stop(boolean back){if(!active())return;var mc=Minecraft.getInstance();camera=null;keys.clear();KeyMapping.releaseAll();if(player!=null)player.input=input;if(mc.player==player){mc.setCameraEntity(previous==null?player:previous);}else mc.setCameraEntity(mc.player);mc.options.setCameraType(perspective);var screen=parent;parent=null;previous=null;player=null;input=null;first=null;second=null;heightStep=false;heightFirst=null;heightSecond=null;scrollRemainder=0;if(back&&screen!=null&&mc.level!=null)mc.gui.setScreen(screen);}
  public static void tick(Minecraft mc){if(!active())return;if(mc.level!=camera.level()||mc.player!=player||!player.isAlive()||mc.gui.screen()!=null||mc.getCameraEntity()!=camera||player.position().distanceToSqr(origin)>16){stop(false);return;}
-  camera.setOldPosAndRot();double forward=(keys.contains(InputConstants.KEY_W)?1:0)-(keys.contains(InputConstants.KEY_S)?1:0),side=(keys.contains(InputConstants.KEY_D)?1:0)-(keys.contains(InputConstants.KEY_A)?1:0),up=(keys.contains(InputConstants.KEY_SPACE)?1:0)-(keys.contains(InputConstants.KEY_LSHIFT)||keys.contains(InputConstants.KEY_RSHIFT)?1:0);double yaw=Math.toRadians(camera.getYRot());var direction=Entity.calculateViewVector(camera.getXRot(),camera.getYRot()).scale(forward).add(-Math.cos(yaw)*side,up,-Math.sin(yaw)*side);if(direction.lengthSqr()>0){var next=camera.position().add(direction.normalize().scale(ctrl()?1.5:.4));if(Math.abs(next.x-origin.x)<=64&&Math.abs(next.y-origin.y)<=64&&Math.abs(next.z-origin.z)<=64&&mc.level.hasChunkAt(BlockPos.containing(next)))camera.setPos(next);}
+  camera.setOldPosAndRot();var o=mc.options;double forward=(held(o.keyUp,InputConstants.KEY_W)?1:0)-(held(o.keyDown,InputConstants.KEY_S)?1:0),side=(held(o.keyRight,InputConstants.KEY_D)?1:0)-(held(o.keyLeft,InputConstants.KEY_A)?1:0),up=(held(o.keyJump,InputConstants.KEY_SPACE)?1:0)-(held(o.keyShift,InputConstants.KEY_LSHIFT,InputConstants.KEY_RSHIFT)?1:0);double yaw=Math.toRadians(camera.getYRot());var direction=Entity.calculateViewVector(camera.getXRot(),camera.getYRot()).scale(forward).add(-Math.cos(yaw)*side,up,-Math.sin(yaw)*side);if(direction.lengthSqr()>0){var next=camera.position().add(direction.normalize().scale(ctrl()?1.5:.4));if(Math.abs(next.x-origin.x)<=64&&Math.abs(next.y-origin.y)<=64&&Math.abs(next.z-origin.z)<=64&&mc.level.hasChunkAt(BlockPos.containing(next)))camera.setPos(next);}
  }
  public static boolean key(int action,KeyEvent event){if(!active())return false;var mc=Minecraft.getInstance();int key=event.key();
   // Toggle the HUD like vanilla F1 (respects rebinding); vanilla keybind handling is paused while the camera is active.
-  if(mc.options.keyToggleGui.matches(event)){if(action==1)mc.gui.hud.toggle();return true;}
+  if(mc.options.keyToggleGui.matches(event)||mc.options.keyToggleGui.isUnbound()&&key==InputConstants.KEY_F1){if(action==1)mc.gui.hud.toggle();return true;}
   if(action==0){keys.remove(key);return true;}
   boolean upKey=key==InputConstants.KEY_UP||key==InputConstants.KEY_PAGEUP,downKey=key==InputConstants.KEY_DOWN||key==InputConstants.KEY_PAGEDOWN;
   if(action==2){if(heightStep&&(upKey||downKey))adjust(upKey?1:-1);return true;}
@@ -114,7 +195,7 @@ public final class AreaSelection {
  private static int size(BlockPos[] box,int axis){return axis==0?box[1].getX()-box[0].getX()+1:axis==1?box[1].getY()-box[0].getY()+1:box[1].getZ()-box[0].getZ()+1;}
  private static Component problem(BlockPos[] box){if(AreaClaimProtocol.volume(box[0],box[1])>AreaClaimProtocol.MAX_VOLUME)return Component.translatable("stow.area.too-large");if(!AreaClaims.validSelection(box[0],box[1]))return Component.translatable("stow.area.out-of-range");return null;}
  private static Component corner(BlockPos pos){return pos==null?Component.translatable("stow.area.unset"):Component.literal(pos.toShortString());}
- private static boolean ctrl(){return keys.contains(InputConstants.KEY_LCONTROL)||keys.contains(InputConstants.KEY_RCONTROL);}
+ private static boolean ctrl(){return held(Minecraft.getInstance().options.keySprint,InputConstants.KEY_LCONTROL,InputConstants.KEY_RCONTROL);}
  private static boolean alt(){return keys.contains(InputConstants.KEY_LALT)||keys.contains(InputConstants.KEY_RALT);}
  private static void sound(boolean ok){Minecraft.getInstance().getSoundManager().play(ok?SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK,1.2f):SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS,0.7f));}
 }
