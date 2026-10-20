@@ -23,6 +23,8 @@ public final class FloatingMaterialTracker extends AbstractWidget {
     private String hoveredGoal;
     public boolean toggleHoveredHud(net.minecraft.client.input.KeyEvent event){if(!active||hoveredGoal==null||!dev.stow.client.input.StowShortcuts.matches(dev.stow.client.input.StowShortcuts.Action.HUD_GOAL,dev.stow.client.input.StowShortcuts.chord(event)))return false;MaterialPlanner.toggleHud(store,hoveredGoal);return true;}
     private String projectId;
+    private boolean allDone;
+    private static final int HEADER=12;
     public FloatingMaterialTracker(int x,int y,int width,int maxHeight,Consumer<String> open) {
         super(x,y,width,0,Component.translatable("stow.need.floating"));this.maxHeight=maxHeight;this.open=open;
         visible=false;
@@ -31,13 +33,18 @@ public final class FloatingMaterialTracker extends AbstractWidget {
     public void update(ChestMemoryStore store,boolean canOpen) {
         if(this.store!=store || !Objects.equals(projectId,store==null?null:store.activeProjectId())){offset=dev.stow.Stow.config.rememberMaterialPage&&store!=null?store.materialPage():0;motion.reset(offset);}hoveredGoal=null;
         projectId=store==null?null:store.activeProjectId();
-        this.store=store;goals=store==null?List.of():store.visibleGoals();
-        int available=maxHeight;
+        this.store=store;
+        // Redesign v2 project strip: only what is still missing, under a project header.
+        var visibleGoals=store==null?List.<MaterialGoal>of():store.visibleGoals();allDone=!visibleGoals.isEmpty();
+        var missing=new ArrayList<MaterialGoal>();for(var goal:visibleGoals)if(!MaterialPlanner.progress(store,goal).enough())missing.add(goal);
+        allDone=allDone&&missing.isEmpty();goals=List.copyOf(missing);
+        int available=maxHeight-HEADER;
         rows=Math.max(1,(available-(goals.size()*22>available?12:0))/22);
         offset=Math.max(0,Math.min(offset,Math.max(0,goals.size()-rows)));
         footer=goals.size()>rows&&maxHeight>=rows*22+12;
-        setHeight(Math.min(rows,goals.size())*22+(footer?12:0));
-        visible=!goals.isEmpty() && width>=38 && maxHeight>=22;active=canOpen;
+        footer=goals.size()>rows&&available>=rows*22+12;
+        setHeight(HEADER+Math.min(rows,goals.size())*22+(footer?12:0));
+        visible=(!goals.isEmpty()||allDone) && width>=38 && maxHeight>=22+HEADER;active=canOpen;
     }
     public List<MaterialGoal> displayedGoals(){return goals.subList(offset,Math.min(goals.size(),offset+rows));}
     public String countLabel(MaterialGoal goal){var p=MaterialPlanner.progress(store,goal);return p.label();}
@@ -45,8 +52,11 @@ public final class FloatingMaterialTracker extends AbstractWidget {
         var font=Minecraft.getInstance().font;
         List<MaterialGoal> shown=displayedGoals();hoveredGoal=null;
         renderOffset=motion.offset();
-        graphics.enableScissor(getX(),getY(),getRight(),getY()+shown.size()*22);
-        graphics.pose().pushMatrix();graphics.pose().translate(0,renderOffset);
+        String header=store==null?"":allDone?Component.translatable("stow.strip.project-done",store.projectName()).getString():Component.translatable("stow.strip.project-missing",store.projectName(),goals.size()).getString();
+        graphics.text(font,font.plainSubstrByWidth(header,width),getX(),getY()+1,allDone?0xFF8FB58A:0xFFC9A548);
+        graphics.pose().pushMatrix();graphics.pose().translate(0,HEADER);
+        graphics.enableScissor(getX(),getY()+HEADER,getRight(),getY()+HEADER+shown.size()*22);
+        graphics.pose().pushMatrix();graphics.pose().translate(0,renderOffset);my-=HEADER;
         for(int i=0;i<shown.size();i++) {
             MaterialGoal goal=shown.get(i);var progress=MaterialPlanner.progress(store,goal);int y=getY()+i*22;
             graphics.item(MemoryItems.icon(goal.itemId()),getX(),y+2);
@@ -74,8 +84,8 @@ public final class FloatingMaterialTracker extends AbstractWidget {
                 PlannerTooltips.show(graphics,mx,my,lines.toArray(Component[]::new));
             }
         }
-        graphics.pose().popMatrix();graphics.disableScissor();
-        if(footer)graphics.text(font,(offset+1)+"–"+Math.min(goals.size(),offset+rows)+" / "+goals.size(),getX(),getY()+shown.size()*22+2,0xFFBDC6CC);
+        graphics.pose().popMatrix();graphics.disableScissor();graphics.pose().popMatrix();
+        if(footer)graphics.text(font,(offset+1)+"–"+Math.min(goals.size(),offset+rows)+" / "+goals.size(),getX(),getY()+HEADER+shown.size()*22+2,0xFFBDC6CC);
     }
     private void drawCount(GuiGraphicsExtractor graphics,String text,int y,int color){
         var font=Minecraft.getInstance().font;float scale=Math.min(1,(width-23)/(float)Math.max(1,font.width(text)));
@@ -83,8 +93,8 @@ public final class FloatingMaterialTracker extends AbstractWidget {
     }
     @Override protected boolean isValidClickButton(net.minecraft.client.input.MouseButtonInfo info){int button=info.button();return dev.stow.client.input.StowShortcuts.matches(dev.stow.client.input.StowShortcuts.Action.HUD_GOAL,dev.stow.client.input.StowShortcuts.chord(info))||button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT || button==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT;}
     @Override public void onClick(MouseButtonEvent event,boolean doubleClick) {
-        if(event.y()-getY()-renderOffset<0)return;
-        int index=(int)(event.y()-getY()-renderOffset)/22+offset;
+        if(event.y()-getY()-HEADER-renderOffset<0)return;
+        int index=(int)(event.y()-getY()-HEADER-renderOffset)/22+offset;
         if(index>=offset && index<Math.min(goals.size(),offset+rows)){String id=goals.get(index).itemId();if(dev.stow.client.input.StowShortcuts.matches(dev.stow.client.input.StowShortcuts.Action.HUD_GOAL,dev.stow.client.input.StowShortcuts.chord(event.buttonInfo()))){MaterialPlanner.toggleHud(store,id);return;}if(event.button()==com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT)ChestMemory.toggleMaterialGlow(store,id);else open.accept(id);}
     }
     @Override public boolean mouseScrolled(double mx,double my,double horizontal,double vertical) {
