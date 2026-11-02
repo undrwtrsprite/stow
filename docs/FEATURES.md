@@ -1,186 +1,366 @@
-# stow
+# Stow feature guide
 
-A quiet home for your items. A standalone client-side Fabric mod for Minecraft **26.3**.
+This guide explains how each part of Stow works and what its limits are. For a short overview, see the [README](../README.md). Release-by-release changes are in the [changelog](../CHANGELOG.md).
 
-## Install
+Stow is for **Minecraft 26.3 on Fabric**. The client works on its own. The optional [companion](COMPANION-DESCRIPTION.md) adds server-side speed-ups and storage labels.
 
-1. Close Minecraft and remove the old Mouse Wheelie jar from your client `mods` folder.
-2. Add the stow client JAR for Minecraft 26.3. Keep Fabric API installed and add [Cloth Config 26.3.159 for Fabric](https://modrinth.com/mod/cloth-config/version/fg2uyxOW), if it is not already installed.
-3. Start Minecraft with Fabric Loader 0.19.5 or newer and Java 25.
+## Contents
 
-The server does not need stow. Mod Menu is optional.
+- [Installation and requirements](#installation-and-requirements)
+- [Sorting and moving items](#sorting-and-moving-items)
+- [Pins, search and Smart Deposit](#pins-search-and-smart-deposit)
+- [Storage memory](#storage-memory)
+- [Material planning](#material-planning)
+- [Building helpers](#building-helpers)
+- [Tools, equipment and combat helpers](#tools-equipment-and-combat-helpers)
+- [Villager trading](#villager-trading)
+- [Shulker box previews](#shulker-box-previews)
+- [Command palette, settings and HUDs](#command-palette-settings-and-huds)
+- [Companion features](#companion-features)
+- [Shortcut reference](#shortcut-reference)
+- [Limits at a glance](#limits-at-a-glance)
+- [Building from source](#building-from-source)
+- [Credits and licenses](#credits-and-licenses)
 
-On first launch, stow copies existing Mouse Wheelie chest memories, projects, material goals, names, storage selections, pinned slots and drag-mode preference into `config/stow/`. Original files remain in place. This imports the custom revision's saved-data formats, not Mouse Wheelie's other configuration settings. Subsequent starts use stow's own data.
+## Installation and requirements
 
-## Use
+1. Install **Java 25+**, **Fabric Loader 0.19.5+**, **Fabric API 0.161.0+26.3** and **Cloth Config 26.3.159+**.
+2. Put the Stow JAR in your client's `mods` folder.
+3. Optional: install **Mod Menu 21.0.0** to open Stow's settings from the mod list.
+4. Remove **Mouse Wheelie** before starting. The two mods conflict.
 
-### Import a materials list (1.0)
+The server doesn't need Stow for the client features. For companion features, see [Companion features](#companion-features).
 
-Open **Materials → Import**, paste a description or list, and choose **Review list**. Rows can use quantities before or after item names, including `32 Oak Planks`, `Glass x64`, `Glass (64)`, and `2 stacks of Glass`. Stacks use the item's actual stack size. English vanilla names also work when the active language is German.
+**Importing from Mouse Wheelie:** on first launch, Stow copies existing Mouse Wheelie chest memories, projects, material goals, names, storage selections, pinned slots and drag-mode preference into `config/stow/`. The original files are left in place. Stow doesn't import Mouse Wheelie's other settings. After the first launch, Stow uses its own data.
 
-The preview preserves the original lines. **Edit** opens item search and quantity correction; the include/skip control selects what enters the project. Unknown names, ambiguous variants, prose and invalid quantities are excluded until corrected. Duplicate included rows are combined. Choose whether to **replace matching targets** or **add quantities**, then review the resulting target totals and confirm. Unrelated goals remain, and **Undo** reverses the complete import.
+## Sorting and moving items
 
-Projects allow 1,024 material types and targets up to 1,000,000 items each. A paste supports 65,536 characters and 2,048 lines. No changes are applied if the complete batch exceeds a limit. The world project HUD shows **+N more materials** for additional visible material types beyond its configured 3–5 rows.
+- **Sort:** middle-click a hovered inventory or chest to sort it. Shift + middle-click sorts by combined quantity. Ctrl + middle-click sorts by displayed name.
+- **Sort orders:** Creative catalogue (the default for normal clicks), Quantity, Name, Item ID and Combine only. Each click type (normal, Shift, Ctrl) has its own configurable order. The defaults are Creative, Quantity and Name.
+- **Combined quantity:** Quantity ranks an item by its combined total across stacks, not the size of one stack.
+- **Name order:** uses the active game language.
+- **Item ID order:** uses the numeric registry order.
+- **Combine only:** merges partial stacks without moving other items.
+- **Hotbar in containers:** the hotbar can be included in container sorts or kept separate. The player inventory screen always keeps it separate.
+- **Protected slots:** pinned slots, equipment and output slots are never sorted.
+- **Restricted inputs:** machine inputs are skipped when they can't accept the whole arrangement.
+- **How sorting runs:** Stow sends ordinary client pickup packets. Each batch ends with an empty cursor and stops if the screen or its contents change. Creative inventory keeps vanilla behavior.
+- **Move several stacks:** Shift + left-drag moves every matching stack. Ctrl + Shift + left-drag moves every stack you cross in Both mode.
+- **Matching compares whole items**, including components such as custom names.
+- **Drag modes:** the drag icon shows the current mode, and each gesture keeps its starting mode and source inventory.
+- **Quick bundles:** Shift + left-click or drag across items to fill a bundle you're holding. Shift + right-click or drag across empty slots to unpack it. Shift + left-drag from a placed bundle unpacks it into empty or matching slots. Filling uses only the bundle's remaining capacity. Unpacking moves one stack at a time. Each crossed slot is used once, even during fast mouse movement. Pinned slots are skipped. Shift-clicking a placed bundle without dragging still moves the whole bundle.
+- **Quick bundle drag** can be disabled under **Settings → Inventory**.
+- **Mouse Tweaks:** when Mouse Tweaks is installed, Stow's drags keep the Matching filter, and Mouse Tweaks' other gestures and wheel actions keep working.
 
-**Finish project** (Materials footer) unlocks when every material meets its target. A finished project keeps counting down as you build but shows neutral colors and "N used" instead of red/yellow/green and "missing"; **Reopen project** restores normal colors. Settings → Project totals → Show finished project totals can hide its HUD.
+## Pins, search and Smart Deposit
 
-Forgetting chest contents preserves the location's project selection. Reopening that chest restores its material totals from the fresh snapshot; forgotten locations do not count as available storage. Discovered and reopened forgotten chests are assigned to the active project by default. Project totals settings can disable auto-assignment. Refreshing a known excluded chest leaves it excluded.
+- **Pin a slot:** hover it and press **P**. Pinned slots appear with a small padlock (45% of the icon size). **Settings → Inventory → Pinned slot appearance** can replace the padlock with a highlighted slot.
+- **What pins protect:** sorting, drags, Smart Deposit and material-picker auto-placement leave pinned slots alone. Manual cursor placement still works.
+- **Keep Shift-transfers out of pinned slots:** a separate setting. When it is on, ordinary Shift-clicks and Shift-drags also skip pinned destinations.
+- **Search your inventory:** Ctrl + F. Escape clears the search.
+- **Find remembered storage:** the chest icon opens storage search.
 
-### HUDs, tool replacement and feedback (1.0)
+**Smart Deposit** moves items into open storage immediately. There is no confirmation screen. Trigger it with the hopper icon, from the command palette or with a shortcut. Hovering the hopper highlights the source slots and shows the quantity.
 
-**Materials → Copy material list** (paper icon beside + and Import) copies the active project's saved targets, including hidden goals and every search/page. The text starts with the project name and uses exact item IDs, for example `128 minecraft:oak_log`, so it can be reviewed and imported in another language. Save quantity edits first. Export does not include chest choices, visibility or HUD priorities. Empty lists explain Import/Add or opening storage; empty search results suggest clearing the search.
+- **Settings → Deposit** controls two options:
+  - **Match variants only** (on by default). Turn it off to fill empty storage with all unprotected items.
+  - **Keep the hotbar protected** (on by default).
+- Matching stacks fill first, then empty slots. Destination restrictions are respected.
+- Machine, crafting, merchant and other non-storage menus are excluded.
+- Pinned slots and keep amounts are always protected.
+- A short notification reports the result, or why nothing could move.
 
-Storage and project chest-selection cards both offer **Forget**. In project selection, use the X next to Glow to forget saved contents; Undo restores them. Excluding a chest uses the separate inclusion control. Forgetting retains material goals and the chest's project selection so reopening it can restore fresh totals.
+**Keep amounts** set a minimum for an item across your main inventory and hotbar, including pinned stacks and named variants. Keeping 64 cobblestone, for example, deposits only the extra cobblestone that fits in storage. Search an item, set its minimum and save. Setting it to zero removes the rule. Keep amounts protect deposits only, not ordinary manual moves.
 
-Project material and equipment rows align right by default. Equipment shows remaining durability only; enable **Show durability percentage** in Equipment HUD settings to show only the percentage instead. The detailed Equipment Watch screen continues to show percentage and current/maximum durability together. Each HUD editor offers left, center or right alignment, dragging, corner anchoring, size controls and reset. **Appearance → Block count layout** provides separate 60–200% size and free positioning; **Beside hotbar** restores automatic placement. Shared HUD size affects all HUD elements.
+## Storage memory
 
-**Inventory → Building & tools** contains tool replacement. **Keep 1 durability** swaps a worn main-hand tool with a usable spare of the same item, keeping the old one in the spare's slot. Without a spare, a damaging use is prevented. Higher-cost actions reserve enough durability to avoid breaking. **After break** waits for the actual main-hand break event. Replacements prefer matching components, avoid pinned spares, and wait during menus or other inventory operations. Armor and offhand equipment are excluded.
+Stow remembers storage snapshots, so you can search and plan without reopening every chest.
 
-Action feedback appears at the top-right screen edge above open menus and their blur, including save, undo, import, storage and project changes, sorting, deposits and tool replacement. Glow feedback lasts 1.1 seconds, sorting completion 1.2 seconds and routine feedback 1.8 seconds; recognized blocked or interrupted actions remain longer. New feedback replaces the current notice, and identical repeats do not extend its timer. **Appearance → Action notifications** controls it. Import input, review and item search use smooth wheel scrolling; keyboard editing and scrollbar dragging stay immediate.
+- **When snapshots are taken:** when you open a chest, barrel or shulker box.
+- **Locally placed shulkers:** Stow remembers their contents from the item you're holding once the server confirms the placement.
+- **Server-confirmed removal:** when the server confirms a shulker was removed, its saved snapshot, totals and glow are cleared.
+- **What Stow doesn't do:** it doesn't read unopened storage remotely. Other players' changes appear when you reopen the container.
+- **Empty chests:** reopening an empty chest updates its count.
 
-| Action | Control |
-| --- | --- |
-| Open the command palette | Ctrl + K; or the command-block inventory icon |
-| Smart deposit into open storage | Click the hopper icon; deposits immediately |
-| Configure keep amounts, shortcuts or HUD placement | Settings: Smart deposit, Inventory, Equipment HUD or Project totals |
-| Equip the fastest suitable tool for a world block | Middle-click the block (Minecraft Pick Block binding) |
-| Toggle automatic mining tools (off by default) | Alt + T; editable in the Shortcut editor |
-| Toggle Hold Attack / interval clicks | Alt + A; choose mode and interval in Settings → Automatic attack |
-| Toggle inventory auto-mending | Alt + M; collect XP while tools cycle through the offhand |
-| Trade an offer using the whole inventory | Shift + left-click the villager output |
-| Preview shulker contents | Hover the shulker box; Settings → Inventory can disable it |
-| Fill a held bundle quickly | Hold it on the cursor; Shift + left-click or drag across items |
-| Unpack a held bundle quickly | Hold it on the cursor; Shift + right-click or drag across empty slots |
-| Unpack a bundle from its slot | Shift + left-drag from the bundle across empty or matching slots |
-| Refill building stacks | Automatic at 8 blocks remaining; configure in Settings → Inventory |
-| Configure the top-right project counters | Settings → Projects |
-| Exclude carried items from material goals | Settings → Inventory → Include inventory items: Off |
-| Prioritize a material in the in-game HUD | Star in Materials; or hover its floating inventory counter and press H |
-| Disable/re-enable chest glow | Eye icon in inventory |
-| Choose chests for the active project | Projects → Choose project chests |
-| Sort hovered inventory or chest | Middle mouse button |
-| Choose sort orders and drag mode | Quick actions → Settings; or Mod Menu settings |
-| Sort by combined item quantity | Shift + middle-click |
-| Sort by displayed name | Ctrl + middle-click |
-| Change drag mode | Drag icon; its shape changes per mode |
-| Move matching stacks | Shift + left drag |
-| Move all crossed stacks in Both mode | Ctrl + Shift + left drag |
-| Pin or unpin a player slot | Hover it and press P |
-| Search current inventory | Ctrl + F; Escape clears search |
-| Find previously opened storage | Chest icon |
-| Track a material | Hover item and press N; or `/need 1000 cobble` |
-| Edit floating material | Left-click its icon or count |
-| Toggle nearest selected chest glow for a material | Right-click its icon or count; right-click again to stop |
+Goals count **your current inventory plus the included saved snapshots** by default. To count only the chests selected for the active project, turn off **Settings → Inventory → Include inventory items**. That choice applies everywhere totals appear.
 
-Matching drag compares the entire item, including components such as custom names. Each gesture keeps its initial mode and source inventory. Pinned positions use a tiny padlock, 45% of the original icon size. Settings → Inventory → Pinned slot appearance can replace it with a highlighted slot. The separate Keep Shift-transfers out of pinned slots setting skips pinned empty/occupied destinations during Shift-click and Shift-drag. Manual cursor placement remains available. They are excluded from drag, sorting and Smart Deposit.
+**Forgetting a snapshot** removes its contents but keeps the chest's project selection and material goals. Reopening it refreshes its totals. **Undo** restores forgotten entries. Excluding a chest is a separate control.
 
-Quick bundle drag keeps the bundle in its original slot or on the cursor. Each crossed slot is used once, including during fast mouse movement. Filling takes only the remaining bundle capacity; unpacking moves one selected stack at a time. Pinned slots are skipped. Shift-clicking a placed bundle without dragging still transfers the whole bundle. Settings → Inventory → Quick bundle drag can disable these gestures.
+**Storage list:** cards show a container icon, coordinates and quantity previews in separate areas. Shulker cards take their dye color. Undyed and older unknown-color entries use a neutral purple style until refreshed. The list uses up to three columns where space allows.
 
-Settings use Cloth Config category tabs, search, reset buttons, Save and Cancel. Building/tools and advanced sorting options are expandable. Edits apply together when you save. Materials, storage, projects, the material picker and chest renaming share full-page native backgrounds, centered headers and matching footer controls. Materials, Storage and Projects have centered navigation tabs at every screen size. Materials uses compact 42-pixel rows with search, target editing, icon actions and slim progress bars. Hover a total for the inventory/chest breakdown, missing count and snapshot age; Projects puts project selection before its name/chest editor, using two columns on wide screens. Storage cards keep coordinates, actions and quantity previews in separate areas. Project editing stays together near the top. Tab switching returns to the inventory without building a chain of utility screens. Floating counters remain background-free. Inventory buttons and counters reflow from the live container position when the recipe book changes its layout.
+**Chest glow:** loaded storage gets Minecraft's native white spectral outline, so it shows through walls. Double chests are outlined as a whole. Remembered storage outside loaded chunks shows a projected box instead. The name and distance label follows the camera and shrinks with distance, with a minimum readable size.
 
-Sorting uses Mouse Wheelie's original stack combination and chained-permutation client algorithm, including named/component tie-breakers and bundle handling. Creative order is the default, based on the creative search catalogue. Quantity ranks each item by its **combined total**, not the size of an individual stack. Name uses the active language; Item ID uses numeric registry order; Combine only merges stacks without rearranging positions. Normal, Shift and Ctrl middle-click each have a configurable order (defaults: Creative, Quantity, Name). In containers, the hotbar can be separate or included; the player inventory screen keeps it separate. Pins, equipment and output slots are excluded. Restricted machine inputs are skipped when they cannot accept the whole permutation. Sorting uses ordinary client pickup packets; each batch finishes with an empty cursor and stops if the screen or contents change. Creative inventory keeps vanilla behavior.
+- Click **Glow** in the storage list, or right-click a material counter, to show the nearest selected chest's glow. Right-click the same counter again to stop it.
+- The eye button in the inventory hides and re-shows glow. The chosen chest is kept.
 
-Chest memory records contents after you open a chest, barrel or shulker box. Since 1.0.5 it also records the known contents of a locally placed shulker after server confirmation. It does not remotely read unopened storage. Goals count **current inventory + included saved chest snapshots** by default. Turn off Settings → Inventory → Include inventory items to count only the active project's selected chests toward goals. The same `current / target` display, remaining amount and completion colors use that choice in all material views. Other players' changes become known when you reopen the chest. Reopening an empty chest updates the count. Projects have independent goals, HUD stars and storage selections, with up to 1,024 materials per project. Projects → Choose project chests opens the selection directly; selected chests sort first when opening the selection screen, and cards retain their positions while you change selections. Chest cards reserve enough height for item counts and actions, with two columns where space permits. New projects start with no selected chests; existing selections are preserved. Floating counters have no background; scroll down to later goals. Totals are red below 40%, yellow from 40% until completion, and green at or above the target. Settings → Inventory → Remember inventory material page chooses between restoring each project's previous scroll position in the current playing session and restarting at the first item when reopening the inventory.
+## Material planning
 
-The right-aligned eye inventory button quickly hides/re-shows chest glow while retaining the selected chest. Clicking Glow in storage or right-clicking a material enables glow again, even if the eye was off. Right-click the same material counter again to stop its glow; the tooltip changes to “stop glow” while active. Stop glow clears the selection. Settings → Inventory also controls visibility.
+Planning covers projects, material goals and the HUD that tracks them.
 
-Loaded storage uses **Minecraft's native spectral-arrow/entity outline effect**, in white, visible through walls. Chests and shulkers use their animated block-entity models; barrels use their block model. Both halves of a double chest are included. stow extracts the selected storage even when a wall hides its render section, and transfers only outline geometry into vanilla's existing pass. It does not submit a second chest skin, alter scene depth or add a fullscreen tint. The existing distance-scaled HUD name/distance label remains; remembered storage outside loaded chunks retains the projected box fallback. Labels stay anchored to the per-frame camera and shrink smoothly with distance, with an eight-pixel readability floor at GUI scales 1–4.
+### Importing a list
 
-Since 1.0.5, server-confirmed shulker removal clears its saved snapshot, totals and active glow, and stops an old open menu from re-saving it. Single-block/section updates and loaded-chunk reconciliation remove observed stale positions. A locally placed shulker can be remembered from its held item's contents after matching server block data or a reconciled prediction acknowledgement. At most 64 placements wait for confirmation, for five seconds; rejected, expired and cross-world candidates are discarded. Reopening always refreshes from the actual menu. Identical-color replacements made while unobserved cannot be identified reliably and still require reopening; identical genuine boxes at separate positions remain separate. Automatic removal preserves project position selections without adding Undo history. Shulkers have matching dye-color icons, accents and tinted cards in storage/search/selection views. Optional dye metadata loads alongside older version-4 files; undyed or unknown-color entries use a neutral purple style until refreshed.
+Open **Materials → Import**, paste a list and choose **Review list**.
 
-## Crafting and full-inventory trading
+- **Formats:** `32 Oak Planks`, `Glass x64`, `Glass (64)` and `2 stacks of Glass` all work. Stacks use the item's real stack size. English vanilla names also work when the game language is German.
+- **Review:** the preview keeps your original lines. **Edit** opens item search and quantity correction. The include/skip control chooses which rows enter the project.
+- **Excluded rows:** unknown names, ambiguous variants, prose and invalid quantities stay out until you fix them. Duplicate included rows are combined.
+- **Apply:** choose **replace matching targets** or **add quantities**, then review the resulting totals and confirm.
+- **Undo** reverses the whole import. Other goals in the project are unchanged.
+- **Limits:** see [Limits at a glance](#limits-at-a-glance). No changes are applied if a paste exceeds a limit.
 
-**Shift + left-click a villager trade output** to trade the selected offer using materials throughout your main inventory and hotbar. Stow refills both payment inputs between vanilla trade batches until materials, villager stock or output space run out. Another click, a keypress (including Escape), scrolling, closing the menu or disconnecting cancels further batches. Changed inventory, offers, prices or components also stop the operation. Each gesture is bounded to 128 batches, with follow-up batches four client ticks apart after the initial click. No companion is required. Merchant refills follow vanilla selection rules, including using pinned payment stacks; results may fill pinned inventory positions under vanilla rules.
+### Projects and finishing
 
-Other recipe output slots keep their menu's vanilla Shift-click behavior, including batch crafting from the inventory, crafting table, stonecutter, smithing, loom, cartography table, grindstone and furnace. Stow's multi-slot Shift-drag and bundle-drag gestures skip result slots, even when the drag starts in a merchant input slot, so crossing a trade output cannot trigger repeated trades. **Keep Shift-transfers out of pinned slots** still protects ordinary item transfers; vanilla result transfers may fill or merge into pinned slots according to that menu's rules.
+- Each project has its own targets, HUD stars and selected chests.
+- **Choose project chests:** Projects → Choose project chests. Selected chests sort to the top.
+- **New projects** start with no chests selected. Existing selections are kept.
+- **Auto-assign:** newly discovered and reopened chests join the active project by default. Turn this off in **Project totals** settings.
+- **Finish project** (in the Materials footer) unlocks when every target is met. A finished project keeps counting as you use materials. Its colors go neutral, and rows say "N used" instead of "missing".
+- **Reopen project** restores the normal colors. **Settings → Project totals → Show finished project totals** can hide a finished project's HUD.
+- **Totals colors:** red below 40%, yellow from 40% until complete, green at or above the target.
+- **Copy material list:** the paper icon copies the project's saved targets, including hidden goals, as plain text with exact item IDs, for example `128 minecraft:oak_log`. It doesn't include chest choices, visibility or HUD priorities. Save quantity edits first.
 
-**Instant companion trades:** update both JARs to 1.0.4 beta 2 or later to perform the whole-inventory trade in one server task using vanilla merchant operations. Payment, stock and result-space limits still apply, with a 128-batch cap. The server validates the open menu, revision, empty cursor and offer, accepts at most one request per two server ticks, and supplies all prices and items. Completed instant work cannot be cancelled afterward. Older/absent companions, custom merchant menus or servers setting `instantVillagerTrading=false` in `config/stow-companion.properties` and restarting retain paced client trades. Missing replies time out after five seconds without replay.
+### HUD
+
+- **Project totals** appear in the top-right corner by default, headed by the project name. Each row shows an icon and `current / target`.
+- **Row limit:** 3 to 5 rows (default 3). Starred goals come first, in your chosen order. Other visible goals fill the remaining rows.
+- **Hiding:** the HUD can be hidden with **F1**, and it isn't shown while another screen is open.
+- **Star a material:** press **H** while hovering a floating counter, or star it in the Materials list.
+- **Track a material:** hover an item and press **N**, or use `/need 1000 cobble` in the command palette. The command opens a confirmation for the material and quantity.
+
+### Moving the HUD
+
+Each HUD has an editor with left, center or right alignment, dragging, corner anchoring, size controls and reset.
+
+- **Project totals:** size is adjustable from 60% to 150%.
+- **Shared HUD size:** **Settings → Appearance → Shared HUD size** sets building stock, equipment and project totals together, from 100% to 200% (default 135%).
+- **Floating counters** have no background. Scroll down to reach later goals.
+
+## Building helpers
+
+- **Block count:** shows your remaining building stock beside the hotbar while you hold a building block. It counts the selected stack plus matching stacks in your main inventory and hotbar, including pinned reserves. Storage snapshots, equipment and the offhand are not counted. It can be moved, or hidden in **Settings → Inventory**.
+- **Refill blocks and rockets:** tops up the hand you used when its stack drops to 8 or fewer. The threshold can be set from 0 to 16. At 0, refill happens after the last item is used. Works in both hands, including Elytra boosts. Rockets must match in flight duration and explosion data. Pinned reserves are skipped. Disable it in **Settings → Inventory** if another mod handles refill.
+- **Tool pick:** while you aim at a world block in survival, press Pick Block (middle-click by default) to choose the fastest suitable tool. It uses an existing hotbar tool, or swaps a backpack tool into an unpinned hotbar slot. The displaced item stays in your inventory. Pinned tools aren't moved. Settings → Inventory can turn tool pick off.
+- **Auto tool (off by default):** press **Alt + T** or enable it in Settings. While mining, it switches to the fastest suitable tool already in your hotbar. It never fetches backpack tools or moves items. Hold Sneak to keep your current item for a moment. It doesn't switch in menus, during item use, in creative, adventure or spectator modes, or on unbreakable blocks.
+
+## Tools, equipment and combat helpers
+
+### Tool replacement
+
+**Inventory → Building & tools** contains the replacement settings.
+
+- **Keep 1 durability:** when your main-hand tool is nearly worn out, swaps in a usable spare of the same item. The old tool goes to the spare's slot. Without a spare, a damaging use is blocked. Costly actions reserve enough durability to avoid breaking the tool.
+- **After break:** waits for the tool to break, then swaps in a spare.
+- Replacements prefer matching components and skip pinned spares. They wait while menus or other inventory operations are open. Armor and offhand equipment are excluded.
+
+### Equipment HUD
+
+- Shows **hotbar tools and worn armor only**. Backpack spares and offhand items stay off the HUD.
+- Shows remaining durability as points by default. Turn on **Show durability percentage** to show a percentage instead.
+- Order: hotbar tools left to right, then armor from helmet to boots.
+- Healthy items are shown by default. Switch to warnings only in settings. The default warning threshold is 15%.
+- The detailed Equipment screen also shows backpack and offhand gear, sorted by durability, with percentage and current/maximum values.
+- It starts in the bottom right, above the hotbar. Use its placement editor to move it.
+
+### Auto-mending
+
+- **Alt + M** toggles it. You can also choose **Toggle auto-mending** from the command palette.
+- Damaged Mending items cycle from your main inventory and hotbar into the offhand, most damaged first. Collect XP normally. Stow never creates XP and never repairs items without Mending.
+- Fully repaired items return to their original positions, and your original offhand item is restored.
+- Your selected hotbar slot stays available for XP farming. Armor and your held main-hand item still receive normal Mending repairs.
+- Pinned donor positions are skipped.
+- Menus, focus loss, pause, death and spectator mode stop the cycle safely. The borrowed item returns once gameplay resumes.
+- Manual changes to the borrowed item or its reserved slot stop the cycle without overwriting your changes.
+- If a disconnect stops the return packet from being sent, the borrowed item stays in the offhand. Reconnecting doesn't restart the cycle.
+
+### Automatic attack
+
+- **Alt + A** toggles it. You can also choose **Toggle automatic attack** from the command palette.
+- **Settings → Automatic attack** offers two modes:
+  - **Hold Attack** (default): holds the normal Attack control, so mining continues. It sends one initial attack.
+  - **Interval clicks**: clicks Attack repeatedly, including against entities.
+- Interval: 50 to 60,000 ms (default 500 ms). Clicks follow game ticks, at most 20 per second. Delays don't cause catch-up bursts.
+- Vanilla attack cooldowns, miss delays and item use still apply.
+- Opening a menu or chat, losing focus, pausing, dying, entering spectator mode or disconnecting stops it and releases the held Attack control. It stays off when you return.
+
+### Batch log stripping
+
+- Hold an axe, aim at a placed unstripped log and press **Alt + S**.
+- **Without the companion:** strips up to 64 visible logs of the same type, within reach and within eight blocks of you. It never breaks them. Each ordinary axe use waits for the server to confirm it. Blocked or out-of-reach logs are skipped.
+- **With the companion:** strips and then harvests the whole connected group of that log type. Face, edge and corner connections are included, with no height or length cutoff. See [Companion features](#companion-features).
+- Log axis orientation is preserved while stripping.
+- Press the same shortcut again to cancel.
+- **Settings → Inventory → Log stripping and companion harvesting** turns it off.
+- Sneak is never used as a start, modifier or cancel key.
+
+## Villager trading
+
+**Shift + left-click a villager's trade output** to keep trading that offer with materials from your whole main inventory and hotbar.
+
+- Stow refills both payment slots between trades until your materials, the villager's stock or your output space runs out.
+- Any other click, a keypress (including Escape), scrolling, closing the menu or disconnecting cancels further trades.
+- A change to inventory, offers, prices or item components also stops the batch.
+- Each gesture is capped at **128 batches**. Follow-up batches are spaced four client ticks apart.
+- Pinned payment slots follow vanilla merchant rules.
+- **With the companion (1.0.4 or later on both sides):** the whole batch completes in one server operation instead. Limits still apply. The server checks the open menu, its revision, your empty cursor and the offer, and it sets all prices and items. Requests are accepted at most once every two server ticks. Completed instant trades can't be cancelled afterward. See [Companion features](#companion-features).
+
+Other recipe outputs keep their vanilla Shift-click behavior. Those include crafting, the crafting table, stonecutter, smithing, loom, cartography table, grindstone and furnace. Stow's multi-slot Shift-drag and bundle-drag skip result slots, so a drag that crosses a trade output can't trigger repeated trades.
 
 ## Shulker box previews
 
-Hover an undyed or colored shulker box to see its **27 slots in a 9 × 3 tooltip grid**, with item icons, counts and durability indicators. Empty slots retain their positions. Empty boxes show an empty grid. The grid replaces the written contents list to keep the tooltip compact; the name, lore and other item details remain. Toggle this under **Settings → Inventory → Shulker box previews** (on by default); disabling it restores the written list.
+Hover an undyed or colored shulker box to see its **27 slots in a 9 × 3 grid**, with item icons, counts and durability indicators. Empty slots keep their positions. The grid replaces the written item list. The name, lore and other item details remain.
 
-The preview uses only item contents already supplied by the server. It does not open boxes or inspect nested containers. Hidden container details remain hidden, and another mod's existing tooltip image takes priority. No companion is required.
+- **Settings → Inventory → Shulker box previews** turns this on or off. It's on by default. Turning it off restores the written list.
+- Previews use only the contents the server has already sent. Stow doesn't open boxes or look inside nested containers.
+- If another mod already shows a tooltip image for the item, that mod's image takes priority.
 
-## Auto-mending
+## Command palette, settings and HUDs
 
-Press **Alt + M** or choose **Toggle auto-mending** in the command palette, then collect XP normally. Stow cycles damaged **Mending** items from the main inventory and hotbar into the offhand, starting with the most missing durability. Fully repaired items return to their original positions, and the original offhand item is restored. An existing damaged Mending item in the offhand is repaired first. Your selected main-hand slot stays available for XP farming; armor you wear and your held main-hand item keep vanilla Mending behavior.
+- **Ctrl + K** (either Ctrl key) opens the command palette in the world, your inventory or any Stow menu.
+  - Search actions, item names, remembered storage contents and project names.
+  - Arrow keys select, Enter opens, and Escape or Ctrl + K goes back.
+  - Shortcuts, keep amounts and chest glow are searchable too.
+  - Opening an action from inside another Stow menu returns you to the inventory or world when you leave.
+- **Settings** are split into tabs with search, reset buttons, and Save and Cancel. Edits apply together when you save.
+  - **Inventory:** sorting, drags, pins, previews, refill, the block counter and tool options.
+  - **Deposit:** Smart Deposit options and keep amounts.
+  - **Equipment:** the Equipment HUD.
+  - **Project totals:** the material HUD.
+  - **Appearance:** Shared HUD size, the action notifications, the What's new screen and the Block count layout.
+  - **Automatic attack:** the attack mode and interval.
+- **Shortcut editor:** supports keyboard and mouse bindings with modifiers. Search actions, reset one, or press Delete while capturing to unbind it. Save applies changes. Back cancels them.
+  - Conflicts with Minecraft or other mods are flagged.
+  - Duplicate Stow bindings are disabled until you resolve them.
+  - Shift and Ctrl are normalized for keyboard and mouse shortcuts.
+  - Most new actions start unbound, so Stow doesn't take extra keys.
+- **Action notifications** appear at the top-right edge, above open menus. They cover saves, undo, imports, storage and project changes, sorting, deposits and tool replacement. You can turn them off in **Appearance**.
+- **Scrolling:** wheel scrolling moves one row at a time, with a short smooth transition. Keyboard editing and scrollbar dragging respond immediately.
+- **Remember the material page:** **Settings → Inventory → Remember inventory material page** chooses between restoring each project's scroll position for the session or starting at the top when you reopen the inventory.
 
-Pinned donor positions, the selected hotbar slot and items without Mending are skipped. Item names, enchantments and other components are preserved. XP is not created or collected remotely. The cycle finishes when no eligible inventory items remain. Change the shortcut in the shortcut editor.
+## Companion features
 
-Toggle again to stop. Menus, focus loss, pause, death and spectator mode also stop activation; a borrowed item is returned after normal gameplay resumes with an empty cursor and no conflicting inventory operation. Manual changes to the borrowed item/reserved position, or selecting its hotbar position, stop the cycle without overwriting those changes. Disconnecting stops it too; if a return packet cannot be sent, the borrowed tool stays in the offhand and the prior offhand item stays in the reserved inventory position. Reconnecting does not reactivate it. No companion is required.
+The companion is an optional server-side mod. Install it on the server for these features. For single-player, install it locally next to the client. The companion adds no menus or HUDs of its own.
 
-## Automatic attack
+| Feature | Needs |
+| --- | --- |
+| Fast chest sorting | Stow client and companion **1.0.3+** |
+| Instant villager trades | Stow client and companion **1.0.4+** |
+| Storage owner labels and Claim area | Stow client and companion **1.0.5+** |
+| Connected-log harvesting (Alt + S) | Stow client and companion |
 
-Press **Alt + A** to toggle automatic Attack, or use **Toggle automatic attack** in the command palette. Set a different shortcut in Stow's shortcut editor. **Settings → Automatic attack** offers **Hold Attack** (default) and **Interval clicks**, plus an interval of **50–60000 ms** (default 500 ms).
+Use the same companion version on the server. The current version is **1.0.6**.
 
-Hold keeps the normal Attack control pressed: it continuously mines blocks and sends one initial attack. Choose Interval to click Attack repeatedly, including repeated attacks on entities. Clicks run on game ticks at most 20 times per second; delays do not cause catch-up bursts. Vanilla attack cooldowns, miss delays, item use and Stow's existing tool protection remain in effect.
+### Fast chest sorting
 
-Toggle again to stop. Opening any menu or chat, losing game focus, pausing, dying, spectator mode or disconnecting also stops it and releases a held Attack control. It stays off when you return. The selected mode and interval are saved, while activation lasts only for the current uninterrupted gameplay session. No companion is required.
+- Sorts vanilla chests (including trapped and double chests), barrels, ender chests and shulker boxes in one server operation. The visible click queue disappears.
+- Middle-click and Shift/Ctrl variants keep their selected order and stack combining.
+- The server checks the open menu, current contents, slot permissions, stack limits and exact item and component totals, then applies the arrangement in a single tick.
+- Your inventory and cursor are not touched. Other viewers receive normal storage updates.
+- If the contents changed, the request is rejected safely.
+- Limit: **54 storage slots and 24 KiB** per request.
+- Larger requests, custom or restricted menus, player-inventory sorts, and missing or older companions use the normal click queue.
+- A request with no reply times out after five seconds and is not replayed.
+- To turn it off, set `fastChestSorting=false` in `config/stow-companion.properties` and restart. Use this if a protection or storage mod needs to intercept each click.
 
-## Survival workspace
+### Instant villager trades
 
-Press **Ctrl + K** (either Ctrl key) in the world, inventory or a stow menu to open the compact command palette. Search actions, item names, remembered storage contents or project names. Arrow keys select; Enter opens; Escape or Ctrl + K goes back. Scroll down one row at a time to reach more actions. `need 1000 cobble` opens an explicit material/quantity confirmation. Tools return directly to the original inventory or world. The launcher has a short contextual list; detailed shortcut, keep-amount and both HUD placement editors live in Settings. Shortcuts, keep amounts and chest glow are also directly searchable. Opening an action from inside another stow menu returns to the original inventory/world. Scrolling outside the palette does not move its selection. There is no duplicate Overview menu.
+- The whole-inventory Shift-click trade runs as one server task using vanilla merchant operations.
+- Payment, stock and output-space limits apply, with the 128-batch cap.
+- The server validates the menu, revision, empty cursor and offer, and supplies all prices and items.
+- Custom merchant menus, older or missing companions, and servers with `instantVillagerTrading=false` in `config/stow-companion.properties` use the paced client trades.
+- A missing reply times out after five seconds without being replayed.
 
-**Equipment Watch** is shown in the in-game HUD; its separate menu is no longer listed in Quick actions. A configured Equipment shortcut can still open the detailed view. The HUD shows **hotbar gear and worn armor only**: backpack spares and offhand items stay out of the HUD. Healthy items are included by default; Equipment HUD settings can switch to warnings only. The development client orders hotbar tools from left to right, then armor from helmet to boots. Warning filtering and colors remain; the detailed equipment screen keeps its durability ordering. Repairing, unequipping or moving an item refreshes the HUD within 50 ms. Equipment never appears beside the inventory material list. The default warning threshold is 15%; HUD icons align against the right edge, with durability counts to their left.
+### Connected-log harvesting
 
-The **Equipment HUD** starts in the bottom right, raised above the hotbar. Settings → Equipment has visibility/size and a draggable placement preview with corner, scale, reset, Save and Back. Placement edits apply on Save. Both placement editors use fullscreen coordinates and the live rows, bounds and rendering code. Controls sit in the opposite corner. Choose Bottom right → Snap to screen edge for zero margins, then Save. Existing margins remain until changed. When no live gear is available, two example rows show the style. Back discards the draft.
+- With the companion, Alt + S finds the full connected group of logs of the same type, strips the group, then harvests it.
+- Includes all vanilla log types, including poplar, plus crimson and warped stems. Other wood types, bark-sided blocks, leaves and unrelated groups are not included.
+- Tall columns, long rows and dense piles are supported, with no fixed height or length cutoff.
+- The starting log must be visible and reachable. Discovery never loads chunks, and it stops at unloaded boundaries.
+- The count limit is set by `maxLogs` in `config/stow-companion.properties`. The default is **16,384** logs, with a maximum of 65,536.
+- Survival requires enough durability for the whole group before starting. The check assumes no Unbreaking savings, so it is conservative.
+- Vanilla loot, Fabric interaction and break callbacks, permissions and protections all apply.
+- Logs already removed by Timber-style mods are skipped. Compatibility with a server's Timber mod depends on that mod.
+- Changing or protecting a block, a player or tool change, or entering an adventure or spectator mode stops the batch. Cancelling keeps completed changes.
 
-**Project totals** appear separately in the **top right** by default, headed by the active project name. Each row shows an item icon and `current / target`, using the Include inventory items setting described above. Counts update as your inventory changes or you reopen storage. Settings → Project totals controls visibility and row limit; its layout editor controls corner, left/center/right alignment, size adjustment (60–150%), dragging and edge margins. The row limit is (**3–5**, default three). Stars prioritize goals first; other visible goals fill any remaining rows in their project order. A project with no stars still shows ordinary goals. Starred goals retain their priority order per project, independently of inventory visibility; unstar to free a priority slot. Hover the current project button in Materials for the material and priority counts. Quantity drafts survive pagination and GUI resizing; resize retains typing focus/caret and incoming additions do not interrupt a target edit. Enter confirms a target. In the material picker, Enter chooses the first visible search result and highlights its amount; Enter again adds/saves it. In Projects, Enter renames the active project; Create new is an explicit button. Project visibility is independent of equipment HUD visibility, and the panel can be moved around a minimap or other HUD.
+### Storage owner labels
 
-Building stock, equipment and project totals share the same default icon size, font size and six-pixel icon/text gap. Settings → Appearance → Shared HUD size adjusts all three together (100–200%, default 135%). Existing saved building count size becomes the shared size, without resetting settings. Equipment/project size adjustments remain independent (100% matches the block counter). Physical scaling is independent of Minecraft menu scale; oversized equipment lists shrink only to fit the screen. Both panels have no background and hide with F1 or while another screen is open. Inventory counters retain their GUI layout. No minimap, route or world waypoint system is added.
+- Storage placed by a player with the companion is labeled with that player's name and UUID. This includes chests, trapped chests, barrels and shulker boxes. Labels are saved with the container and survive restarts.
+- Storage that was already there starts as **Unclaimed**. Opening it does not claim it.
+- In the storage list you can filter by Everyone, Mine, Shared, Unclaimed, Mixed (double chests with different owners) or a single player. Project totals are not affected.
+- **Rename → Storage owner** claims unclaimed storage, marks your open storage as Shared or restores a player label.
+- Only the labeling player or an operator can change an existing label. Double chests with different owners need authority over both halves.
+- Label changes require the storage menu to be open, normal access and the container within eight blocks. The server handles at most 32 requests per player per 20 ticks. No item contents are sent, and remote chunks are never loaded.
+- Labels are for organizing. They don't lock containers, grant access or reveal unopened contents. They don't identify who placed older storage.
 
-**Building stock** adds a background-free block icon and total beside the hotbar while holding a building block. It counts the selected stack plus exact matching stacks in main inventory and hotbar, including pinned reserves; storage snapshots, equipment and offhand are excluded. At narrow GUI widths it moves above the hotbar's right edge, avoiding the offhand slot. The counter disappears immediately when the selected hand becomes empty, including after the final block; a successful refill shows the new selected stack instead. The default display is 35% larger than before. Settings → Appearance → Shared HUD size adjusts it together with the other HUDs from 100–200%; placement stays inside the screen and moves above the hotbar when necessary. Settings → Inventory can hide this counter.
+### Claim area
 
-**Refill blocks and rockets** tops up the hand that used a block or firework rocket when its stack reaches 8 or fewer (configurable 0–16; set 0 to refill after the last item). Both main hand and offhand are supported, including Elytra boosts. Rockets wait up to five seconds for the server's count update; failed uses never move reserves. Refill prefers backpack reserves, matches every item component (including rocket flight duration and explosion data), preserves named variants and pinned donors, and finishes ordinary inventory clicks with an empty cursor. A pinned main-hand slot can refill its existing type. Changing the item type/components, changing the selected slot for a pending main-hand refill, opening a GUI, carrying a cursor item or starting sorting/deposit cancels pending refill. Disable it in Settings → Inventory if another mod handles refill. No companion is required.
+- **Storage → Claim area → Fly and select corners** opens a local free camera. Your character stays put and normal server physics apply.
+- **Controls:** the movement keys (default W/A/S/D), jump, sneak and sprint all fly the camera. Ctrl speeds it up. Enter moves on to the next step.
+- **Step 1 (footprint):** aim at a block within 32 blocks. Left-click sets corner 1 and right-click sets corner 2. With corner 1 set, right-click moves straight to the height step, as long as the footprint is valid.
+- **Step 2 (height):** the scroll wheel or Up/Down moves the top. Alt with the wheel or arrows moves the bottom. Ctrl steps by five. Left-click or Enter confirms, and Backspace goes back to the footprint.
+- **Review:** check the box, then press **Claim unassigned storage in this box**. Nothing is claimed until you press that button.
+- **Limits:** up to **262,144 positions**, with corners within **64 blocks** of you on each axis. Only loaded chunks are scanned. Unloaded positions are skipped.
+- **Batching:** at most eight jobs are active, one per player, with a combined budget of 512 positions and eight containers per server tick.
+- **Scope:** only unclaimed chests, trapped chests, barrels and shulker boxes are claimed. Existing owners and Shared labels are always kept, even for operators. Locked or inaccessible containers are skipped. Double chests need both halves loaded, inside the box and unclaimed.
+- **Cancelling** keeps the claims already made. Moving more than eight blocks from where the scan started, changing dimension or disconnecting stops the scan.
+- Claims are saved with the containers and survive restarts. They set a label only. They don't identify historical placers or reveal unopened contents.
 
-**Companion chest sorting** removes the visible click queue for vanilla chests (including trapped/double chests), barrels, ender chests and shulker boxes when client and server both use 1.0.3 or newer. The existing middle-click and Shift/Ctrl sort variants keep their selected order, client language and stack combining. The client proposes the resulting arrangement; the server checks the open menu, current contents, slot permissions, stack limits and exact item/component totals, then applies it in one server tick. Player inventory, cursor and excluded slots are untouched. Other viewers receive normal storage updates. A changed snapshot is rejected safely. One request supports at most 54 storage slots and 24 KiB; large item data, custom/restricted menus, player-inventory sorting and absent/older companions retain the existing queue. A pending request times out after five seconds without replay. Once the server accepts a request it completes as one operation. Server owners can disable acceleration with `fastChestSorting=false` in `config/stow-companion.properties` and restart; use that option if a protection/storage mod needs to intercept individual vanilla clicks. Install both JARs locally for single-player acceleration.
+## Shortcut reference
 
-**Tool pick** uses Minecraft's Pick Block binding (middle-click by default) when aiming at a world block in survival. It considers vanilla tool rules, mining speed, Efficiency and held-item attributes, preferring correct drops when a block requires a suitable tool. It selects an existing hotbar tool or swaps a backpack tool into an unpinned hotbar position; the displaced stack remains in the backpack. Pinned backpack tools are not moved. Creative pick block, entities and inventory middle-click sorting retain vanilla/existing behavior. Settings → Inventory can disable tool picking.
+Default shortcuts. Each one can be changed in the Shortcut editor.
 
-**Auto tool** is off by default. Enable Settings → Inventory → Auto-switch mining tools, or press **Alt + T**. The shortcut can be changed in the Shortcut editor; its screen-edge notification confirms on/off and the choice is saved. While mining, it selects the fastest suitable tool already in your hotbar, including Efficiency and correct harvest tiers. Holding left-click across stone, dirt or logs switches tools as the target changes. It never retrieves backpack tools or rearranges slots. Hold Sneak to keep your chosen item temporarily. Menus, active item use, creative/adventure/spectator modes and unbreakable blocks do not trigger switching. Manual middle-click tool picking has its own setting. Search “auto tool” in the command palette to toggle it there too.
+| Action | Default |
+| --- | --- |
+| Open the command palette | Ctrl + K |
+| Sort the hovered inventory or chest | Middle-click |
+| Sort by combined quantity | Shift + middle-click |
+| Sort by displayed name | Ctrl + middle-click |
+| Move matching stacks | Shift + left-drag |
+| Move every crossed stack (Both mode) | Ctrl + Shift + left-drag |
+| Pin or unpin a hovered slot | P |
+| Search your inventory | Ctrl + F (Escape clears it) |
+| Track a material | N (hover the item) |
+| Prioritize a material on the HUD | H (hover the floating counter) |
+| Smart Deposit | Hopper icon (no default key) |
+| Pick the best tool for a world block | Middle-click (Pick Block binding) |
+| Toggle auto tool | Alt + T |
+| Toggle automatic attack | Alt + A |
+| Toggle auto-mending | Alt + M |
+| Strip or harvest connected logs | Alt + S |
+| Trade the whole inventory | Shift + left-click the villager output |
+| Fill a held bundle quickly | Shift + left-click or drag across items |
+| Unpack a held bundle quickly | Shift + right-click or drag across empty slots |
+| Toggle chest glow | Eye icon in the inventory |
 
-**Batch log stripping and companion harvesting:** hold an axe, aim at an unstripped placed log and press **Alt + S**. With **stow companion** installed on the server, it discovers the connected group of logs of the same type, strips all of it, then harvests it. Face, edge and corner connections include tall columns, long rows and dense piles beyond normal reach, with no fixed height or length cutoff. The starting log must be visible and reachable. Log axes are preserved while stripping. All vanilla log types, including poplar, and crimson/warped stems are supported. Other log types, bark-sided wood/hyphae blocks, leaves and separate groups are excluded from the selected group.
+## Limits at a glance
 
-Press the same shortcut again to cancel. The binding is editable in the Shortcut editor; search “strip” in the world command palette for the action. Settings → Inventory → Log stripping and companion harvesting disables it. Sneak is never used as a start, modifier or cancellation control. The companion uses normal server axe uses and block breaks, respecting vanilla loot and Fabric interaction/break callbacks. It strips the full group before mining starts and skips logs already removed by Timber. Exact compatibility depends on the server's Timber mod.
+| Item | Limit |
+| --- | --- |
+| Material types per project | 1,024 |
+| Target per material | 1,000,000 items |
+| Import size | 65,536 characters and 2,048 lines |
+| Refill threshold | 0–16 |
+| Automatic attack interval | 50–60,000 ms (at most 20 clicks per second) |
+| Villager trade batches per gesture | 128 |
+| Fast chest sorting request | 54 storage slots and 24 KiB |
+| Connected-log count (`maxLogs`) | Default 16,384; maximum 65,536 |
+| Claim area | 262,144 positions; corners within 64 blocks per axis |
+| Companion requests per player | 32 per 20 ticks (labels) |
 
-The companion processes up to 512 work steps per server tick across active batches. Small groups can finish in one tick; larger ones take several ticks. It never loads chunks to expand a group and rejects discovery at unloaded boundaries. A configurable count limit defaults to 16,384 logs (`config/stow-companion.properties`, `maxLogs`, maximum 65,536). Survival reserves two durability points per log plus one spare before starting, conservatively ignoring Unbreaking savings; normal enchantment behavior still applies to the actual actions. Creative uses vanilla creative drops and durability. Protected/changed blocks and player/tool/context changes stop work. Cancelling preserves completed changes. Adventure and spectator are excluded.
+## Building from source
 
-**Without the companion**, the shortcut only strips up to 64 visible, nearby logs of the same type as the starting log within normal interaction reach; it never mines them. Each ordinary client axe use waits for a server acknowledgement. Changed, blocked and out-of-reach logs are skipped; rejection or a missing acknowledgement stops the batch. Client scanning is bounded to eight blocks around the player while still respecting the actual interaction reach. Install the companion to harvest full connected groups. Installation and local-build changes are recorded in [CHANGELOG.md](../CHANGELOG.md).
+Install **JDK 25**, then run `./gradlew build` on Linux or macOS, or `gradlew.bat build` on Windows. The JAR is written to `build/libs/`. The Gradle wrapper downloads its own Gradle version. The build uses Fabric Loom 1.17 with Minecraft 26.3's unobfuscated classes, so no mappings are needed.
 
-**Smart Deposit** runs immediately from the hopper icon, palette or a configured shortcut; there is no confirmation screen. Hovering the hopper highlights eligible source slots and shows the quantity. **Settings → Deposit** saves whether to deposit matching item variants only (the default) and whether to keep the hotbar protected (the default). Turn matching-only off to fill empty storage with all unprotected items. Pins and keep amounts always stay protected. Matching stacks fill before empty slots; destination restrictions are respected. Machine, crafting, merchant and other menu types are excluded. Each queued source stack finishes with an empty cursor; closing/changing the menu or receiving unexpected contents stops pending moves. A short screen-edge notification reports the result or the reason nothing could move.
+- **Client dependencies:** Minecraft, Fabric Loader, Fabric API and Cloth Config. Mod Menu is compile-only and optional at runtime.
+- **Companion dependencies:** Minecraft, Fabric Loader and Fabric API. It contains no client inventory, HUD or configuration code.
+- Run `python3 dev-tools/check-project.py` to check metadata, translation keys and assets.
 
-**Keep amounts** are minimums per item type, across all main-inventory and hotbar stacks, including pinned stacks and named variants. For example, keeping 64 cobblestone deposits only the extras that fit in eligible storage. Search an item, edit its minimum and Save; zero removes the rule. Changes are drafted together, including across pages; Back discards them. Keep amounts protect deposits, not ordinary manual transfers.
+For reference: [Fabric for Minecraft 26.3](https://www.fabricmc.net/2026/09/15/263.html).
 
-The **Shortcut editor** supports keyboard/mouse bindings and modifiers, searchable actions, individual reset, and unbinding with Delete while capturing. Save applies the draft; Back cancels it. Relevant Minecraft/mod key mappings are flagged in their input context; duplicate stow bindings are disabled until resolved. Inventory search consumes typing; Ctrl + K remains available in stow menus. Left/right modifier flags and Caps/Num Lock are normalized for keyboard and mouse shortcuts. Sort retains its Shift/Ctrl order variants. Other actions start unbound to avoid taking additional default keys.
+## Credits and licenses
 
-## Build
+- **Mouse Wheelie** by Siphalor and contributors (Apache License 2.0). Stow's stack combination, chained-permutation client sorting, creative catalogue lookup and sort modes are adapted from Mouse Wheelie. Stow's storage and inventory utilities were extracted from a custom Mouse Wheelie port and modified for Stow. The attribution is in [NOTICE](../NOTICE) and [LICENSE](../LICENSE).
+- **Material Design Icons** by Pictogrammers and contributors (Apache License 2.0). The 16-pixel inventory and menu icons are rendered from the selected SVGs in `design/icons/mdi/`.
+- **Cloth Config** is a separate, required dependency used through its public API. Mod Menu is optional.
+- Stow's icon and branding are in `src/main/resources/assets/stow/`.
 
-Install JDK 25. Run `./gradlew build` on Linux/macOS or `gradlew.bat build` on Windows. The jar is written to `build/libs/`. The Gradle wrapper downloads Gradle 9.6.0; Fabric Loom 1.17 is used without mappings for unobfuscated Minecraft 26.3.
-
-Client dependencies: Minecraft, Fabric Loader, Fabric API, Cloth Config. Mod Menu is compile-only and optional at runtime. The separate companion only needs Minecraft, Fabric Loader and Fabric API; it includes no client inventory, HUD or configuration-screen code. No Coat, Tweed, Amecs or scroll-transfer subsystem is bundled. Hand refill is a small standalone building helper.
-
-
-Build reference: [Fabric for Minecraft 26.3](https://www.fabricmc.net/2026/09/15/263.html).
-
-## Credits
-
-Storage and inventory utilities were extracted from our custom Mouse Wheelie port and adapted for stow. Required upstream attribution is retained in `NOTICE` and `LICENSE` (Apache 2.0). The new icon and branding are included in `src/main/resources/assets/stow/`.
-
-### Previous interface (0.5.5–0.5.6)
-
-These sections describe earlier releases. In 1.0, action icons have been replaced by real Minecraft item models; legacy artwork and attribution remain in the source archive.
-
-### 0.5.5 interaction polish
-
-Mouse-wheel scrolling moves one row at a time, including whole two-column rows in storage and the material picker. High-resolution wheel gestures accumulate correctly. A short 160ms cubic transition makes direction easy to follow; clipping and moving widget hitboxes keep rows from covering footer controls. Page arrows still move a full window. Range labels and thin scroll indicators show your position. The inventory tracker and quick actions also ease their one-row scrolling, and Cloth Config settings/tabs enable native smooth scrolling.
-
-Inventory actions now use downloaded Material Design Icons rendered at 16 GUI pixels: a chest for Storage, a clipboard list for Materials, sort bars, lightning for Quick actions, a tray/down arrow for Deposit, and eye/eye-off for glow. Drag modes use stacked layers (matching), select-all (all), and a finger/drag arrow (both). The palette also distinguishes adding a goal (clipboard-plus), searching storage (magnifier), equipment (pickaxe), reserves (shield-check), projects (folders), shortcuts (keyboard), and settings (gear). Actual items retain Minecraft item models. X/remove, checkmark confirmation and page controls use centered icon textures. Materials has room between counts, progress and actions; Save target uses a checkmark and Enter still works. English/German help is shorter, hover titles bold, metadata values bright and secondary text subdued. The chest caption uses a white name and grey distance, sits near the spectral outline with a fixed screen-space gap, and preserves the existing bob-compensated/distance-scaled projection.
-
-### Icon assets (0.5.6)
-
-The actual SVG artwork is downloaded from [Pictogrammers Material Design Icons](https://pictogrammers.com/library/mdi/), pinned to upstream commit `9e04201d4557e729822fb57f62a316c3dea1d4a8`. The selected 24 SVGs and manifest are in `design/icons/mdi`; the Apache 2.0 attribution is in NOTICE and the upstream license is retained alongside the sources and runtime textures. `python dev-tools/render-icons.py` uses Inkscape and Pillow to export white 64×64 PNGs with alpha, rendered at centered 16px in native Minecraft buttons. Development tools are optional: the game needs no SVG library, network request or new dependency. Minecraft's texture loader performs filtering as GUI size changes. Item icons remain actual Minecraft item models.
-
-Development ownership labels require the matching 1.0.5 test companion: newly placed vanilla storage receives its placer's name/UUID, the storage list can filter owners, and Rename → Storage owner can claim older unclaimed storage or mark your open storage shared. Existing labels can be changed only by their owner or an operator. These are labels, not locks; filters do not change project totals. All storage cards now have container icons, including ordinary/double chests and barrels.
-
-The test.6 development client adds **Storage → Claim area**: fly a local camera with W/A/S/D, Space/Shift and Ctrl, left-click two block corners, Enter to review, then explicitly claim unassigned storage. Right-click resets corners; Escape returns without claiming. The companion stores ownership on the server, skips existing owners/shared storage, and visits only loaded positions in bounded tick batches (262,144 positions maximum, corners within 64 blocks per axis). Completed claims remain after cancellation. This does not infer historical placers or discover unopened contents. Storage cards are denser and use up to three columns; Stow fields have a vertical caret and inventory widgets follow recipe-book geometry immediately while keeping expensive display caches.
+Stow is an independent project and is not affiliated with Mojang or Microsoft. Minecraft and its assets are not included.
